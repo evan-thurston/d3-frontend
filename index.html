@@ -35,7 +35,6 @@
     ></svg>
 </div>
 
-<!-- TODO: 0. can we get the same code to work with version 7 of d3 instead of 4? https://github.com/d3/d3/releases -->
 <!-- TODO: 1. scale drawing to 90% of viewport (vertically and horizontally) -->
 <!-- TODO: 2. add permanent labels to nodes -->
 <!-- TODO: 3. add permanent icons to nodes (any image url is fine for now)-->
@@ -45,7 +44,7 @@
 <!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
 <!-- TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
 <!-- TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
-
+<!-- TODO: 10: on-hover over node -> show histogram -->
 
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
@@ -289,9 +288,19 @@
 
     if (data.formation) {
         for (const z of data.formation) {
-            nodes.push({color: colors.shift(), size: 20, label: z.label, name: z.name, id: z.id});
-            for (const connId of z.connectionsOut) {
-                links.push({source: z.id, target: connId});
+
+            nodes.push({
+                color: colors.shift(),
+                size: 20, // TODO: size should be dynamic/scaled, but with a minimum and maximum size
+                label: z.label,
+                name: z.name,
+                id: z.id,
+                histogram: new Map()
+            });
+
+            // we only need-be concerned with connectionsOut, not connectionsIn, in order to complete graph
+            for (const targetId of z.connectionsOut) {
+                links.push({source: z.id, target: targetId, ...{whatever: 'else'}});
             }
         }
 

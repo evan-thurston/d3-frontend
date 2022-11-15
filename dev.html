@@ -79,6 +79,7 @@
             for(const v of fisherYatesShuffle(nodes)){
                 // update node with id v.id
                 // TODO: dynamically update nodes in network here
+                // TODO: down the line, will be updated with websocket conn
             }
         }, 2000);
 
@@ -143,6 +144,9 @@
                     .forceLink(links)
                     .id(d => d.id)
                     .distance(d => 5 * (d.source.size + d.target.size))
+                    // TODO force distance between all elements, not just connected ones
+                    // TODO in fact, force should be greater amongst non-connected elements
+                    // TODO idea - force should increase as degree of freedom between nodes increases
             )
             .on("tick", ticked);
 

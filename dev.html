@@ -42,7 +42,7 @@
 <!-- TODO: 4. allow for triangle or rectangular shapes in nodes -->
 <!-- TODO: 5. add on-hover text (show metadata when hovering over) -->
 <!-- TODO: 6. add dynamic text above node (gets updated constantly from backend) -->
-<!-- TODO: 7. add dynamic images/drawings/animation (gets updated constantly from backend) -->
+<!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
 <!-- TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
 <!-- TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
 
@@ -79,8 +79,8 @@
     const run = (nodes, links) => {
 
         setInterval(() => {
-            for(const v of fisherYatesShuffle(nodes)){
-                // update node with id v.id
+            for(const n of fisherYatesShuffle(nodes)){
+                // update node with id = n.id
                 // TODO: dynamically update nodes in network here
                 // TODO: down the line, will be updated with websocket conn
             }

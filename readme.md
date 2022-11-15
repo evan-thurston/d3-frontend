@@ -2,7 +2,9 @@
 
 ### Getting started
 
-There's no dependencies except d3 which is references in the html
+Todo list is in todos.md.
+
+There are no dependencies except d3 which is referenced in the html.
 
 ```bash
 open dev.html  ## opens with google chrome, etc

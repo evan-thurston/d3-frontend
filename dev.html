@@ -67,19 +67,6 @@
         'black'
     ];
 
-    const deJSON = (fn) => {
-        return (z) => {
-            try {
-                var val = JSON.parse(z.data);
-            } catch (err) {
-                console.error('Could not parse:', z);
-                console.error('Could not parse:', String(z));
-                console.error(err);
-                return fn(z);
-            }
-            return fn(val);
-        };
-    }
 
     // TODO: https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
 

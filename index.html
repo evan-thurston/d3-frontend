@@ -45,6 +45,7 @@
 <!-- TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
 <!-- TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
 <!-- TODO: 10: on-hover over node -> show histogram -->
+<!-- TODO: 10: on-hover over link -> show histogram -->
 
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
@@ -140,17 +141,38 @@
         simulation
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("nodes", d3.forceManyBody())
+
+            // .linkDistance(1)
             .force(
                 "links",
                 d3
                     .forceLink(links)
                     .id(d => d.id)
-                    .distance(d => 5 * (d.source.size + d.target.size))
+                    // .distance(d => 5 * (d.source.size + d.target.size))
                     // TODO force distance between all elements, not just connected ones
                     // TODO in fact, force should be greater amongst non-connected elements
                     // TODO idea - force should increase as degree of freedom between nodes increases
+                    .distance((d,a,b) => {
+                        console.log({d, a, b});
+                        return 5 * (d.source.size + d.target.size);
+                    })
             )
             .on("tick", ticked);
+
+        // function isolate(force, nodeA, nodeB) {
+        //     let initialize = force.initialize;
+        //     force.initialize = function() {
+        //         initialize.call(force, [nodeA, nodeB]);
+        //     };
+        //     return force;
+        // }
+
+        // data.nodes contains all nodes
+        for(let i = 0; i < nodes.length - 1; i++) {
+            for(let j = i + 1; j < nodes.length; j++) {
+                simulation.force();
+            }
+        }
 
         function ticked() {
             // console.log(simulation.alpha());

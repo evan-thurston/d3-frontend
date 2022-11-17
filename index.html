@@ -72,6 +72,15 @@
 <!-- TODO: 10: on-hover over node -> show histogram -->
 <!-- TODO: 11: on-hover over link -> show histogram -->
 
+<!-- TODO:make initial separating force a little stronger, so that nodes are further apart (more spaced out). -->
+<!-- TODO:2. in initial render, avoid crossing lines/edges -->
+<!-- TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links -->
+<!-- TODO: 4. rendering is optimization problem, roughly: -->
+<!-- TODO: * minimize link crossing/overlap. -->
+<!-- TODO: * maximize space between nodes. -->
+<!-- TODO: * but keep drawing within container.-->
+
+
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
 
@@ -242,11 +251,11 @@
         // }
 
         // data.nodes contains all nodes
-        for(let i = 0; i < nodes.length - 1; i++) {
-            for(let j = i + 1; j < nodes.length; j++) {
-                simulation.force();
-            }
-        }
+        // for(let i = 0; i < nodes.length - 1; i++) {
+        //     for(let j = i + 1; j < nodes.length; j++) {
+        //         simulation.force();
+        //     }
+        // }
 
         function ticked() {
             // console.log(simulation.alpha());

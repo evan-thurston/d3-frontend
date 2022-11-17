@@ -268,19 +268,11 @@
                     // TODO in fact, force should be greater amongst non-connected elements
                     // TODO idea - force should increase as degree of freedom between nodes increases
                     .distance((d,a,b) => {
-                        console.log({d, a, b});
+                        // console.log({d, a, b});
                         return 3 * (d.source.size + d.target.size);
                     })
             )
             .on("tick", ticked);
-
-        // function isolate(force, nodeA, nodeB) {
-        //     let initialize = force.initialize;
-        //     force.initialize = function() {
-        //         initialize.call(force, [nodeA, nodeB]);
-        //     };
-        //     return force;
-        // }
 
         // data.nodes contains all nodes
         // for(let i = 0; i < nodes.length - 1; i++) {

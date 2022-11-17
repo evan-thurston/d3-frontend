@@ -70,7 +70,7 @@
 <!-- TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
 <!-- TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
 <!-- TODO: 10: on-hover over node -> show histogram -->
-<!-- TODO: 10: on-hover over link -> show histogram -->
+<!-- TODO: 11: on-hover over link -> show histogram -->
 
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
@@ -284,6 +284,7 @@
             simulation.alphaTarget(0.5).restart();
             d.fx = d.x;
             d.fy = d.y;
+            placeLabelsAndIcons();
         }
 
         function drag(event, d) {
@@ -291,15 +292,18 @@
             // simulation.alpha(0.5).restart()
             d.fx = event.x;
             d.fy = event.y;
+            placeLabelsAndIcons();
             // d.fx = d3.event.x;
             // d.fy = d3.event.y;
         }
 
         function dragEnd(event, d) {
             // console.log('drag end');
+            placeLabelsAndIcons();
             simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
+            placeLabelsAndIcons();
         }
     }
 

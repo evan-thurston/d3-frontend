@@ -160,13 +160,6 @@
         // console.log({program});
     };
 
-    const fisherYatesShuffle = function* (deck) {
-        for (let i = deck.length - 1; i >= 0; i--) {
-            const swapIndex = Math.floor(Math.random() * (i + 1));
-            [deck[i], deck[swapIndex]] = [deck[swapIndex], deck[i]];
-            yield deck[i];
-        }
-    };
 
     const colors = [
         'red',
@@ -373,6 +366,7 @@
 
         let simulation = d3.forceSimulation(nodes);
 
+        let val = 0;
         setInterval(() => {
 
             console.log('udpating A...');
@@ -380,6 +374,7 @@
             data.formation[0].updateableFields.inc++;
 
            for(let i = 0; i < nodes.length; i++){
+               // this doesn't really work to force a re-render
                const n = nodes[i];
                nodes[i] = Object.assign(n, {
                    updateableFields: {
@@ -391,14 +386,17 @@
            }
 
 
+            svg
+                .selectAll("circle")
+                // .data(nodes) // pass new data seems good idea
+                .enter()
+                // .attr("r", d => d.size)
+                .attr(val++, val)
+                .attr("fill", d => 'black')
+                // .attr("img", d => d.icon)
+
+
             // simulation.alpha(0.5).restart()
-
-            for (const n of fisherYatesShuffle(nodes)) {
-                // update node with id = n.id
-                // TODO: dynamically update nodes in network here
-                // TODO: down the line, will be updated with websocket conn
-            }
-
             // placeLabelsAndIcons();
         }, 1000);
 

@@ -12,7 +12,11 @@
         background: #eee;
     }
 
-    /* .svg-container {
+	div#secret {
+		display: none;
+	}
+
+    .svg-container {
         display: inline-block;
         position: relative;
         width: 100%;
@@ -26,7 +30,7 @@
         position: absolute;
         top: 0;
         left: 0;
-    } */
+    }
 
     g {
         opacity: 0.6;
@@ -54,13 +58,28 @@
 
     .controls {
         visibility: visible;
+	}
+
+	g:hover div {
+		visibility: visible;
+	}
+
+	.histogram {
+		visibility: hidden;
+	}
+
+	.show-histogram .histogram {
+		visibility: inherit;
+	}
+/* 
+    g image {
+        visibility: hidden;
     }
 
     g:hover div {
         visibility: visible;
     }
 
-    /*
         g image {
             visibility: hidden;
         }
@@ -82,6 +101,7 @@
             preserveAspectRatio="xMidYMid meet"
     ></svg> -->
 </div>
+<div id="secret"/>
 
 <!-- DONT NEED? * TODO: 1. scale drawing to 90% of viewport (vertically and horizontally) -->
 <!-- DONE TODO: 2. add permanent labels to nodes -->
@@ -113,6 +133,7 @@
 <!--       * minimize link crossing/overlap. -->
 <!--       * maximize space between nodes. -->
 <!--       * but keep drawing within container.-->
+
 
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
@@ -202,14 +223,20 @@
         svg.selectAll("foreignObject").remove();
 
         const gs = svg.selectAll("g")
-            .on('click', d => {
+            .on('click', e => {
                 //TODO: kind of a kludge here, there must be a way to access it cleaner?
-                d.target.__data__.histogramShowing = !d.target.__data__.histogramShowing;
+//                 e.target.__data__.histogramShowing = !e.target.__data__.histogramShowing;
                 // console.log(d.target.__data__.histogramShowing)
                 // console.log(d3.select(this).histogramShowing)
                 // d3.select(this).histogramShowing = true
                 // d3.select(this)
                 //     .style('background', '#ddd')
+					histogramShowing = !histogramShowing;
+					if (histogramShowing) {
+						document.body.classList.add("show-histogram");
+					} else {
+						document.body.classList.remove("show-histogram");
+					}
             });
 
         // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
@@ -239,7 +266,7 @@
         //     .attr("text-anchor", "middle")
         // 	.text(d => 'Label: ' + d.label);
 
-        gs.append("foreignObject")
+        let divs = gs.append("foreignObject")
             .attr("x", d => d.x - 70)
             .attr("y", d => d.y + 1.1 * d.size)
             .style("overflow", "visible")
@@ -251,14 +278,86 @@
             //     color: "steelblue"
             // }))
             .append("xhtml:div")
-            .text(d => d.histogramShowing ? "histogram" : [
+//             .text(d => d.histogramShowing ? "histogram" : [
+			.text(d => histogramShowing ? "histogram" : [
                 '\nUpdates:', JSON.stringify(d.updateableFields),
                 "\nID: ", d.id,
                 "\nName:", d.name,
                 '\nLabel:', d.label
             ].join(' '));
+        
+        for (const div of divs._groups[0]) {
+			div.appendChild(getAndCacheHistogram(div.id));
+		}
+};
+	const histoCache = {};
+	const addToHistoCache = (id, value) => {
+		histoCache[id] = value;
+		return true;
+	};
+	const getHistoData = (id) => {
+		return [{val: 9.5}, {val: 2}, {val: 2.5}, {val: 3}, {val: 3.3},
+			{val: 4}, {val: 5.6}, {val: 2.1}, {val: 1.7}, {val: 7}];
+	};
+	const getAndCacheHistogram = (id) => {
+		addToHistoCache(id, createHistogram(id) );
+		return histoCache[id];
+	};
 
-    };
+	// Creating a basic histogram: https://d3-graph-gallery.com/graph/histogram_basic.html
+	const createHistogram = (id) => {
+		const data = getHistoData(id);
+
+		// set the dimensions and margins of the graph
+		const margin = {top: 10, right: 10, bottom: 10, left: 0},
+			width = 120 - margin.left - margin.right,
+			height = 50 - margin.top - margin.bottom;
+
+		let histSvg = d3.select("div#secret")
+			.append("svg")
+			.attr("class", "histogram")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom);
+
+		histSvg.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		// And apply this function to data to get the bins
+		const x = d3.scaleLinear()
+			.domain([0, 10])     // can use this instead of 10 to have the max of data: d3.max(data, function(d) { return +d.value })
+			.range([0, width]);
+		histSvg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x));
+
+		// set the parameters for the histogram
+		const histogram = d3.histogram()
+			.value(function(d) { return d.val; })
+			.domain(x.domain())
+			.thresholds(x.ticks(10)); // number of bins
+
+		const bins = histogram(data);
+
+		// Y axis: scale and draw:
+		const y = d3.scaleLinear()
+			.range([height, 0]);
+		y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+		histSvg.append("g")
+			.call(d3.axisLeft(y));
+
+		// append the bar rectangles to the svg element
+		histSvg.selectAll("rect")
+			.data(bins)
+			.enter()
+			.append("rect")
+			.attr("x", 1)
+			.attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+			.attr("width", function(d) { return Math.max(0, x(d.x1) - x(d.x0) - 1) ; })
+			.attr("height", function(d) { return height - y(d.length); })
+			.style("fill", "#69b3a2");
+
+		return histSvg.node();
+	}
 
     const run = (nodes, links) => {
 
@@ -590,7 +689,7 @@
                 "entity": {
                     "initialGraphData": true
                 },
-                "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
+                "iconUrl": "./images/arrow-sink.svg",
                 "label": "C",
                 "connectionsOut": [
                     "D"
@@ -605,7 +704,7 @@
                 "entity": {
                     "initialGraphData": true
                 },
-                "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
+                "iconUrl": "./images/arrow-source.svg",
                 "label": "D",
                 "connectionsOut": [
                     "E"
@@ -620,7 +719,7 @@
                 "entity": {
                     "initialGraphData": true
                 },
-                "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
+                "iconUrl": "./images/noun-up-3815871.svg",
                 "label": "E",
                 "connectionsOut": [],
                 "updateableFields": {
@@ -664,7 +763,6 @@
 
         run(nodes, links);
     }
-
 
 </script>
 </body>

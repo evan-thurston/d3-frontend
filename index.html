@@ -65,7 +65,6 @@
 </style>
 
 <body>
-
 <div id="container" class="svg-container">
     <svg
             version="1.1"
@@ -105,6 +104,39 @@
 
 <script>
 
+    const client = new WebSocket('ws://0.0.0.0:5900');
+
+    client.addEventListener('message', m => {
+        console.log('change event:', m);
+        location.reload(); // reload page
+    });
+
+    const program = {
+        ctrlKey: false,
+        metaKey: false
+    };
+
+    document.onkeydown= (event) => {
+        console.log({event});
+        if(event.key === 'Control'){  // this doesn't really seem to work
+            program.ctrlKey = true;
+        }
+        if(event.key === 'Meta'){
+            program.metaKey = true;
+        }
+        console.log({program});
+    };
+
+    document.onkeyup= (event) => {
+        if(event.key === 'Control'){  // this doesn't really seem to work
+            program.ctrlKey = false;
+        }
+        if(event.key === 'Meta'){
+            program.metaKey = true;
+        }
+        console.log({program});
+    };
+
     const fisherYatesShuffle = function* (deck) {
         for (let i = deck.length - 1; i >= 0; i--) {
             const swapIndex = Math.floor(Math.random() * (i + 1));
@@ -112,6 +144,8 @@
             yield deck[i];
         }
     };
+
+
 
     const colors = [
         'red',
@@ -458,6 +492,6 @@
 
 
 </script>
-</body>
+</>
 </html>
 

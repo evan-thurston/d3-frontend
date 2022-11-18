@@ -95,6 +95,7 @@
 <!--    * button to toggle physics on/off for the graph-->
 <!--    * pause/unpause button (to pause a process on backend-->
 <!--    * button to slow-down or speed-up backend process (change timestep) -->
+<!--    * button to stop all sources (stop generating new consumables/movables on the backend)-->
 <!-- DONE ** TODO: 10: on-click node -> show histogram -->
 <!-- ** TODO: 11: code histogram into metadata toggle -->
 <!-- TODO: 13: control panel at top: movable -->
@@ -191,6 +192,7 @@
             console.error('missing svg element.');
             return;
         }
+
         svg.selectAll("text").remove();
         svg.selectAll("image").remove();
         svg.selectAll("foreignObject").remove();
@@ -250,6 +252,23 @@
     };
 
     const run = (nodes, links) => {
+
+        setTimeout(() => {
+            nodes.push({
+                color: colors[index++ % nodes.length],
+                size: nodeRadius, // TODO: size should be dynamic/scaled, but with a minimum and maximum size
+                label: 'Z',
+                name: 'Z',
+                id: 'Z',
+                iconUrl: '',
+                histogram: [{value: 20}, {value: 30}, {value: 40}],
+                histogramShowing: false
+            });
+            links.push({
+                source: 'Z',
+                target: 'E'
+            });
+        }, 5000);
 
         setInterval(() => {
             for (const n of fisherYatesShuffle(nodes)) {
@@ -499,7 +518,8 @@
                 "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
                 "label": "E",
                 "connectionsOut": []
-            }
+            },
+
         ]
     }
 

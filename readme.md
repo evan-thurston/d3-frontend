@@ -11,3 +11,4 @@ open index.html  ## opens with google chrome, etc
 ```
 
 Open index.html with a browser and it will load. There's no backend needed.
+(If you want live-reload, run live-reload.js.)

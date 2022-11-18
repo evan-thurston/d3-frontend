@@ -29,44 +29,45 @@
     } */
 
     g {
-		opacity: 0.6;
+        opacity: 0.6;
         transition: opacity 0.2s ease-in-out;
-		overflow: visible;
-		cursor: default;
-	}
+        overflow: visible;
+        cursor: default;
+    }
 
-	g:hover {
-		opacity: 1;
-	}
+    g:hover {
+        opacity: 1;
+    }
 
-	g div {
-		height: 60px;
-		width: 120px;
-		padding: 10px;
-		background: #fff;
-		text-align: center;
-		vertical-align: middle;
-		white-space: pre;
-		visibility: hidden;
+    g div {
+        height: 60px;
+        width: 120px;
+        padding: 10px;
+        background: #fff;
+        text-align: center;
+        vertical-align: middle;
+        white-space: pre;
+        visibility: hidden;
         border-radius: 10px;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
-	}
+    }
 
-    .controls { 
+    .controls {
         visibility: visible;
     }
 
-	g:hover div {
-		visibility: visible;
-	}
-/* 
-    g image {
-        visibility: hidden;
-    }
-    
-    g:hover image {
+    g:hover div {
         visibility: visible;
-    } */
+    }
+
+    /*
+        g image {
+            visibility: hidden;
+        }
+
+        g:hover image {
+            visibility: visible;
+        } */
 </style>
 
 <body>
@@ -107,7 +108,6 @@
 <!--       * maximize space between nodes. -->
 <!--       * but keep drawing within container.-->
 
-
 <!--we are using version 7 of d3, use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
 
@@ -120,30 +120,33 @@
         location.reload(); // reload page
     });
 
+    client.addEventListener('error', e => {
+        console.log('start ws server using start.js in the project root to get live updates.')
+    });
+
     const program = {
         ctrlKey: false,
         metaKey: false
     };
 
-    document.onkeydown= (event) => {
-        console.log({event});
-        if(event.key === 'Control'){  // this doesn't really seem to work
+    document.onkeydown = (event) => {
+        if (event.key === 'Control') {  // this doesn't really seem to work
             program.ctrlKey = true;
         }
-        if(event.key === 'Meta'){
+        if (event.key === 'Meta') {
             program.metaKey = true;
         }
-        console.log({program});
+        // console.log({program});
     };
 
-    document.onkeyup= (event) => {
-        if(event.key === 'Control'){  // this doesn't really seem to work
+    document.onkeyup = (event) => {
+        if (event.key === 'Control') {  // this doesn't really seem to work
             program.ctrlKey = false;
         }
-        if(event.key === 'Meta'){
+        if (event.key === 'Meta') {
             program.metaKey = true;
         }
-        console.log({program});
+        // console.log({program});
     };
 
     const fisherYatesShuffle = function* (deck) {
@@ -154,110 +157,114 @@
         }
     };
 
-
-
     const colors = [
         'red',
         'blue',
+        'brown',
         'indigo',
-        'violet',
         'purple',
         'orange',
         'pink',
         'yellow',
         'maroon',
-        'black'
+        'black',
+        'magenta',
+        'green',
+        'gray',
+        'violet'
     ];
 
-    // ** TODO: https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
-
-	const width = window.innerWidth;
-	const height = window.innerHeight;
-	const minRadius = 20;
-	// I just made up a formula, but radius should be a function of window size
-	// (and eventually number of nodes as well)
-	const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25));
-	// console.log("node radius: " + nodeRadius);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const minRadius = 20;
+    // I just made up a formula, but radius should be a function of window size
+    // (and eventually number of nodes as well)
+    const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25));
+    // console.log("node radius: " + nodeRadius);
 
     let histogramShowing = false;
 
-	const placeLabelsAndIcons = () => {
-		const svg = d3.select("svg");
+    const placeLabelsAndIcons = () => {
+        const svg = d3.select("svg");
 
-		if (svg) {
-			svg.selectAll("text").remove();
-			svg.selectAll("image").remove();
-			svg.selectAll("foreignObject").remove();
+        if (!svg) {
+            console.error('missing svg element.');
+            return;
+        }
+        svg.selectAll("text").remove();
+        svg.selectAll("image").remove();
+        svg.selectAll("foreignObject").remove();
 
-			const gs = svg.selectAll("g")
-                .on('click', d => {
-                    d.target.__data__.histogramShowing = !d.target.__data__.histogramShowing;
-                    // console.log(d.target.__data__.histogramShowing)
-                    // console.log(d3.select(this).histogramShowing) 
-                    // d3.select(this).histogramShowing = true
-                    // d3.select(this)
-                    //     .style('background', '#ddd')
-                });
+        const gs = svg.selectAll("g")
+            .on('click', d => {
+                //TODO: kind of a kludge here, there must be a way to access it cleaner?
+                d.target.__data__.histogramShowing = !d.target.__data__.histogramShowing;
+                // console.log(d.target.__data__.histogramShowing)
+                // console.log(d3.select(this).histogramShowing)
+                // d3.select(this).histogramShowing = true
+                // d3.select(this)
+                //     .style('background', '#ddd')
+            });
 
-            // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
+        // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
 
-			gs.append("image")
-				.attr("x", d => d.x - d.size )
-				.attr("y", d => d.y - 1.8 * d.size)
-				.attr("width", d => d.size /2)
-				.attr("height", d => d.size /2)
-				.attr("href", d => d.iconUrl);
+        gs.append("image")
+            .attr("x", d => d.x - d.size)
+            .attr("y", d => d.y - 1.8 * d.size)
+            .attr("width", d => d.size / 2)
+            .attr("height", d => d.size / 2)
+            .attr("href", d => d.iconUrl);
 
-            // gs.append("text")
-			// 	.attr("x", d => d.x + d.size / 2)
-			// 	.attr("y", d => d.y - 1.9 * d.size)
-			// 	.attr("text-anchor", "middle")
-			// 	.text(d => 'ID: ' + d.id);
+        // gs.append("text")
+        // 	.attr("x", d => d.x + d.size / 2)
+        // 	.attr("y", d => d.y - 1.9 * d.size)
+        // 	.attr("text-anchor", "middle")
+        // 	.text(d => 'ID: ' + d.id);
 
-			gs.append("text")
-				.attr("x", d => d.x + d.size / 3)
-				.attr("y", d => d.y - 1.5 * d.size)
-				.attr("text-anchor", "middle")
-				.text(d => 'Name: ' + d.name);
+        gs.append("text")
+            .attr("x", d => d.x + d.size / 3)
+            .attr("y", d => d.y - 1.5 * d.size)
+            .attr("text-anchor", "middle")
+            .text(d => 'Name: ' + d.name);
 
-			// gs.append("text")
-			// 	.attr("x", d => d.x + d.size / 2)
-			// 	.attr("y", d => d.y - 1.1 * d.size)
-            //     .attr("text-anchor", "middle")
-			// 	.text(d => 'Label: ' + d.label);
+        // gs.append("text")
+        // 	.attr("x", d => d.x + d.size / 2)
+        // 	.attr("y", d => d.y - 1.1 * d.size)
+        //     .attr("text-anchor", "middle")
+        // 	.text(d => 'Label: ' + d.label);
 
-            gs.append("foreignObject")
-                .attr("x", d => d.x - 70)
-                .attr("y", d => d.y + 1.1 * d.size)
-                .style("overflow", "visible")
-                // .append(Histogram(d => d.histogram, {
-                //     value: d => d.value,
-                //     label: 'histogram data',
-                //     width: 120,
-                //     height: 60,
-                //     color: "steelblue"
-                // }))
-                .append("xhtml:div")
-                .text(d => d.histogramShowing ? "histogram" : "ID: " + d.id + "\nName: " + d.name + '\nLabel: ' + d.label);  
-    	}
+        gs.append("foreignObject")
+            .attr("x", d => d.x - 70)
+            .attr("y", d => d.y + 1.1 * d.size)
+            .style("overflow", "visible")
+            // .append(Histogram(d => d.histogram, {
+            //     value: d => d.value,
+            //     label: 'histogram data',
+            //     width: 120,
+            //     height: 60,
+            //     color: "steelblue"
+            // }))
+            .append("xhtml:div")
+            .text(d => d.histogramShowing ? "histogram" : "ID: " + d.id + "\nName: " + d.name + '\nLabel: ' + d.label);
+
     };
 
     const run = (nodes, links) => {
 
         setInterval(() => {
-            for(const n of fisherYatesShuffle(nodes)){
+            for (const n of fisherYatesShuffle(nodes)) {
                 // update node with id = n.id
                 // TODO: dynamically update nodes in network here
                 // TODO: down the line, will be updated with websocket conn
             }
 
-			// placeLabelsAndIcons();
+            // placeLabelsAndIcons();
         }, 2000);
 
         const svg = d3.select('div#container')
             .append('svg')
             .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
-            // .classed("svg-content", true);
+        // .classed("svg-content", true);
 
         // let svg = d3
         //     .select("svg")
@@ -342,7 +349,7 @@
                     // TODO force distance between all elements, not just connected ones
                     // TODO in fact, force should be greater amongst non-connected elements
                     // TODO idea - force should increase as degree of freedom between nodes increases
-                    .distance((d,a,b) => {
+                    .distance((d, a, b) => {
                         // console.log({d, a, b});
                         return 3 * (d.source.size + d.target.size);
                     })
@@ -444,7 +451,7 @@
                 "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
                 "label": "F",
                 "connectionsOut": [
-                   "C"
+                    "C"
                 ]
             },
             {
@@ -496,17 +503,19 @@
         ]
     }
 
+    let index = nodes.length - 1;
+
     if (data.formation) {
         for (const z of data.formation) {
 
             nodes.push({
-                color: colors.shift(),
+                color: colors[index++ % nodes.length],
                 size: nodeRadius, // TODO: size should be dynamic/scaled, but with a minimum and maximum size
                 label: z.label,
                 name: z.name,
                 id: z.id,
                 iconUrl: z.iconUrl,
-                histogram: [ {value: 20}, {value: 30}, {value: 40}],
+                histogram: [{value: 20}, {value: 30}, {value: 40}],
                 histogramShowing: false
             });
 

@@ -1,14 +1,22 @@
 #!/usr/bin/env
 
-const cp = require('child_process');
 const fs = require('fs');
 const ws = require('ws');
 
-export const wss  ={
-    connections: new Set<WebSocket.WebSocket>()
+const wss  ={
+    connections: new Set()
 }
 
-const server = ws.WebSocketServer({host:' 0.0.0.0', port: 5900});
+const serverConfig = {
+    host: '0.0.0.0',
+    port: 5900
+}
+
+const server = new ws.WebSocketServer(serverConfig);
+
+server.on('listening', () => {
+    console.log('server listening on interface:', serverConfig);
+});
 
 let to = null;
 

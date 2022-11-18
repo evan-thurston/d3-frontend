@@ -12,9 +12,9 @@
         background: #eee;
     }
 
-	div#secret {
-		display: none;
-	}
+    div#secret {
+        display: none;
+    }
 
     .svg-container {
         display: inline-block;
@@ -58,35 +58,36 @@
 
     .controls {
         visibility: visible;
-	}
-
-	g:hover div {
-		visibility: visible;
-	}
-
-	.histogram {
-		visibility: hidden;
-	}
-
-	.show-histogram .histogram {
-		visibility: inherit;
-	}
-/* 
-    g image {
-        visibility: hidden;
     }
 
     g:hover div {
         visibility: visible;
     }
 
+    .histogram {
+        visibility: hidden;
+    }
+
+    .show-histogram .histogram {
+        visibility: inherit;
+    }
+
+    /*
         g image {
             visibility: hidden;
         }
 
-        g:hover image {
+        g:hover div {
             visibility: visible;
-        } */
+        }
+
+            g image {
+                visibility: hidden;
+            }
+
+            g:hover image {
+                visibility: visible;
+            } */
 </style>
 
 <body>
@@ -135,15 +136,14 @@
 <!--       * but keep drawing within container.-->
 
 
-<!--we are using version 7 of d3, use the minified version later -->
+<!--we are using version 7 of d3; will will use the minified version later -->
 <script src="https://d3js.org/d3.v7.js"></script>
 
 <script>
 
     document.turnOffSim = () => {
         alert('simulation not yet started.');
-        // d3.force.stop()
-    }
+    };
 
     const client = new WebSocket('ws://0.0.0.0:5900');
 
@@ -231,12 +231,12 @@
                 // d3.select(this).histogramShowing = true
                 // d3.select(this)
                 //     .style('background', '#ddd')
-					histogramShowing = !histogramShowing;
-					if (histogramShowing) {
-						document.body.classList.add("show-histogram");
-					} else {
-						document.body.classList.remove("show-histogram");
-					}
+                histogramShowing = !histogramShowing;
+                if (histogramShowing) {
+                    document.body.classList.add("show-histogram");
+                } else {
+                    document.body.classList.remove("show-histogram");
+                }
             });
 
         // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
@@ -278,86 +278,97 @@
             //     color: "steelblue"
             // }))
             .append("xhtml:div")
-//             .text(d => d.histogramShowing ? "histogram" : [
-			.text(d => histogramShowing ? "histogram" : [
+            //             .text(d => d.histogramShowing ? "histogram" : [
+            .text(d => histogramShowing ? "histogram" : [
                 '\nUpdates:', JSON.stringify(d.updateableFields),
                 "\nID: ", d.id,
                 "\nName:", d.name,
                 '\nLabel:', d.label
             ].join(' '));
-        
+
         for (const div of divs._groups[0]) {
-			div.appendChild(getAndCacheHistogram(div.id));
-		}
-};
-	const histoCache = {};
-	const addToHistoCache = (id, value) => {
-		histoCache[id] = value;
-		return true;
-	};
-	const getHistoData = (id) => {
-		return [{val: 9.5}, {val: 2}, {val: 2.5}, {val: 3}, {val: 3.3},
-			{val: 4}, {val: 5.6}, {val: 2.1}, {val: 1.7}, {val: 7}];
-	};
-	const getAndCacheHistogram = (id) => {
-		addToHistoCache(id, createHistogram(id) );
-		return histoCache[id];
-	};
+            div.appendChild(getAndCacheHistogram(div.id));
+        }
+    };
 
-	// Creating a basic histogram: https://d3-graph-gallery.com/graph/histogram_basic.html
-	const createHistogram = (id) => {
-		const data = getHistoData(id);
+    const histoCache = {};
+    const addToHistoCache = (id, value) => {
+        histoCache[id] = value;
+        return true;
+    };
+    const getHistoData = (id) => {
+        return [{val: 9.5}, {val: 2}, {val: 2.5}, {val: 3}, {val: 3.3},
+            {val: 4}, {val: 5.6}, {val: 2.1}, {val: 1.7}, {val: 7}];
+    };
+    const getAndCacheHistogram = (id) => {
+        addToHistoCache(id, createHistogram(id));
+        return histoCache[id];
+    };
 
-		// set the dimensions and margins of the graph
-		const margin = {top: 10, right: 10, bottom: 10, left: 0},
-			width = 120 - margin.left - margin.right,
-			height = 50 - margin.top - margin.bottom;
+    // Creating a basic histogram: https://d3-graph-gallery.com/graph/histogram_basic.html
+    const createHistogram = (id) => {
+        const data = getHistoData(id);
 
-		let histSvg = d3.select("div#secret")
-			.append("svg")
-			.attr("class", "histogram")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom);
+        // set the dimensions and margins of the graph
+        const margin = {top: 10, right: 10, bottom: 10, left: 0},
+            width = 120 - margin.left - margin.right,
+            height = 50 - margin.top - margin.bottom;
 
-		histSvg.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        let histSvg = d3.select("div#secret")
+            .append("svg")
+            .attr("class", "histogram")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
 
-		// And apply this function to data to get the bins
-		const x = d3.scaleLinear()
-			.domain([0, 10])     // can use this instead of 10 to have the max of data: d3.max(data, function(d) { return +d.value })
-			.range([0, width]);
-		histSvg.append("g")
-			.attr("transform", "translate(0," + height + ")")
-			.call(d3.axisBottom(x));
+        histSvg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		// set the parameters for the histogram
-		const histogram = d3.histogram()
-			.value(function(d) { return d.val; })
-			.domain(x.domain())
-			.thresholds(x.ticks(10)); // number of bins
+        // And apply this function to data to get the bins
+        const x = d3.scaleLinear()
+            .domain([0, 10])     // can use this instead of 10 to have the max of data: d3.max(data, function(d) { return +d.value })
+            .range([0, width]);
+        histSvg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
 
-		const bins = histogram(data);
+        // set the parameters for the histogram
+        const histogram = d3.histogram()
+            .value(function (d) {
+                return d.val;
+            })
+            .domain(x.domain())
+            .thresholds(x.ticks(10)); // number of bins
 
-		// Y axis: scale and draw:
-		const y = d3.scaleLinear()
-			.range([height, 0]);
-		y.domain([0, d3.max(bins, function(d) { return d.length; })]);
-		histSvg.append("g")
-			.call(d3.axisLeft(y));
+        const bins = histogram(data);
 
-		// append the bar rectangles to the svg element
-		histSvg.selectAll("rect")
-			.data(bins)
-			.enter()
-			.append("rect")
-			.attr("x", 1)
-			.attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-			.attr("width", function(d) { return Math.max(0, x(d.x1) - x(d.x0) - 1) ; })
-			.attr("height", function(d) { return height - y(d.length); })
-			.style("fill", "#69b3a2");
+        // Y axis: scale and draw:
+        const y = d3.scaleLinear()
+            .range([height, 0]);
+        y.domain([0, d3.max(bins, function (d) {
+            return d.length;
+        })]);
+        histSvg.append("g")
+            .call(d3.axisLeft(y));
 
-		return histSvg.node();
-	}
+        // append the bar rectangles to the svg element
+        histSvg.selectAll("rect")
+            .data(bins)
+            .enter()
+            .append("rect")
+            .attr("x", 1)
+            .attr("transform", function (d) {
+                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+            })
+            .attr("width", function (d) {
+                return Math.max(0, x(d.x1) - x(d.x0) - 1);
+            })
+            .attr("height", function (d) {
+                return height - y(d.length);
+            })
+            .style("fill", "#69b3a2");
+
+        return histSvg.node();
+    }
 
     const run = (nodes, links) => {
 
@@ -387,12 +398,10 @@
         }, 5000);
 
 
-
         const svg = d3.select('div#container')
             .append('svg')
             .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
         // .classed("svg-content", true);
-
 
 
         const reDraw = () => {
@@ -472,17 +481,17 @@
 
             data.formation[0].updateableFields.inc++;
 
-           for(let i = 0; i < nodes.length; i++){
-               // this doesn't really work to force a re-render
-               const n = nodes[i];
-               nodes[i] = Object.assign(n, {
-                   updateableFields: {
-                       ...n.updateableFields,
-                       // increment some shit to force a re-render
-                       inc: ++n.updateableFields.inc
-                   }
-               });
-           }
+            for (let i = 0; i < nodes.length; i++) {
+                // this doesn't really work to force a re-render
+                const n = nodes[i];
+                nodes[i] = Object.assign(n, {
+                    updateableFields: {
+                        ...n.updateableFields,
+                        // increment some shit to force a re-render
+                        inc: ++n.updateableFields.inc
+                    }
+                });
+            }
 
 
             svg
@@ -492,7 +501,7 @@
                 // .attr("r", d => d.size)
                 .attr(val++, val)
                 .attr("fill", d => 'black')
-                // .attr("img", d => d.icon)
+            // .attr("img", d => d.icon)
 
 
             // simulation.alpha(0.5).restart()
@@ -501,7 +510,7 @@
 
         document.turnOffSim = () => {
             simulation.stop(); // this works, but simulation restarts again on drag
-            simulation .force("center", null)
+            simulation.force("center", null)
                 .force("nodes", null)
                 .force("radial", null)
                 .force("charge", null) // repulsion should scale with node size
@@ -511,28 +520,28 @@
         };
 
         document.turnOnSim = () => {
-          simulation.force("center", d3.forceCenter(width / 2, height / 2))
+            simulation.force("center", d3.forceCenter(width / 2, height / 2))
                 .force("nodes", d3.forceManyBody())
                 .force("radial", d3.forceRadial(height, width / 2, height / 2))
                 .force("charge", d3.forceManyBody().strength(-30 * nodeRadius)) // repulsion should scale with node size
                 .force("collision", d3.forceCollide().radius(nodeRadius / 2))
                 .force(
-                "links",
-                d3
-                    .forceLink(links)
-                    .id(d => d.id)
-                    // .distance(d => 5 * (d.source.size + d.target.size))
-                    // TODO force distance between all elements, not just connected ones
-                    // TODO in fact, force should be greater amongst non-connected elements
-                    // TODO idea - force should increase as degree of freedom between nodes increases
-                    .distance((d, a, b) => {
-                        // we set the new distance pressure to the current distance
-                        return 0.5 * Math.sqrt(
-                            Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
-                        );
-                    })
-            )
-           // this works, but simulation restarts again on drag
+                    "links",
+                    d3
+                        .forceLink(links)
+                        .id(d => d.id)
+                        // .distance(d => 5 * (d.source.size + d.target.size))
+                        // TODO force distance between all elements, not just connected ones
+                        // TODO in fact, force should be greater amongst non-connected elements
+                        // TODO idea - force should increase as degree of freedom between nodes increases
+                        .distance((d, a, b) => {
+                            // we set the new distance pressure to the current distance
+                            return 0.5 * Math.sqrt(
+                                Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
+                            );
+                        })
+                )
+            // this works, but simulation restarts again on drag
             // instead we want
         }
 
@@ -729,7 +738,6 @@
 
         ]
     }
-
 
 
     if (data.formation) {

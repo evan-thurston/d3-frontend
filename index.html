@@ -390,11 +390,13 @@
                 histogram: [{value: 20}, {value: 30}, {value: 40}],
                 histogramShowing: false
             });
+
             // dynamically add a new link
             links.push({
                 source: 'Z',
                 target: 'E'
             });
+
         }, 5000);
 
 
@@ -479,8 +481,6 @@
 
             console.log('udpating A...');
 
-            data.formation[0].updateableFields.inc++;
-
             for (let i = 0; i < nodes.length; i++) {
                 // this doesn't really work to force a re-render
                 const n = nodes[i];
@@ -493,7 +493,6 @@
                 });
             }
 
-
             svg
                 .selectAll("circle")
                 // .data(nodes) // pass new data seems good idea
@@ -503,20 +502,19 @@
                 .attr("fill", d => 'black')
             // .attr("img", d => d.icon)
 
-
             // simulation.alpha(0.5).restart()
             // placeLabelsAndIcons();
         }, 1000);
 
         document.turnOffSim = () => {
-            simulation.stop(); // this works, but simulation restarts again on drag
-            simulation.force("center", null)
+            simulation.stop();
+            simulation
+                .force("center", null)
                 .force("nodes", null)
                 .force("radial", null)
                 .force("charge", null) // repulsion should scale with node size
                 .force("collision", null)
                 .force("links", null);
-            // instead we want
         };
 
         document.turnOnSim = () => {

@@ -103,7 +103,8 @@
 <!-- TODO: 13: control panel at top: movable -->
 <!-- TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this)-->
 <!-- TODO: 15: nodes will "float" outside of viewport, after turning physics on/off -->
-
+<!-- TODO: 16: need to find a way to do an ultra-efficient re-render of each node - -->
+<!--only render changed nodes and do *not* re-render whole damn thing! -->
 
 <!-- TODO:make initial separating force a little stronger, so that nodes are further apart (more spaced out). -->
 <!-- TODO:2. on/in initial render, avoid crossing lines/edges -->
@@ -257,11 +258,17 @@
             //     color: "steelblue"
             // }))
             .append("xhtml:div")
-            .text(d => d.histogramShowing ? "histogram" : "ID: " + d.id + "\nName: " + d.name + '\nLabel: ' + d.label);
+            .text(d => d.histogramShowing ? "histogram" : [
+                '\nUpdates:', JSON.stringify(d.updateableFields),
+                "\nID: ", d.id,
+                "\nName:", d.name,
+                '\nLabel:', d.label
+            ].join(' '));
 
     };
 
     const run = (nodes, links) => {
+
 
         setTimeout(() => {
 
@@ -287,20 +294,20 @@
             });
         }, 5000);
 
-        setInterval(() => {
-            for (const n of fisherYatesShuffle(nodes)) {
-                // update node with id = n.id
-                // TODO: dynamically update nodes in network here
-                // TODO: down the line, will be updated with websocket conn
-            }
 
-            // placeLabelsAndIcons();
-        }, 2000);
 
         const svg = d3.select('div#container')
             .append('svg')
             .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
         // .classed("svg-content", true);
+
+
+
+        const reDraw = () => {
+            svg.selectAll(".link").remove();//add this to remove the links
+            svg.selectAll(".gnode").remove();//add this to remove the nodes
+        }
+
 
         // let svg = d3
         //     .select("svg")
@@ -366,6 +373,35 @@
 
         let simulation = d3.forceSimulation(nodes);
 
+        setInterval(() => {
+
+            console.log('udpating A...');
+
+            data.formation[0].updateableFields.inc++;
+
+           for(let i = 0; i < nodes.length; i++){
+               const n = nodes[i];
+               nodes[i] = Object.assign(n, {
+                   updateableFields: {
+                       ...n.updateableFields,
+                       // increment some shit to force a re-render
+                       inc: ++n.updateableFields.inc
+                   }
+               });
+           }
+
+
+            // simulation.alpha(0.5).restart()
+
+            for (const n of fisherYatesShuffle(nodes)) {
+                // update node with id = n.id
+                // TODO: dynamically update nodes in network here
+                // TODO: down the line, will be updated with websocket conn
+            }
+
+            // placeLabelsAndIcons();
+        }, 1000);
+
         document.turnOffSim = () => {
             simulation.stop(); // this works, but simulation restarts again on drag
             simulation .force("center", null)
@@ -394,7 +430,7 @@
                     // TODO idea - force should increase as degree of freedom between nodes increases
                     .distance((d, a, b) => {
                         // we set the new distance pressure to the current distance
-                        return 0.9 * Math.sqrt(
+                        return 0.5 * Math.sqrt(
                             Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
                         );
                     })
@@ -515,7 +551,10 @@
                 "label": "A",
                 "connectionsOut": [
                     "B", "C"
-                ]
+                ],
+                "updateableFields": {
+                    inc: 1
+                }
             },
             {
                 "name": "F",
@@ -527,7 +566,10 @@
                 "label": "F",
                 "connectionsOut": [
                     "C"
-                ]
+                ],
+                "updateableFields": {
+                    inc: 1
+                }
             },
             {
                 "name": "B",
@@ -539,7 +581,10 @@
                 "label": "B",
                 "connectionsOut": [
                     "C"
-                ]
+                ],
+                "updateableFields": {
+                    inc: 1
+                }
             },
             {
                 "name": "C",
@@ -551,7 +596,10 @@
                 "label": "C",
                 "connectionsOut": [
                     "D"
-                ]
+                ],
+                "updateableFields": {
+                    inc: 1
+                }
             },
             {
                 "name": "D",
@@ -563,7 +611,10 @@
                 "label": "D",
                 "connectionsOut": [
                     "E"
-                ]
+                ],
+                "updateableFields": {
+                    inc: 1
+                }
             },
             {
                 "name": "E",
@@ -573,7 +624,10 @@
                 },
                 "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
                 "label": "E",
-                "connectionsOut": []
+                "connectionsOut": [],
+                "updateableFields": {
+                    inc: 1
+                }
             },
 
         ]
@@ -592,7 +646,8 @@
                 id: z.id,
                 iconUrl: z.iconUrl,
                 histogram: [{value: 20}, {value: 30}, {value: 40}],
-                histogramShowing: false
+                histogramShowing: false,
+                updateableFields: z.updateableFields
             });
 
             // we only need-be concerned with connectionsOut, not connectionsIn, in order to complete graph

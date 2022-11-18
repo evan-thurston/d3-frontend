@@ -44,6 +44,7 @@
     }
 
     g div {
+        height: 75px;
         height: 60px;
         width: 120px;
         padding: 10px;
@@ -71,63 +72,42 @@
     .show-histogram .histogram {
         visibility: inherit;
     }
-
-    /*
-        g image {
-            visibility: hidden;
-        }
-
-        g:hover div {
-            visibility: visible;
-        }
-
-            g image {
-                visibility: hidden;
-            }
-
-            g:hover image {
-                visibility: visible;
-            } */
 </style>
 
 <body>
-<button onclick="turnOffSim()">Turn Off Physics</button>
-<button onclick="turnOnSim()">Turn On Physics</button>
-<div id="container" class="svg-container">
-    <!-- <svg
-            class="svg-content"
-            version="1.1"
-            baseProfile="full"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid meet"
-    ></svg> -->
-</div>
-<div id="secret"/>
+
+    <button onclick="turnOffSim()">Turn Off Physics</button>
+    <button onclick="turnOnSim()">Turn On Physics</button>
+
+    <div id="container" class="svg-container"></div>
+    <div id="secret"></div>
 
 <!-- DONT NEED? * TODO: 1. scale drawing to 90% of viewport (vertically and horizontally) -->
+<!-- DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes -->
+<!-- DONT KNOW TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
+
 <!-- DONE TODO: 2. add permanent labels to nodes -->
 <!-- DONE TODO: 3. add permanent icons to nodes (any image url is fine for now)-->
-<!-- DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes -->
+<!-- DONE ** TODO: 10: on-click node -> show histogram -->
+<!-- DONE ** TODO: 11: code histogram into metadata toggle -->
 <!-- DONE ** TODO: 5. add on-hover text (show metadata when hovering over) -->
+<!-- DONE TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
+<!-- DONE ** TODO: 11: on-hover over link -> show histogram -->
+<!-- DONE TODO:make initial separating force a little stronger, so that nodes are further apart (more spaced out). -->
+
 <!-- TODO: 6. add dynamic text above node (gets updated constantly from backend) -->
 <!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
-<!-- DONT KNOW TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom -->
-<!-- TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
-<!-- ** TODO: 11: on-hover over link -> show histogram -->
 <!-- TODO: 12: create a control panel that can do the following:-->
 <!--    * button to toggle physics on/off for the graph-->
 <!--    * pause/unpause button (to pause a process on backend-->
 <!--    * button to slow-down or speed-up backend process (change timestep) -->
 <!--    * button to stop all sources (stop generating new consumables/movables on the backend)-->
-<!-- DONE ** TODO: 10: on-click node -> show histogram -->
-<!-- ** TODO: 11: code histogram into metadata toggle -->
 <!-- TODO: 13: control panel at top: movable -->
 <!-- TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this)-->
 <!-- TODO: 15: nodes will "float" outside of viewport, after turning physics on/off -->
 <!-- TODO: 16: need to find a way to do an ultra-efficient re-render of each node - -->
-<!--only render changed nodes and do *not* re-render whole damn thing! -->
+<!--           only render changed nodes and do *not* re-render whole damn thing! -->
 
-<!-- TODO:make initial separating force a little stronger, so that nodes are further apart (more spaced out). -->
 <!-- TODO:2. on/in initial render, avoid crossing lines/edges -->
 <!-- TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links -->
 <!-- TODO: 4. rendering is optimization problem, roughly: -->
@@ -156,30 +136,30 @@
         console.log('start ws server using start.js in the project root to get live updates.')
     });
 
-    const program = {
-        ctrlKey: false,
-        metaKey: false
-    };
+    // const program = {
+    //     ctrlKey: false,
+    //     metaKey: false
+    // };
 
-    document.onkeydown = (event) => {
-        if (event.key === 'Control') {  // this doesn't really seem to work
-            program.ctrlKey = true;
-        }
-        if (event.key === 'Meta') {
-            program.metaKey = true;
-        }
-        // console.log({program});
-    };
+    // document.onkeydown = (event) => {
+    //     if (event.key === 'Control') {  // this doesn't really seem to work
+    //         program.ctrlKey = true;
+    //     }
+    //     if (event.key === 'Meta') {
+    //         program.metaKey = true;
+    //     }
+    //     // console.log({program});
+    // };
 
-    document.onkeyup = (event) => {
-        if (event.key === 'Control') {  // this doesn't really seem to work
-            program.ctrlKey = false;
-        }
-        if (event.key === 'Meta') {
-            program.metaKey = true;
-        }
-        // console.log({program});
-    };
+    // document.onkeyup = (event) => {
+    //     if (event.key === 'Control') {  // this doesn't really seem to work
+    //         program.ctrlKey = false;
+    //     }
+    //     if (event.key === 'Meta') {
+    //         program.metaKey = true;
+    //     }
+    //     // console.log({program});
+    // };
 
 
     const colors = [
@@ -225,17 +205,11 @@
         const gs = svg.selectAll("g")
             .on('click', e => {
                 //TODO: kind of a kludge here, there must be a way to access it cleaner?
-//                 e.target.__data__.histogramShowing = !e.target.__data__.histogramShowing;
-                // console.log(d.target.__data__.histogramShowing)
-                // console.log(d3.select(this).histogramShowing)
-                // d3.select(this).histogramShowing = true
-                // d3.select(this)
-                //     .style('background', '#ddd')
-                histogramShowing = !histogramShowing;
-                if (histogramShowing) {
-                    document.body.classList.add("show-histogram");
+                e.target.__data__.histogramShowing = !e.target.__data__.histogramShowing;
+                if (e.target.__data__.histogramShowing) {
+                    e.target.parentElement.classList.add('show-histogram');
                 } else {
-                    document.body.classList.remove("show-histogram");
+                    e.target.parentElement.classList.remove("show-histogram");
                 }
             });
 
@@ -248,39 +222,19 @@
             .attr("height", d => d.size / 2)
             .attr("href", d => d.iconUrl);
 
-        // gs.append("text")
-        // 	.attr("x", d => d.x + d.size / 2)
-        // 	.attr("y", d => d.y - 1.9 * d.size)
-        // 	.attr("text-anchor", "middle")
-        // 	.text(d => 'ID: ' + d.id);
-
         gs.append("text")
             .attr("x", d => d.x + d.size / 3)
             .attr("y", d => d.y - 1.5 * d.size)
             .attr("text-anchor", "middle")
             .text(d => 'Name: ' + d.name);
 
-        // gs.append("text")
-        // 	.attr("x", d => d.x + d.size / 2)
-        // 	.attr("y", d => d.y - 1.1 * d.size)
-        //     .attr("text-anchor", "middle")
-        // 	.text(d => 'Label: ' + d.label);
-
         let divs = gs.append("foreignObject")
             .attr("x", d => d.x - 70)
             .attr("y", d => d.y + 1.1 * d.size)
             .style("overflow", "visible")
-            // .append(Histogram(d => d.histogram, {
-            //     value: d => d.value,
-            //     label: 'histogram data',
-            //     width: 120,
-            //     height: 60,
-            //     color: "steelblue"
-            // }))
             .append("xhtml:div")
-            //             .text(d => d.histogramShowing ? "histogram" : [
-            .text(d => histogramShowing ? "histogram" : [
-                '\nUpdates:', JSON.stringify(d.updateableFields),
+            .text(d => d.histogramShowing ? "histogram" : [
+                'Updates:', JSON.stringify(d.updateableFields),
                 "\nID: ", d.id,
                 "\nName:", d.name,
                 '\nLabel:', d.label
@@ -371,8 +325,7 @@
     }
 
     const run = (nodes, links) => {
-
-
+        
         setTimeout(() => {
 
             // TODO: dynamically add a new node/link
@@ -387,7 +340,6 @@
                 name: 'Z',
                 id: 'Z',
                 iconUrl: 'https://raw.githubusercontent.com/ORESoftware/d3-front-end/main/images/server-node.svg',
-                histogram: [{value: 20}, {value: 30}, {value: 40}],
                 histogramShowing: false
             });
 
@@ -398,8 +350,6 @@
             });
 
         }, 5000);
-
-
         const svg = d3.select('div#container')
             .append('svg')
             .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
@@ -410,27 +360,6 @@
             svg.selectAll(".link").remove();//add this to remove the links
             svg.selectAll(".gnode").remove();//add this to remove the nodes
         }
-
-
-        // let svg = d3
-        //     .select("svg")
-        //     .attr("width", width)
-        //     .attr("height", height);
-
-        // svg.append("foreignObject")
-        //         .attr("x", 100)
-        //         .attr("y", 100)
-        //         .style("overflow", "visible")
-        //         // .append(Histogram(d => d.histogram, {
-        //         //     value: d => d.value,
-        //         //     label: 'histogram data',
-        //         //     width: 120,
-        //         //     height: 60,
-        //         //     color: "steelblue"
-        //         // }))
-        //         .append("xhtml:div")
-        //         .classed('controls', true)
-        //         .text("histogram"); 
 
         // append a path marker to svg defs
         svg.append("defs").selectAll("marker")
@@ -500,7 +429,6 @@
                 // .attr("r", d => d.size)
                 .attr(val++, val)
                 .attr("fill", d => 'black')
-            // .attr("img", d => d.icon)
 
             // simulation.alpha(0.5).restart()
             // placeLabelsAndIcons();
@@ -512,62 +440,40 @@
                 .force("center", null)
                 .force("nodes", null)
                 .force("radial", null)
-                .force("charge", null) // repulsion should scale with node size
+                .force("charge", null)
                 .force("collision", null)
                 .force("links", null);
         };
 
         document.turnOnSim = () => {
-            simulation.force("center", d3.forceCenter(width / 2, height / 2))
+            startSimulation()
+        }
+
+        const startSimulation = () => {
+            simulation
+                .force("center", d3.forceCenter(width / 2, height / 2))
                 .force("nodes", d3.forceManyBody())
-                .force("radial", d3.forceRadial(height, width / 2, height / 2))
-                .force("charge", d3.forceManyBody().strength(-30 * nodeRadius)) // repulsion should scale with node size
+                .force("radial", d3.forceRadial(Math.min(height, width) * 0.35, width / 2, height / 2))
+                .force("charge", d3.forceManyBody().strength(-30 * nodeRadius))
                 .force("collision", d3.forceCollide().radius(nodeRadius / 2))
                 .force(
                     "links",
                     d3
                         .forceLink(links)
                         .id(d => d.id)
-                        // .distance(d => 5 * (d.source.size + d.target.size))
-                        // TODO force distance between all elements, not just connected ones
-                        // TODO in fact, force should be greater amongst non-connected elements
                         // TODO idea - force should increase as degree of freedom between nodes increases
                         .distance((d, a, b) => {
-                            // we set the new distance pressure to the current distance
-                            return 0.5 * Math.sqrt(
-                                Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
-                            );
+                            // QUESTION: What does this do? seems buggy in my testing
+                            // return 0.5 * Math.sqrt(
+                            //     Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
+                            // ); 
+                            return 3 * (d.source.size + d.target.size)
                         })
                 )
-            // this works, but simulation restarts again on drag
-            // instead we want
+                .on("tick", ticked);
         }
 
-        simulation
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("nodes", d3.forceManyBody())
-            .force("radial", d3.forceRadial(height, width / 2, height / 2))
-            .force("charge", d3.forceManyBody().strength(-30 * nodeRadius)) // repulsion should scale with node size
-            .force("collision", d3.forceCollide().radius(nodeRadius / 2))
-            // .force('collide', d3.forceCollide().radius(function(d) {
-            //     return d.radius + 150;
-            // }))
-            // .linkDistance(1)
-            .force(
-                "links",
-                d3
-                    .forceLink(links)
-                    .id(d => d.id)
-                    // .distance(d => 5 * (d.source.size + d.target.size))
-                    // TODO force distance between all elements, not just connected ones
-                    // TODO in fact, force should be greater amongst non-connected elements
-                    // TODO idea - force should increase as degree of freedom between nodes increases
-                    .distance((d, a, b) => {
-                        // console.log({d, a, b});
-                        return 3 * (d.source.size + d.target.size);
-                    })
-            )
-            .on("tick", ticked);
+        startSimulation()
 
         // data.nodes contains all nodes
         // for(let i = 0; i < nodes.length - 1; i++) {
@@ -614,7 +520,6 @@
             simulation.alphaTarget(0.5).restart();
             d.fx = d.x;
             d.fy = d.y;
-            placeLabelsAndIcons();
         }
 
         function drag(event, d) {
@@ -622,18 +527,13 @@
             // simulation.alpha(0.5).restart()
             d.fx = event.x;
             d.fy = event.y;
-            placeLabelsAndIcons();
-            // d.fx = d3.event.x;
-            // d.fy = d3.event.y;
         }
 
         function dragEnd(event, d) {
             // console.log('drag end');
-            placeLabelsAndIcons();
             simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
-            placeLabelsAndIcons();
         }
     }
 
@@ -748,7 +648,6 @@
                 name: z.name,
                 id: z.id,
                 iconUrl: z.iconUrl,
-                histogram: [{value: 20}, {value: 30}, {value: 40}],
                 histogramShowing: false,
                 updateableFields: z.updateableFields
             });
@@ -760,10 +659,6 @@
         }
 
         // for (const v of nodes) {
-        //   console.log(v);
-        // }
-        //
-        // for (const v of links) {
         //   console.log(v);
         // }
 

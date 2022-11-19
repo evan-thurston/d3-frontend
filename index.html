@@ -114,6 +114,9 @@
 <!--       * minimize link crossing/overlap. -->
 <!--       * maximize space between nodes. -->
 <!--       * but keep drawing within container.-->
+<!-- TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:   -->
+<!--       see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph -->
+    <!--    TODO: re-render nodes by id (efficiently, only 1 node at a time) -->
 
 
 <!--we are using version 7 of d3; will will use the minified version later -->
@@ -133,7 +136,7 @@
     });
 
     client.addEventListener('error', e => {
-        console.log('start ws server using start.js in the project root to get live updates.')
+        console.log('start the ws-server using live-reload.js in the project root to get live updates.')
     });
 
     // const program = {
@@ -322,7 +325,7 @@
             .style("fill", "#69b3a2");
 
         return histSvg.node();
-    }
+    };
 
     const run = (nodes, links) => {
         
@@ -409,7 +412,7 @@
             for (let i = 0; i < nodes.length; i++) {
                 // this doesn't really work to force a re-render
                 const n = nodes[i];
-                nodes[i] = Object.assign(n, {
+                nodes[i] = Object.assign(n, { // assign new fields to same objects
                     updateableFields: {
                         ...n.updateableFields,
                         // increment some shit to force a re-render
@@ -460,6 +463,7 @@
                         // TODO idea - force should increase as degree of freedom between nodes increases
                         .distance((d, a, b) => {
                             // QUESTION: What does this do? seems buggy in my testing
+                            // answer -> after turning off/on physics this keeps the nodes separated
                             // return 0.5 * Math.sqrt(
                             //     Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
                             // ); 
@@ -469,7 +473,7 @@
                 .on("tick", ticked);
         }
 
-        startSimulation()
+        startSimulation();
 
         // data.nodes contains all nodes
         // for(let i = 0; i < nodes.length - 1; i++) {
@@ -533,11 +537,11 @@
 
             //prevents node from exceeding vertical bound
             if(event.y > height - nodeRadius) {
-                d.fy = height - nodeRadius
+                d.fy = height - nodeRadius;
             } else if (event.y < nodeRadius) {
-                d.fy = nodeRadius
+                d.fy = nodeRadius;
             } else {
-                d.fy = event.y
+                d.fy = event.y;
             }
         }
 
@@ -647,7 +651,7 @@
             },
 
         ]
-    }
+    };
 
 
     if (data.formation) {

@@ -124,6 +124,10 @@
 
 <script>
 
+    document.turnOnSim = () => {
+        alert('simulation not yet started.');
+    };
+
     document.turnOffSim = () => {
         alert('simulation not yet started.');
     };
@@ -412,10 +416,10 @@
             for (let i = 0; i < nodes.length; i++) {
                 // this doesn't really work to force a re-render
                 const n = nodes[i];
-                nodes[i] = Object.assign(n, { // assign new fields to same objects
+                nodes[i] = Object.assign(n, { // assign new field(s) to *same objects*
                     updateableFields: {
                         ...n.updateableFields,
-                        // increment some shit to force a re-render
+                        // increment some shit to force a re-render, or at least to test it out
                         inc: ++n.updateableFields.inc
                     }
                 });
@@ -445,8 +449,8 @@
         };
 
         document.turnOnSim = () => {
-            startSimulation()
-        }
+            startSimulation();
+        };
 
         const startSimulation = () => {
             simulation

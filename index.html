@@ -197,7 +197,15 @@
 
     let histogramShowing = false;
 
+    const placeLabelsAndIconsById = (id) => {
+        // TODO: re-render single node/link just by id
+    };
+
     const placeLabelsAndIcons = () => {
+
+        // note this functionality updates all nodes/links
+        // we want a way to update one-at-a-time for efficiency's sake
+
         const svg = d3.select("svg");
 
         if (!svg) {

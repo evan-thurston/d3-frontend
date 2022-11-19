@@ -9,7 +9,7 @@
 <style>
     body {
         margin: 0;
-        background: #eee;
+        background: #fff;
     }
 
     div#secret {
@@ -20,7 +20,6 @@
         display: inline-block;
         position: relative;
         width: 100%;
-        padding-bottom: 100%;
         vertical-align: top;
         overflow: hidden;
     }
@@ -94,22 +93,23 @@
 <!-- DONE TODO: 9. allow user to toggle on/off nodes self-separating - default is on - if it's off: then user can drag nodes wherever they want  -->
 <!-- DONE ** TODO: 11: on-hover over link -> show histogram -->
 <!-- DONE TODO:make initial separating force a little stronger, so that nodes are further apart (more spaced out). -->
+<!-- DONE * TODO: 15: nodes will "float" outside of viewport, after turning physics on/off -->
 
 <!-- TODO: 6. add dynamic text above node (gets updated constantly from backend) -->
 <!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
-<!-- TODO: 12: create a control panel that can do the following:-->
+<!-- * TODO: 12: create a control panel that can do the following:-->
 <!--    * button to toggle physics on/off for the graph-->
 <!--    * pause/unpause button (to pause a process on backend-->
 <!--    * button to slow-down or speed-up backend process (change timestep) -->
 <!--    * button to stop all sources (stop generating new consumables/movables on the backend)-->
 <!-- TODO: 13: control panel at top: movable -->
 <!-- TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this)-->
-<!-- TODO: 15: nodes will "float" outside of viewport, after turning physics on/off -->
 <!-- TODO: 16: need to find a way to do an ultra-efficient re-render of each node - -->
 <!--           only render changed nodes and do *not* re-render whole damn thing! -->
+<!-- TODO: 17: fix viewport too tall(no scrolling !) -->
 
 <!-- TODO:2. on/in initial render, avoid crossing lines/edges -->
-<!-- TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links -->
+<!-- * TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links -->
 <!-- TODO: 4. rendering is optimization problem, roughly: -->
 <!--       * minimize link crossing/overlap. -->
 <!--       * maximize space between nodes. -->
@@ -326,40 +326,36 @@
 
     const run = (nodes, links) => {
         
-        setTimeout(() => {
+        // setTimeout(() => {
 
-            // TODO: dynamically add a new node/link
-            // TODO: this doesn't work yet :/
-            return;
+        //     // TODO: dynamically add a new node/link
+        //     // TODO: this doesn't work yet :/
+        //     return;
 
-            // dynamically add a new node
-            nodes.push({
-                color: colors[colorIndex++ % nodes.length],
-                size: nodeRadius,
-                label: 'Z',
-                name: 'Z',
-                id: 'Z',
-                iconUrl: 'https://raw.githubusercontent.com/ORESoftware/d3-front-end/main/images/server-node.svg',
-                histogramShowing: false
-            });
+        //     // dynamically add a new node
+        //     nodes.push({
+        //         color: colors[colorIndex++ % nodes.length],
+        //         size: nodeRadius,
+        //         label: 'Z',
+        //         name: 'Z',
+        //         id: 'Z',
+        //         iconUrl: 'https://raw.githubusercontent.com/ORESoftware/d3-front-end/main/images/server-node.svg',
+        //         histogramShowing: false
+        //     });
 
-            // dynamically add a new link
-            links.push({
-                source: 'Z',
-                target: 'E'
-            });
+        //     // dynamically add a new link
+        //     links.push({
+        //         source: 'Z',
+        //         target: 'E'
+        //     });
 
-        }, 5000);
+        // }, 5000);
+
         const svg = d3.select('div#container')
             .append('svg')
             .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
         // .classed("svg-content", true);
 
-
-        const reDraw = () => {
-            svg.selectAll(".link").remove();//add this to remove the links
-            svg.selectAll(".gnode").remove();//add this to remove the nodes
-        }
 
         // append a path marker to svg defs
         svg.append("defs").selectAll("marker")
@@ -408,7 +404,7 @@
         let val = 0;
         setInterval(() => {
 
-            console.log('udpating A...');
+            // console.log('udpating A...');
 
             for (let i = 0; i < nodes.length; i++) {
                 // this doesn't really work to force a re-render
@@ -525,8 +521,24 @@
         function drag(event, d) {
             // console.log('dragging', event, d);
             // simulation.alpha(0.5).restart()
-            d.fx = event.x;
-            d.fy = event.y;
+
+            //prevents node from exceeding horizontal bound
+            if(event.x > width - nodeRadius) {
+                d.fx = width - nodeRadius
+            } else if (event.x < nodeRadius) {
+                d.fx = nodeRadius
+            } else {
+                d.fx = event.x
+            }
+
+            //prevents node from exceeding vertical bound
+            if(event.y > height - nodeRadius) {
+                d.fy = height - nodeRadius
+            } else if (event.y < nodeRadius) {
+                d.fy = nodeRadius
+            } else {
+                d.fy = event.y
+            }
         }
 
         function dragEnd(event, d) {

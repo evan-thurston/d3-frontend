@@ -14,6 +14,7 @@ client.addEventListener('message', m => {
 });
 
 client.addEventListener('error', e => {
+    console.log(e); // we don't want any unnecessary red crap in the browser console
     console.log('start the ws-server using live-reload.js in the project root to get live updates.')
 });
 
@@ -134,7 +135,7 @@ const placeLabelsAndIcons = () => {
     }
 };
 
-const histoCache = {};
+const histoCache = {};  // we can use a Set/Map if we want to get a fancy
 const addToHistoCache = (id, value) => {
     histoCache[id] = value;
     return true;

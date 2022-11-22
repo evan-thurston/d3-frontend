@@ -301,7 +301,7 @@ const run = (nodes, links) => {
             nodes[i] = Object.assign(n, { // assign new field(s) to *same objects*
                 updateableFields: {
                     ...n.updateableFields,
-                    // increment some shit to force a re-render, or at least to test it out
+                    // increment some sh*t to force a re-render, or at least to test it out
                     inc: ++n.updateableFields.inc
                 }
             });
@@ -436,6 +436,7 @@ const run = (nodes, links) => {
         simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
+        placeLabelsAndIcons();
     }
 }
 

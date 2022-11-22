@@ -307,6 +307,7 @@ const run = (nodes, links) => {
             });
         }
 
+        // below is an attempt to update info manually (ideally, only when the data changes)
         svg
             .selectAll("circle")
             // .data(nodes) // pass new data seems good idea
@@ -444,8 +445,6 @@ const run = (nodes, links) => {
 const nodes = [];
 const links = [];
 
-let colorIndex = nodes.length - 1;
-
 const data = {
     formation: [
         {
@@ -541,9 +540,13 @@ const data = {
 };
 
 
+let colorIndex = nodes.length - 1;
+
+
 if (data.formation) {
     for (const z of data.formation) {
 
+        // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
         nodes.push({
             color: colors[colorIndex++ % nodes.length],
             size: nodeRadius,
@@ -555,15 +558,12 @@ if (data.formation) {
             updateableFields: z.updateableFields
         });
 
-        // we only need-be concerned with connectionsOut, not connectionsIn, in order to complete graph
+        // note: in order to complete graph, we only need-be concerned with connectionsOut, not connectionsIn
         for (const targetId of z.connectionsOut) {
+            // TODO: are there are any pre-built fields for rendering images or labels in links?
             links.push({source: z.id, target: targetId, ...{whatever: 'else'}});
         }
     }
-
-    // for (const v of nodes) {
-    //   console.log(v);
-    // }
 
     run(nodes, links);
 }

@@ -460,7 +460,9 @@ const data = {
                 "B", "C"
             ],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
         {
@@ -475,7 +477,9 @@ const data = {
                 "C"
             ],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
         {
@@ -490,7 +494,9 @@ const data = {
                 "C"
             ],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
         {
@@ -505,7 +511,9 @@ const data = {
                 "D"
             ],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
         {
@@ -520,7 +528,9 @@ const data = {
                 "E"
             ],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
         {
@@ -533,7 +543,9 @@ const data = {
             "label": "E",
             "connectionsOut": [],
             "updateableFields": {
-                inc: 1
+                inc: 1,
+                serverUtilization: 1,
+                queueHistogram: {},
             }
         },
 

@@ -1,5 +1,9 @@
 All todos here:
 
+
+TODO: cycle between 3 to 5 states for each node
+TODO: low priority task: render objects/nodes in the midpoint of edges/links!
+
 DONT NEED? * TODO: 1. scale drawing to 90% of viewport (vertically and horizontally)
 DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes
 DONT KNOW TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom

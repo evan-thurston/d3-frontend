@@ -241,6 +241,11 @@ const run = (nodes, links) => {
 
     // }, 5000);
 
+    setTimeout(() => {
+
+
+    }, 3000);
+
     const svg = d3.select('div#container')
         .append('svg')
         .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
@@ -443,8 +448,8 @@ const run = (nodes, links) => {
 }
 
 
-const nodes = [];
-const links = [];
+const nodes = new Map();
+const links = new Map();
 
 const data = {
     formation: [
@@ -560,7 +565,7 @@ if (data.formation) {
     for (const z of data.formation) {
 
         // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
-        nodes.push({
+        nodes.set(z.id, {
             color: colors[colorIndex++ % nodes.length],
             size: nodeRadius,
             label: z.label,
@@ -574,9 +579,15 @@ if (data.formation) {
         // note: in order to complete graph, we only need-be concerned with connectionsOut, not connectionsIn
         for (const targetId of z.connectionsOut) {
             // TODO: are there are any pre-built fields for rendering images or labels in links?
-            links.push({source: z.id, target: targetId, ...{whatever: 'else'}});
+            links.set(
+                [z.id,targetId].join('-'),
+                {source: z.id, target: targetId, ...{whatever: 'else'}}
+            );
         }
     }
 
-    run(nodes, links);
+    run(
+        Array.from(nodes.values()),
+        Array.from(links.values())
+    );
 }

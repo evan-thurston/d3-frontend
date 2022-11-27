@@ -558,7 +558,7 @@ const data = {
 };
 
 
-let colorIndex = nodes.length - 1;
+let colorIndex = nodes.size - 1;
 
 
 if (data.formation) {
@@ -566,7 +566,7 @@ if (data.formation) {
 
         // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
         nodes.set(z.id, {
-            color: colors[colorIndex++ % nodes.length],
+            color: colors[colorIndex++ % nodes.size],
             size: nodeRadius,
             label: z.label,
             name: z.name,

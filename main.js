@@ -450,6 +450,8 @@ const run = (nodes, links) => {
 
 const nodes = new Map();
 const links = new Map();
+const linksBySource = new Map();
+const linksByTarget = new Map();
 
 const data = {
     formation: [
@@ -579,10 +581,10 @@ if (data.formation) {
         // note: in order to complete graph, we only need-be concerned with connectionsOut, not connectionsIn
         for (const targetId of z.connectionsOut) {
             // TODO: are there are any pre-built fields for rendering images or labels in links?
-            links.set(
-                [z.id,targetId].join('-'),
-                {source: z.id, target: targetId, ...{whatever: 'else'}}
-            );
+            const linkValue = {source: z.id, target: targetId, ...{whatever: 'else'}};
+            links.set([z.id,targetId].join('-'), linkValue);
+            linksBySource.set(z.id, linkValue);
+            linksByTarget.set(targetId, linkValue);
         }
     }
 

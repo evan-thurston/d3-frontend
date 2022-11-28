@@ -5,10 +5,10 @@ TODO: cycle between 3 to 5 states for each node
 TODO: low priority task: render objects/nodes in the midpoint of edges/links!
 
 TODO: high priority - there needs to be 3 histograms for each node:
-    1. histogram representing the input queue  (at node but waiting to be processed)
-    2. histogram representing processing time (not exactly a queue just time spent being processed)
-    3. histogram representing the output queue (at same node but waiting to be accepted by another node)
-
+    1. histogram representing the input queue  (for items at node and waiting to be processed)
+    2. histogram representing processing time (for items in process at node - not exactly a queue just time spent being processed)
+    3. histogram representing the output queue (items at same node but waiting to leave - to be accepted by another node)
+    note: these histograms should be updated node-by-node, so as not to re-render whole graph unnecessarily
 
 DONT NEED? * TODO: 1. scale drawing to 90% of viewport (vertically and horizontally)
 DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes

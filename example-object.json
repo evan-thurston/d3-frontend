@@ -3,16 +3,6 @@
   "m": {
     "timeStepCount": 108,
     "id": "D",
-    "connectionsIn": {
-      "size": 0,
-      "values": []
-    },
-    "connectionsOut": {
-      "size": 1,
-      "values": [
-        "A"
-      ]
-    },
     "rv": {
       "lambda": 0.1
     },
@@ -50,6 +40,19 @@
       "4": 500,
       "11": 500,
       "15": 8500
+    },
+    "movableItems": {
+       "from": {
+         "A": {
+           "count": 3
+         },
+         "B": {
+           "count": 7
+         },
+         "D": {
+           "count": 6
+         }
+       }
     }
   }
 }

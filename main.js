@@ -295,6 +295,37 @@ const run = (nodes, links) => {
                         "11": 500,
                         "15": 8500  // interesting that the first 4 values mirror the input queue
                     }
+                },
+                // NOTE: connection information is fairly static (won't change much over time as simulation proceeds)
+                // *however* to represent disconnects we can dynamically route movables and "turn off" a certain destination
+                // but I don't see why we would ever need to dynamically *disconnect* nodes, however: we
+                // may want to dynamically *connect* one node to another....TBD
+                "connectionsIn": {
+                    "size": 0,
+                    "values": []
+                },
+                "connectionsOut": {
+                    "size": 1,
+                    "values": [
+                        "A"
+                    ]
+                },
+                // NOTE: movable items represents a count (group by origin) of items from a previous node
+                // this is primarily for animating the graph, showing things moving from one node to another
+                // this means the animation might be a half-second or full-second behind the simulation,
+                // but that should be fine
+                "movableItems": {
+                    "from": {
+                        "A": {
+                            "count": 3
+                        },
+                        "B": {
+                            "count": 7
+                        },
+                        "D": {
+                            "count": 6
+                        }
+                    }
                 }
             }
         ])

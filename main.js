@@ -34,50 +34,6 @@ client.addEventListener('error', e => {
     console.log('start the ws-server using live-reload.js in the project root to get live updates.')
 });
 
-// const program = {
-//     ctrlKey: false,
-//     metaKey: false
-// };
-
-// document.onkeydown = (event) => {
-//     if (event.key === 'Control') {  // this doesn't really seem to work
-//         program.ctrlKey = true;
-//     }
-//     if (event.key === 'Meta') {
-//         program.metaKey = true;
-//     }
-//     // console.log({program});
-// };
-
-// document.onkeyup = (event) => {
-//     if (event.key === 'Control') {  // this doesn't really seem to work
-//         program.ctrlKey = false;
-//     }
-//     if (event.key === 'Meta') {
-//         program.metaKey = true;
-//     }
-//     // console.log({program});
-// };
-
-
-const colors = [
-    'red',
-    'blue',
-    'brown',
-    'indigo',
-    'purple',
-    'orange',
-    'pink',
-    'yellow',
-    'maroon',
-    'black',
-    'magenta',
-    'green',
-    'gray',
-    'violet'
-];
-
-
 const width = window.innerWidth;
 const height = window.innerHeight;
 const minRadius = 20;
@@ -87,10 +43,6 @@ const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25))
 // console.log("node radius: " + nodeRadius);
 
 let histogramShowing = false;
-
-const placeLabelsAndIconsById = (id) => {
-    // TODO: re-render single node/link just by id
-};
 
 const placeLabelsAndIcons = () => {
 
@@ -232,31 +184,6 @@ const createHistogram = (id) => {
 
 const run = (nodes, links) => {
 
-    // setTimeout(() => {
-
-    //     // TODO: dynamically add a new node/link
-    //     // TODO: this doesn't work yet :/
-    //     return;
-
-    //     // dynamically add a new node
-    //     nodes.push({
-    //         color: colors[colorIndex++ % nodes.length],
-    //         size: nodeRadius,
-    //         label: 'Z',
-    //         name: 'Z',
-    //         id: 'Z',
-    //         iconUrl: 'https://raw.githubusercontent.com/ORESoftware/d3-front-end/main/images/server-node.svg',
-    //         histogramShowing: false
-    //     });
-
-    //     // dynamically add a new link
-    //     links.push({
-    //         source: 'Z',
-    //         target: 'E'
-    //     });
-
-    // }, 5000);
-
     const updateGraph = (list) => {
         // list is array of objects
     };
@@ -267,84 +194,7 @@ const run = (nodes, links) => {
         // the main idea is to update the histogram information
         // and to tell the graph how to animate objects going from node A --> node B
 
-        updateGraph([
-            {
-                "type": "GRAPH_DATA:PROCESSING",
-                "m": {  // is just m for message, probably should give it a better name, but will keep it for now
-                    "timeStepCount": 108,
-                    "id": "D",
-                    "rv": {
-                        "lambda": 0.1
-                    },
-                    "queue": {
-                        "size": 0
-                    },
-                    "maxQueueSize": -1,
-                    "opts": {
-                        "xx": true
-                    },
-                    "isProcessor": true,
-                    "concurrency": 15,
-                    "inputQueue": {
-                        "size": 2
-                    },
-                    "processingQueue": {
-                        "size": 1
-                    },
-                    "outQueue": {
-                        "size": 0
-                    },
-                    "totalServerBusyTime": 135000,
-                    "totalServerIdleTime": 675000,
-                    "processedCount": 270,
-                    "inputQueueHistogram": {
-                        "0": 44500, // the value is the amount of time spent with queue size = 0
-                        "4": 500,  // the value is the amount of time spent with queue size = 4
-                        "11": 500, // // the value is the amount of time spent with queue size = 11
-                        "15": 4000,
-                        "19": 500,
-                        "30": 4000
-                    },
-                    "processingQueueHistogram": {
-                        "0": 44500,  // the value is the amount of time spent with queue size = 0
-                        "4": 500,   // the value is the amount of time spent with queue size = 4
-                        "11": 500,
-                        "15": 8500  // interesting that the first 4 values mirror the input queue
-                    }
-                },
-                // NOTE: connection information is fairly static (won't change much over time as simulation proceeds)
-                // *however* to represent disconnects we can dynamically route movables and "turn off" a certain destination
-                // but I don't see why we would ever need to dynamically *disconnect* nodes, however: we
-                // may want to dynamically *connect* one node to another....TBD
-                "connectionsIn": {
-                    "size": 0,
-                    "values": []
-                },
-                "connectionsOut": {
-                    "size": 1,
-                    "values": [
-                        "A"
-                    ]
-                },
-                // NOTE: movable items represents a count (group by origin) of items from a previous node
-                // this is primarily for animating the graph, showing things moving from one node to another
-                // this means the animation might be a half-second or full-second behind the simulation,
-                // but that should be fine
-                "movableItems": {
-                    "from": {
-                        "A": {
-                            "count": 3
-                        },
-                        "B": {
-                            "count": 7
-                        },
-                        "D": {
-                            "count": 6
-                        }
-                    }
-                }
-            }
-        ])
+        updateGraph(dataUpdate)
 
     }, 3000);
 
@@ -486,17 +336,9 @@ const run = (nodes, links) => {
     }
 
     startSimulation();
-
-    // data.nodes contains all nodes
-    // for(let i = 0; i < nodes.length - 1; i++) {
-    //     for(let j = i + 1; j < nodes.length; j++) {
-    //         simulation.force();
-    //     }
-    // }
+    placeLabelsAndIcons();
 
     function ticked() {
-        // console.log(simulation.alpha());
-
         nodeSelection.attr("cx", d => d.x).attr("cy", d => d.y);
 
         linkSelection
@@ -524,20 +366,16 @@ const run = (nodes, links) => {
                 .attr("y2", m2.y);
         });
 
-        placeLabelsAndIcons();
+        // placeLabelsAndIcons();
     }
 
-    function dragStart(event, d) {
-        // console.log('drag start');
+    function dragStart(d) {
         simulation.alphaTarget(0.5).restart();
         d.fx = d.x;
         d.fy = d.y;
     }
 
     function drag(event, d) {
-        // console.log('dragging', event, d);
-        // simulation.alpha(0.5).restart()
-
         //prevents node from exceeding horizontal bound
         if (event.x > width - nodeRadius) {
             d.fx = width - nodeRadius
@@ -557,12 +395,10 @@ const run = (nodes, links) => {
         }
     }
 
-    function dragEnd(event, d) {
-        // console.log('drag end');
+    function dragEnd(d) {
         simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
-        placeLabelsAndIcons();
     }
 }
 
@@ -572,111 +408,6 @@ const links = new Map();
 const linksBySource = new Map();
 const linksByTarget = new Map();
 
-const data = {
-    formation: [
-        {
-            "name": "A",
-            "id": "A",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
-            "label": "A",
-            "connectionsOut": [
-                "B", "C"
-            ],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-        {
-            "name": "F",
-            "id": "F",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
-            "label": "F",
-            "connectionsOut": [
-                "C"
-            ],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-        {
-            "name": "B",
-            "id": "B",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/new-super-mario-bros-u/4/48/Yoshi.png",
-            "label": "B",
-            "connectionsOut": [
-                "C"
-            ],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-        {
-            "name": "C",
-            "id": "C",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "./images/arrow-sink.svg",
-            "label": "C",
-            "connectionsOut": [
-                "D"
-            ],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-        {
-            "name": "D",
-            "id": "D",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "./images/arrow-source.svg",
-            "label": "D",
-            "connectionsOut": [
-                "E"
-            ],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-        {
-            "name": "E",
-            "id": "E",
-            "entity": {
-                "initialGraphData": true
-            },
-            "iconUrl": "./images/noun-up-3815871.svg",
-            "label": "E",
-            "connectionsOut": [],
-            "updateableFields": {
-                inc: 1,
-                serverUtilization: 1,
-                queueHistogram: {},
-            }
-        },
-
-    ]
-};
 
 
 let colorIndex = nodes.size - 1;
@@ -687,7 +418,7 @@ if (data.formation) {
 
         // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
         nodes.set(z.id, {
-            color: colors[colorIndex++ % nodes.size],
+            color: d3['schemeSet1'][colorIndex++ % nodes.size],
             size: nodeRadius,
             label: z.label,
             name: z.name,

@@ -1,8 +1,24 @@
-document.turnOnSim = () => {
+document.turnOnPhysics = () => {
     alert('simulation not yet started.');
 };
 
-document.turnOffSim = () => {
+document.turnOffPhysics = () => {
+    alert('simulation not yet started.');
+};
+
+document.restartSim = () => {
+    alert('simulation not yet started.');
+};
+
+document.startSim = () => {
+    alert('simulation not yet started.');
+};
+
+document.pauseSim = () => {
+    alert('simulation not yet started.');
+};
+
+document.stopSim = () => {
     alert('simulation not yet started.');
 };
 
@@ -215,7 +231,7 @@ const createHistogram = (id) => {
 };
 
 const run = (nodes, links) => {
-    
+
     // setTimeout(() => {
 
     //     // TODO: dynamically add a new node/link
@@ -412,7 +428,7 @@ const run = (nodes, links) => {
         // placeLabelsAndIcons();
     }, 1000);
 
-    document.turnOffSim = () => {
+    document.turnOffPhysics = () => {
         simulation.stop();
         simulation
             .force("center", null)
@@ -423,9 +439,26 @@ const run = (nodes, links) => {
             .force("links", null);
     };
 
-    document.turnOnSim = () => {
+    document.turnOnPhysics = () => {
         startSimulation();
     };
+
+    document.startSim = () => {
+        client.send({startSim: true});
+    };
+
+    document.stopSim = () => {
+        client.send({stopSim: true});
+    };
+
+    document.pauseSim = () => {
+        client.send({pauseSim: true});
+    };
+
+    document.restartSim = () => {
+        client.send({restartSim: true});
+    };
+
 
     const startSimulation = () => {
         simulation
@@ -506,7 +539,7 @@ const run = (nodes, links) => {
         // simulation.alpha(0.5).restart()
 
         //prevents node from exceeding horizontal bound
-        if(event.x > width - nodeRadius) {
+        if (event.x > width - nodeRadius) {
             d.fx = width - nodeRadius
         } else if (event.x < nodeRadius) {
             d.fx = nodeRadius
@@ -515,7 +548,7 @@ const run = (nodes, links) => {
         }
 
         //prevents node from exceeding vertical bound
-        if(event.y > height - nodeRadius) {
+        if (event.y > height - nodeRadius) {
             d.fy = height - nodeRadius;
         } else if (event.y < nodeRadius) {
             d.fy = nodeRadius;
@@ -668,7 +701,7 @@ if (data.formation) {
         for (const targetId of z.connectionsOut) {
             // TODO: are there are any pre-built fields for rendering images or labels in links?
             const linkValue = {source: z.id, target: targetId, ...{whatever: 'else'}};
-            links.set([z.id,targetId].join('-'), linkValue);
+            links.set([z.id, targetId].join('-'), linkValue);
             linksBySource.set(z.id, linkValue);
             linksByTarget.set(targetId, linkValue);
         }

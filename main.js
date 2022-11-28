@@ -241,8 +241,63 @@ const run = (nodes, links) => {
 
     // }, 5000);
 
+    const updateGraph = (list) => {
+        // list is array of objects
+    };
+
     setTimeout(() => {
 
+        // list is coming from backend, list will always be about 10-20 objects in an array
+        // the main idea is to update the histogram information
+        // and to tell the graph how to animate objects going from node A --> node B
+
+        updateGraph([
+            {
+                "type": "GRAPH_DATA:PROCESSING",
+                "m": {  // is just m for message, probably should give it a better name, but will keep it for now
+                    "timeStepCount": 108,
+                    "id": "D",
+                    "rv": {
+                        "lambda": 0.1
+                    },
+                    "queue": {
+                        "size": 0
+                    },
+                    "maxQueueSize": -1,
+                    "opts": {
+                        "xx": true
+                    },
+                    "isProcessor": true,
+                    "concurrency": 15,
+                    "inputQueue": {
+                        "size": 2
+                    },
+                    "processingQueue": {
+                        "size": 1
+                    },
+                    "outQueue": {
+                        "size": 0
+                    },
+                    "totalServerBusyTime": 135000,
+                    "totalServerIdleTime": 675000,
+                    "processedCount": 270,
+                    "inputQueueHistogram": {
+                        "0": 44500, // the value is the amount of time spent with queue size = 0
+                        "4": 500,  // the value is the amount of time spent with queue size = 4
+                        "11": 500, // // the value is the amount of time spent with queue size = 11
+                        "15": 4000,
+                        "19": 500,
+                        "30": 4000
+                    },
+                    "processingQueueHistogram": {
+                        "0": 44500,  // the value is the amount of time spent with queue size = 0
+                        "4": 500,   // the value is the amount of time spent with queue size = 4
+                        "11": 500,
+                        "15": 8500  // interesting that the first 4 values mirror the input queue
+                    }
+                }
+            }
+        ])
 
     }, 3000);
 

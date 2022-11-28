@@ -4,6 +4,12 @@ All todos here:
 TODO: cycle between 3 to 5 states for each node
 TODO: low priority task: render objects/nodes in the midpoint of edges/links!
 
+TODO: high priority - there needs to be 3 histograms for each node:
+    1. histogram representing the input queue  (at node but waiting to be processed)
+    2. histogram representing processing time (not exactly a queue just time spent being processed)
+    3. histogram representing the output queue (at same node but waiting to be accepted by another node)
+
+
 DONT NEED? * TODO: 1. scale drawing to 90% of viewport (vertically and horizontally)
 DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes
 DONT KNOW TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom

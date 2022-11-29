@@ -1,4 +1,36 @@
 const client = new WebSocket('ws://0.0.0.0:5900');
+let simulation;
+
+document.turnOffPhysics = () => {
+    simulation.stop();
+    simulation
+        .force("center", null)
+        .force("nodes", null)
+        .force("radial", null)
+        .force("charge", null)
+        .force("collision", null)
+        .force("links", null);
+};
+
+document.turnOnPhysics = () => {
+    startSimulation();
+};
+
+document.startSim = () => {
+    client.send({startSim: true});
+};
+
+document.stopSim = () => {
+    client.send({stopSim: true});
+};
+
+document.pauseSim = () => {
+    client.send({pauseSim: true});
+};
+
+document.restartSim = () => {
+    client.send({restartSim: true});
+};
 
 client.addEventListener('message', m => {
     console.log('change event:', m);
@@ -20,7 +52,7 @@ const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25))
 const displayStates = ["Empty", "InputQueue", "ProcessingQueue", "OutputQueue"]
 
 const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
-    // Create an arrowhead.
+    // Create an arrowhead, used by the lines created to represent links.
     svg.append("defs").selectAll("marker")
         .data(["dominating"])
         .enter()
@@ -83,7 +115,7 @@ const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
 		.attr("text-anchor", "middle")
 		.text(d => 'Name: ' + d.name);
 
-    nodeGroups.append()
+    // nodeGroups.append()
 };
 
 const placeLabelsAndIcons = () => {
@@ -214,38 +246,10 @@ const createHistogram = (id) => {
 const run = (nodes, links) => {
     const svg = d3.select('div#container')
         .append('svg')
-        .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
+        .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight);
 
-    document.turnOffPhysics = () => {
-        simulation.stop();
-        simulation
-            .force("center", null)
-            .force("nodes", null)
-            .force("radial", null)
-            .force("charge", null)
-            .force("collision", null)
-            .force("links", null);
-    };
-
-    document.turnOnPhysics = () => {
-        startSimulation();
-    };
-
-    document.startSim = () => {
-        client.send({startSim: true});
-    };
-
-    document.stopSim = () => {
-        client.send({stopSim: true});
-    };
-
-    document.pauseSim = () => {
-        client.send({pauseSim: true});
-    };
-
-    document.restartSim = () => {
-        client.send({restartSim: true});
-    };
+    createGraph(svg, nodes, links, dragStart, drag, dragEnd);
+    simulation = d3.forceSimulation(nodes);
 
     const startSimulation = () => {
         simulation
@@ -272,8 +276,6 @@ const run = (nodes, links) => {
             .on("tick", ticked);
     }
 
-    createGraph(svg, nodes, links, dragStart, drag, dragEnd);
-    let simulation = d3.forceSimulation(nodes);
     startSimulation();
 
     function ticked() {
@@ -310,7 +312,7 @@ const run = (nodes, links) => {
         });
     }
 
-    function dragStart(d) {
+    function dragStart(event, d) {
         simulation.alphaTarget(0.5).restart();
         d.fx = d.x;
         d.fy = d.y;
@@ -336,7 +338,7 @@ const run = (nodes, links) => {
         }
     }
 
-    function dragEnd(d) {
+    function dragEnd(event, d) {
         simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;

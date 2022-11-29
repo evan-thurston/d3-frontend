@@ -61,10 +61,10 @@ g:hover div {
     visibility: visible;
 }
 
-.histogram {
+/* .histogram {
     visibility: hidden;
-}
+} */
 
-.show-histogram .histogram {
+/* .show-histogram .histogram {
     visibility: inherit;
-}
+} */

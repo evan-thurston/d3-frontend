@@ -49,7 +49,11 @@ const minRadius = 20;
 // (and eventually number of nodes as well)
 const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25));
 
-const displayStates = ["Empty", "InputQueue", "ProcessingQueue", "OutputQueue"]
+const displayStates = ["Metadata", "InputQueueHistogram"]; // "ProcessingQueue", "OutputQueue"];
+const getNextDisplayState = function (currentState) {
+    let idx = displayStates.findIndex((element) => element == currentState)
+    return displayStates[(idx + 1) % displayStates.length];
+}
 
 const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
     // Create an arrowhead, used by the lines created to represent links.
@@ -68,10 +72,11 @@ const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
                 .attr("d", "M0,-5L10,0L0,5");
 
     // Add lines representing links.
-	svg.selectAll("line")
+	svg.selectAll("line.link")
 		.data(links)
 		.enter()
 		.append("line")
+            .attr("class", "link")
 			.attr("stroke", "black")
 			.attr("stroke-width", 1)
 			// add marker to line
@@ -97,7 +102,27 @@ const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
 				.on("end", dragEnd)
 		)
         .on("click", function(e, d) {
-            console.log("Clicked " + d.id)
+            // TODO(julien): create a separate function to initialize/update display state.
+            d.displayState = getNextDisplayState(d.displayState);
+            if (d.displayState == "InputQueueHistogram") {
+                nodeGroups
+                    .selectAll("foreignObject")
+                    .filter(function(d2, i) { return d.id == d2.id;})
+                    .select("div")
+                        .call(createHistogram, d.id);
+            }
+            if (d.displayState == "Metadata") {
+                nodeGroups
+                .selectAll("foreignObject")
+                .filter(function(d2, i) { return d.id == d2.id;})
+                .select("div")
+                    .text(d => [
+                        'Updates:', JSON.stringify(d.updateableFields),
+                        "\nID: ", d.id,
+                        "\nName:", d.name,
+                        '\nLabel:', d.label
+                    ].join(' '));
+            }
         });
 
 	// Add an image to each node group.
@@ -115,79 +140,37 @@ const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
 		.attr("text-anchor", "middle")
 		.text(d => 'Name: ' + d.name);
 
-    // nodeGroups.append()
-};
-
-const placeLabelsAndIcons = () => {
-
-    // note this functionality updates all nodes/links
-    // we want a way to update one-at-a-time for efficiency's sake
-
-    const svg = d3.select("svg");
-
-    if (!svg) {
-        console.error('missing svg element.');
-        return;
-    }
-
-    svg.selectAll("text").remove();
-    svg.selectAll("image").remove();
-    svg.selectAll("foreignObject").remove();
-
-    const gs = svg.selectAll("g")
-        .on('click', e => {
-            //TODO: kind of a kludge here, there must be a way to access it cleaner?
-            e.target.__data__.histogramShowing = !e.target.__data__.histogramShowing;
-            if (e.target.__data__.histogramShowing) {
-                e.target.parentElement.classList.add('show-histogram');
-            } else {
-                e.target.parentElement.classList.remove("show-histogram");
-            }
-        });
-
-    // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
-
-    let divs = gs.append("foreignObject")
-        .attr("x", d => d.x - 70)
-        .attr("y", d => d.y + 1.1 * d.size)
+    nodeGroups.append("foreignObject")
+        .attr("x", -70)
+        .attr("y", d => 1.1 * d.size)
+        .attr("height", 100)
+        .attr("width", 100)
         .style("overflow", "visible")
         .append("xhtml:div")
-        .text(d => d.histogramShowing ? "histogram" : [
-            'Updates:', JSON.stringify(d.updateableFields),
-            "\nID: ", d.id,
-            "\nName:", d.name,
-            '\nLabel:', d.label
-        ].join(' '));
-
-    for (const div of divs._groups[0]) {
-        div.appendChild(getAndCacheHistogram(div.id));
-    }
+            .text(d => [
+                'Updates:', JSON.stringify(d.updateableFields),
+                "\nID: ", d.id,
+                "\nName:", d.name,
+                '\nLabel:', d.label
+            ].join(' '));
 };
 
-const histoCache = {};  // we can use a Set/Map if we want to get a fancy
-const addToHistoCache = (id, value) => {
-    histoCache[id] = value;
-    return true;
-};
 const getHistoData = (id) => {
     return [{val: 9.5}, {val: 2}, {val: 2.5}, {val: 3}, {val: 3.3},
         {val: 4}, {val: 5.6}, {val: 2.1}, {val: 1.7}, {val: 7}];
 };
-const getAndCacheHistogram = (id) => {
-    addToHistoCache(id, createHistogram(id));
-    return histoCache[id];
-};
 
 // Creating a basic histogram: https://d3-graph-gallery.com/graph/histogram_basic.html
-const createHistogram = (id) => {
-    const data = getHistoData(id);
+const createHistogram = (selection, id) => {
+    selection.text("");
 
+    const data = getHistoData(id);
     // set the dimensions and margins of the graph
     const margin = {top: 10, right: 10, bottom: 10, left: 0},
         width = 120 - margin.left - margin.right,
         height = 50 - margin.top - margin.bottom;
 
-    let histSvg = d3.select("div#secret")
+    let histSvg = selection
         .append("svg")
         .attr("class", "histogram")
         .attr("width", width + margin.left + margin.right)
@@ -228,19 +211,17 @@ const createHistogram = (id) => {
         .data(bins)
         .enter()
         .append("rect")
-        .attr("x", 1)
-        .attr("transform", function (d) {
-            return "translate(" + x(d.x0) + "," + y(d.length) + ")";
-        })
-        .attr("width", function (d) {
-            return Math.max(0, x(d.x1) - x(d.x0) - 1);
-        })
-        .attr("height", function (d) {
-            return height - y(d.length);
-        })
-        .style("fill", "#69b3a2");
-
-    return histSvg.node();
+            .attr("x", 1)
+            .attr("transform", function (d) {
+                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+            })
+            .attr("width", function (d) {
+                return Math.max(0, x(d.x1) - x(d.x0) - 1);
+            })
+            .attr("height", function (d) {
+                return height - y(d.length);
+            })
+            .style("fill", "#69b3a2");
 };
 
 const run = (nodes, links) => {
@@ -280,7 +261,7 @@ const run = (nodes, links) => {
 
     function ticked() {
         var nodeGroups = svg.selectAll("g.gnode");
-        var linkSelection = svg.selectAll("line");
+        var linkSelection = svg.selectAll("line.link");
 
         nodeGroups
             .attr("transform", function(d) {

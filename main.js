@@ -53,7 +53,7 @@ const displayStates = ["Metadata", "InputQueueHistogram"]; // "ProcessingQueue",
 const getNextDisplayState = function (currentState) {
     let idx = displayStates.findIndex((element) => element == currentState)
     return displayStates[(idx + 1) % displayStates.length];
-}
+};
 
 const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
     // Create an arrowhead, used by the lines created to represent links.

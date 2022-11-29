@@ -146,7 +146,34 @@ const dataUpdate = [
 				"4": 500,   // the value is the amount of time spent with queue size = 4
 				"11": 500,
 				"15": 8500  // interesting that the first 4 values mirror the input queue
-			}
+			},
+            "outputQueueHistogram": {
+                "0": 62000,  // the value is the amount of time spent with queue size = 0
+            },
+            "inputQueueTimeWaiting": {
+                "dist": [
+                    500,
+                    1000,
+                    1000,
+                    500,
+                    2000,
+                    2500,
+                    1000,
+                    500
+                ]
+            },
+            "processingQueueTimeWaiting": {
+                "dist": [
+                    1500,
+                    1000,
+                    1000,
+                ]
+            },
+            "outputQueueTimeWaiting": {
+                "dist": [
+
+                ]
+            },
 		},
 		// NOTE: connection information is fairly static (won't change much over time as simulation proceeds)
 		// *however* to represent disconnects we can dynamically route movables and "turn off" a certain destination

@@ -683,6 +683,10 @@ let colorIndex = nodes.size - 1;
 
 
 if (data.formation) {
+
+    let linknum = 0;
+    let linkindex = 0;
+
     for (const z of data.formation) {
 
         // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
@@ -700,7 +704,14 @@ if (data.formation) {
         // note: in order to complete graph, we only need-be concerned with connectionsOut, not connectionsIn
         for (const targetId of z.connectionsOut) {
             // TODO: are there are any pre-built fields for rendering images or labels in links?
-            const linkValue = {source: z.id, target: targetId, ...{whatever: 'else'}};
+            const linkValue = {
+                source: z.id,
+                target: targetId,
+                linkindex: linkindex++, // linkindex / linknum seem advisable according to:
+                linknum: linknum++,  //https://itecnote.com/tecnote/javascript-how-to-add-an-arrow-links-in-d3-js/
+                ...{whatever: 'else'}
+            };
+
             links.set([z.id, targetId].join('-'), linkValue);
             linksBySource.set(z.id, linkValue);
             linksByTarget.set(targetId, linkValue);

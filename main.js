@@ -1,27 +1,3 @@
-document.turnOnPhysics = () => {
-    alert('simulation not yet started.');
-};
-
-document.turnOffPhysics = () => {
-    alert('simulation not yet started.');
-};
-
-document.restartSim = () => {
-    alert('simulation not yet started.');
-};
-
-document.startSim = () => {
-    alert('simulation not yet started.');
-};
-
-document.pauseSim = () => {
-    alert('simulation not yet started.');
-};
-
-document.stopSim = () => {
-    alert('simulation not yet started.');
-};
-
 const client = new WebSocket('ws://0.0.0.0:5900');
 
 client.addEventListener('message', m => {
@@ -40,9 +16,75 @@ const minRadius = 20;
 // I just made up a formula, but radius should be a function of window size
 // (and eventually number of nodes as well)
 const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25));
-// console.log("node radius: " + nodeRadius);
 
-let histogramShowing = false;
+const displayStates = ["Empty", "InputQueue", "ProcessingQueue", "OutputQueue"]
+
+const createGraph = function(svg, nodes, links, dragStart, drag, dragEnd) {
+    // Create an arrowhead.
+    svg.append("defs").selectAll("marker")
+        .data(["dominating"])
+        .enter()
+        .append("marker")
+            .attr("id", d => d)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 0)
+            .attr("refY", 0)
+            .attr("markerWidth", 12)
+            .attr("markerHeight", 12)
+            .attr("orient", "auto")
+            .append("path")
+                .attr("d", "M0,-5L10,0L0,5");
+
+    // Add lines representing links.
+	svg.selectAll("line")
+		.data(links)
+		.enter()
+		.append("line")
+			.attr("stroke", "black")
+			.attr("stroke-width", 1)
+			// add marker to line
+			.attr("marker-end", d => "url(#dominating)");
+
+	// Add groups representing nodes.
+	let nodeGroups = svg.selectAll("g.gnode")
+		.data(nodes, d => d.id)
+		.enter()
+		.append("g")
+		.attr("class", "gnode");
+
+	// Add circle to each node group.
+	nodeGroups.append("circle")
+		.attr("r", d => d.size)
+		.attr("fill", d => d.color)
+		.attr("img", d => d.icon)
+		.call(
+			d3
+				.drag()
+				.on("start", dragStart)
+				.on("drag", drag)
+				.on("end", dragEnd)
+		)
+        .on("click", function(e, d) {
+            console.log("Clicked " + d.id)
+        });
+
+	// Add an image to each node group.
+	nodeGroups.append("image")
+		.attr("x", d => -d.size)
+		.attr("y", d => -1.8 * d.size)
+		.attr("width", d => d.size / 2)
+		.attr("height", d => d.size / 2)
+		.attr("href", d => d.iconUrl);
+
+	// Add text to each node group.
+	nodeGroups.append("text")
+		.attr("x", d => d.size / 3)
+		.attr("y", d => -1.5 * d.size)
+		.attr("text-anchor", "middle")
+		.text(d => 'Name: ' + d.name);
+
+    nodeGroups.append()
+};
 
 const placeLabelsAndIcons = () => {
 
@@ -72,19 +114,6 @@ const placeLabelsAndIcons = () => {
         });
 
     // svg.selectAll("g").on("click", d => { console.log("Clicked " + d.histogramShowing); });
-
-    gs.append("image")
-        .attr("x", d => d.x - d.size)
-        .attr("y", d => d.y - 1.8 * d.size)
-        .attr("width", d => d.size / 2)
-        .attr("height", d => d.size / 2)
-        .attr("href", d => d.iconUrl);
-
-    gs.append("text")
-        .attr("x", d => d.x + d.size / 3)
-        .attr("y", d => d.y - 1.5 * d.size)
-        .attr("text-anchor", "middle")
-        .text(d => 'Name: ' + d.name);
 
     let divs = gs.append("foreignObject")
         .attr("x", d => d.x - 70)
@@ -183,100 +212,9 @@ const createHistogram = (id) => {
 };
 
 const run = (nodes, links) => {
-
-    const updateGraph = (list) => {
-        // list is array of objects
-    };
-
-    setTimeout(() => {
-
-        // list is coming from backend, list will always be about 10-20 objects in an array
-        // the main idea is to update the histogram information
-        // and to tell the graph how to animate objects going from node A --> node B
-
-        updateGraph(dataUpdate)
-
-    }, 3000);
-
     const svg = d3.select('div#container')
         .append('svg')
         .attr("viewBox", "0 0 " + window.innerWidth + " " + window.innerHeight)
-    // .classed("svg-content", true);
-
-
-    // append a path marker to svg defs
-    svg.append("defs").selectAll("marker")
-        .data(["dominating"])
-        .enter().append("marker")
-        .attr("id", d => d)
-        .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 0)
-        .attr("refY", 0)
-        .attr("markerWidth", 12)
-        .attr("markerHeight", 12)
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", "M0,-5L10,0L0,5");
-
-    let linkSelection = svg
-        .selectAll("line")
-        .data(links)
-        .enter()
-        .append("line")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        // add marker to line
-        .attr("marker-end", d => "url(#dominating)");
-
-
-    let nodeSelection = svg
-        .selectAll("circle")
-        .data(nodes)
-        .enter()
-        .append("g")
-        .append("circle")
-        .attr("r", d => d.size)
-        .attr("fill", d => d.color)
-        .attr("img", d => d.icon)
-        .call(
-            d3
-                .drag()
-                .on("start", dragStart)
-                .on("drag", drag)
-                .on("end", dragEnd)
-        );
-
-    let simulation = d3.forceSimulation(nodes);
-
-    let val = 0;
-    setInterval(() => {
-
-        // console.log('udpating A...');
-
-        for (let i = 0; i < nodes.length; i++) {
-            // this doesn't really work to force a re-render
-            const n = nodes[i];
-            nodes[i] = Object.assign(n, { // assign new field(s) to *same objects*
-                updateableFields: {
-                    ...n.updateableFields,
-                    // increment some sh*t to force a re-render, or at least to test it out
-                    inc: ++n.updateableFields.inc
-                }
-            });
-        }
-
-        // below is an attempt to update info manually (ideally, only when the data changes)
-        svg
-            .selectAll("circle")
-            // .data(nodes) // pass new data seems good idea
-            .enter()
-            // .attr("r", d => d.size)
-            .attr(val++, val)
-            .attr("fill", d => 'black')
-
-        // simulation.alpha(0.5).restart()
-        // placeLabelsAndIcons();
-    }, 1000);
 
     document.turnOffPhysics = () => {
         simulation.stop();
@@ -309,7 +247,6 @@ const run = (nodes, links) => {
         client.send({restartSim: true});
     };
 
-
     const startSimulation = () => {
         simulation
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -335,18 +272,24 @@ const run = (nodes, links) => {
             .on("tick", ticked);
     }
 
+    createGraph(svg, nodes, links, dragStart, drag, dragEnd);
+    let simulation = d3.forceSimulation(nodes);
     startSimulation();
-    placeLabelsAndIcons();
 
     function ticked() {
-        nodeSelection.attr("cx", d => d.x).attr("cy", d => d.y);
+        var nodeGroups = svg.selectAll("g.gnode");
+        var linkSelection = svg.selectAll("line");
+
+        nodeGroups
+            .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")";
+            });
 
         linkSelection
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
-
 
         // recalculate and back off the distance
         linkSelection.each(function (d, i, n) {
@@ -365,8 +308,6 @@ const run = (nodes, links) => {
                 .attr("x2", m2.x)
                 .attr("y2", m2.y);
         });
-
-        // placeLabelsAndIcons();
     }
 
     function dragStart(d) {
@@ -402,29 +343,24 @@ const run = (nodes, links) => {
     }
 }
 
-
 const nodes = new Map();
 const links = new Map();
 const linksBySource = new Map();
 const linksByTarget = new Map();
 
-
-
-let colorIndex = nodes.size - 1;
-
-
 if (data.formation) {
+    let colorIndex = 0;
+    colors = d3["schemeSet1"]
     for (const z of data.formation) {
-
         // TODO: are there are any pre-ordained fields for rendering images or labels in nodes?
         nodes.set(z.id, {
-            color: d3['schemeSet1'][colorIndex++ % nodes.size],
+            color: colors[colorIndex++ % colors.length],
             size: nodeRadius,
             label: z.label,
             name: z.name,
             id: z.id,
             iconUrl: z.iconUrl,
-            histogramShowing: false,
+            displayState: displayStates[0],
             updateableFields: z.updateableFields
         });
 

@@ -7,13 +7,15 @@
     import { schemeAccent } from "d3-scale-chromatic";
     import { select, selectAll } from "d3-selection";
     import { drag } from "d3-drag";
+    import Histogram from "./../lib/Histogram.svelte";
+
     import {
         forceSimulation,
         forceLink,
         forceManyBody,
         forceCenter,
     } from "d3-force";
-    import { link } from "d3";
+    import { histogram, link, pointRadial } from "d3";
     let d3 = {
         zoom,
         zoomIdentity,
@@ -29,10 +31,17 @@
         forceCenter,
     };
     export let data;
+    
+	var data1 = [30, 86, 168, 281, 303, 365];
+	var data2 = [30, 86, 130, 168, 281, 303, 365, 475];
+	var data3 = [30, 86, 168, 281];
+	var data4 = [30, 86, 130, 150, 168, 281, 336, 387, 485, 497];
+
     let svg;
     let width = 500;
     let height = 600;
-    const radius = 20;
+    let popupWidth = 224;
+    const radius = 30;
     const padding = { top: 20, right: 40, bottom: 40, left: 25 };
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
@@ -42,9 +51,9 @@
             .forceSimulation(nodes)
             .force(
                 "link",
-                d3.forceLink(links).id((d) => d.id).distance(60)
+                d3.forceLink(links).id((d) => d.id).distance(radius * 3)
             )
-            .force("charge", d3.forceManyBody().strength(radius * -9))
+            .force("charge", d3.forceManyBody().strength((10 / nodes.length) * radius * -90))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
         d3.select(svg)
@@ -57,12 +66,13 @@
                     .on("drag", dragged)
                     .on("end", dragended)
             )
-            .call(
-                d3
-                    .zoom()
-                    .scaleExtent([1 / 10, 8])
-                    .on("zoom", zoomed)
-            );
+            // TODO: zoom doesn't work with hovering text
+            // .call(
+            //     d3
+            //         .zoom()
+            //         .scaleExtent([1 / 10, 8])
+            //         .on("zoom", zoomed)
+            // );
     });
     $: links = data.links.map((d) => Object.create(d));
     $: nodes = data.nodes.map((d) => Object.create(d));
@@ -71,7 +81,26 @@
         nodes = [...nodes];
         links = [...links];
 
-        var linkSelection = d3.select(svg).selectAll("g.link").select("line");
+        // TODO: this doesn't work (shortening link length to display arrows, currently arrows are hidden behind nodes)
+    
+        // let linkSelection = d3.select(svg).selectAll("g.link").select("line");
+
+        // linkSelection.each( (d, i, n) => {
+        //     // current path length
+        //     const pl = this.getTotalLength();
+        //     // radius of marker head plus def constant
+        //     const mrs = (d.source.size);
+        //     const mrt = (d.target.size) + 12;
+        //     // get new start and end points
+        //     const m1 = this.getPointAtLength(mrs);
+        //     const m2 = this.getPointAtLength(pl - mrt);
+        //     // new line start and end
+        //     d3.select(n[i])
+        //         .attr("x1", m1.x)
+        //         .attr("y1", m1.y)
+        //         .attr("x2", m2.x)
+        //         .attr("y2", m2.y);
+        // });
     }
     function zoomed(currentEvent) {
         transform = currentEvent.transform;
@@ -118,7 +147,7 @@
 <svg bind:this={svg} {width} height={height - 24}>
 
     {#each links as link}
-        <g stroke="#999" stroke-opacity="0.6" class="link">
+        <g stroke="#999" stroke-opacity="0.6">
             <line
                 x1={link.source.x}
                 y1={link.source.y}
@@ -127,7 +156,6 @@
                 marker-end="url(#SvgjsMarker1019)"
                 transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
             >
-                <title>{link.source.id}</title>
             </line>
         </g>
         <defs>
@@ -146,9 +174,16 @@
     {/each}
 
     {#each nodes as point}
-        <g>
-            <!-- Why doesn't this show? -->
-            <text fill={colourScale(point.group)} y={-radius * 1.2} text-anchor="middle">ID: {point.id}</text>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <g on:click={() => { if(!point.currentView || point.currentView === 0) point.currentView = 1; else if (point.currentView === 1) point.currentView = 2; else point.currentView = 0 }}>
+            <image transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})" width={radius} height={radius} x={-radius/2} y={-radius*3} alt='node image' href={point.group > 2 ? '/dog.png' : '/bird.png'}/>
+            <text 
+                fill={colourScale(point.group)} 
+                y={-radius * 1.2} 
+                text-anchor="middle"
+                transform='translate({point.x} {point.y}) scale({transform.k} {transform.k})'>
+                    ID: {point.id}
+            </text>
 
             <circle
                 class="node"
@@ -158,11 +193,50 @@
                 cy={point.y}
                 transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
             />
+
+            <foreignObject 
+            height={(point.currentView !== 0 && point.currentView) ? popupWidth * 2 : popupWidth * 2 / 3}
+            width={popupWidth}
+            x={-popupWidth / 2}
+            y={radius * 1.5}
+            class='metadata'
+            transform='translate({point.x} {point.y}) scale({transform.k} {transform.k})'>
+                {#if point.currentView === 1}
+                    <Histogram data={data1} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                    <Histogram data={data2} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                    <Histogram data={data3} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                {:else if point.currentView === 2}
+                    <Histogram data={data3} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                    <Histogram data={data1} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                    <Histogram data={data4} width={popupWidth - 20} height={popupWidth * 2 / 3 - 12}/>
+                {:else}
+                    <p>
+                        ID: {point.id}
+                    </p>
+                    <p>
+                        group: {point.group}
+                    </p>
+                    <p>currentView: {point.currentView || 0}</p>
+                    <p>icon: {point.group > 2 ? "dog" : "bird"}</p>
+                {/if}
+            </foreignObject>
         </g>
     {/each}
 </svg>
 
-<style>
+<style lang='postcss'>
+    .metadata {
+        @apply bg-slate-200 border-2 border-slate-600 rounded-lg text-center opacity-0 invisible transition-opacity duration-300 ease-in-out text-slate-600 p-2;
+    }
+    g:hover .metadata {
+        @apply opacity-100 visible;
+    }
+    image {
+        @apply invisible transition-opacity duration-300 ease-in-out;
+    }
+    g:hover image {
+        @apply opacity-100 visible;
+    }
     svg {
         float: left;
     }

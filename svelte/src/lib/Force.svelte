@@ -36,6 +36,25 @@
       // update the renderedDots reference to trigger an update
       renderedDots = [...nodes];
       links = [...links];
+
+      let linkSelection = d3.select(element).selectAll('g.link').select('line');
+
+      linkSelection.each(function (d, i, n) {
+                // current path length
+                const pl = this.getTotalLength();
+                // radius of marker head plus def constant
+                const mrs = (d.source.size);
+                const mrt = (d.target.size) + 12;
+                // get new start and end points
+                const m1 = this.getPointAtLength(mrs);
+                const m2 = this.getPointAtLength(pl - mrt);
+                // new line start and end
+                d3.select(n[i])
+                    .attr("x1", m1.x)
+                    .attr("y1", m1.y)
+                    .attr("x2", m2.x)
+                    .attr("y2", m2.y);
+            });
     });
 
   $: {

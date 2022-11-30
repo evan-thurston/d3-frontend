@@ -10,7 +10,7 @@
 
     const yScale = d3.scaleLinear()
         .domain([0, Math.max(...data)])
-        .range([0, height])
+        .range([9, height])
 
 	onMount(() => {
 		d3.select(el)
@@ -33,8 +33,11 @@
 <style lang='postcss'>
 	.chart :global(div) {
         @apply
-            bg-emerald-600 p-1 mx-[1px] align-bottom inline-block
+            bg-emerald-600 p-1 pt-0 mx-[1px] align-bottom inline-block
             font-sans text-xs text-center text-white;
+	}
+	.chart {
+		@apply mb-2;
 	}
 </style>
 

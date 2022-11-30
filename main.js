@@ -257,6 +257,8 @@ const run = (nodes, links) => {
         var nodeGroups = svg.selectAll("g.gnode");
         var linkSelection = svg.selectAll("line.link");
 
+        console.log(linkSelection);
+        
         nodeGroups
             .attr("transform", function(d) {
                 return "translate(" + d.x + ", " + d.y + ")";

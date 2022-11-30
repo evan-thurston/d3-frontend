@@ -18,7 +18,7 @@
 
     let demo = 1;
 
-	import { lesMis } from './../lib/utils'
+	import { lesMis, dummyNodes } from './../lib/utils'
 </script>
 
 <svelte:window
@@ -26,9 +26,9 @@
     bind:innerWidth={width}
 />
 
-{#if demo === 1}
-    <NetworkGraph data={lesMis}/>
-{/if}
+<!-- {#if demo === 1} -->
+    <NetworkGraph data={dummyNodes}/>
+<!-- {/if}
 {#if demo === 2}
     <ForceWrapper/>
 {/if}
@@ -44,8 +44,8 @@
 {/if}
 {#if demo === 4}
 	<OldGraph/>
-{/if}
-<div class="h-5 absolute bottom-1">
+{/if} -->
+<!-- <div class="h-5 absolute bottom-1">
     <label>
         <input type="radio" bind:group={demo} value={1} />
         linked graph
@@ -63,4 +63,4 @@
         Original Graph
     </label>
     
-</div>
+</div> -->

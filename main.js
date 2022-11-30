@@ -47,8 +47,7 @@ const height = window.innerHeight;
 const minRadius = 20;
 // I just made up a formula, but radius should be a function of window size
 // (and eventually number of nodes as well)
-const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 25));
-
+const nodeRadius = Math.max(minRadius, Math.floor(Math.min(width, height) / 20));
 const displayStates = ["Metadata", "InputQueueHistogram"]; // "ProcessingQueue", "OutputQueue"];
 const getNextDisplayState = function (currentState) {
     let idx = displayStates.findIndex((element) => element == currentState)
@@ -246,11 +245,6 @@ const run = (nodes, links) => {
                     .id(d => d.id)
                     // TODO idea - force should increase as degree of freedom between nodes increases
                     .distance((d, a, b) => {
-                        // QUESTION: What does this do? seems buggy in my testing
-                        // answer -> after turning off/on physics this keeps the nodes separated
-                        // return 0.5 * Math.sqrt(
-                        //     Math.pow(d.source.x - d.target.x, 2) + Math.pow(d.source.y - d.target.y, 2)
-                        // ); 
                         return 3 * (d.source.size + d.target.size)
                     })
             )
@@ -265,7 +259,7 @@ const run = (nodes, links) => {
 
         nodeGroups
             .attr("transform", function(d) {
-                return "translate(" + [d.x, d.y] + ")";
+                return "translate(" + d.x + ", " + d.y + ")";
             });
 
         linkSelection
@@ -309,7 +303,7 @@ const run = (nodes, links) => {
             d.fx = event.x
         }
 
-        //prevents node from exceeding vertical bound
+        // prevents node from exceeding vertical bound
         if (event.y > height - nodeRadius) {
             d.fy = height - nodeRadius;
         } else if (event.y < nodeRadius) {

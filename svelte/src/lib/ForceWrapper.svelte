@@ -1,14 +1,23 @@
 <script>
     // @ts-nocheck
-	import * as d3 from 'd3';
+    import * as d3 from "d3";
 
     import { onMount } from "svelte";
 
-    import { forceX, forceY, forceCollide, forceRadial, forceCenter, forceManyBody, forceLink } from "d3-force";
+    import {
+        forceX,
+        forceY,
+        forceCollide,
+        forceRadial,
+        forceCenter,
+        forceManyBody,
+        forceLink,
+    } from "d3-force";
 
     import Force from "./Force.svelte";
 
-    let width, height = 800;
+    let width,
+        height = 800;
 
     let radius = 60;
 
@@ -17,44 +26,47 @@
     let useForceCollide = true;
     let useForceRadial = true;
     let useForceCharge = true;
+    $: links = linkData.map((d) => Object.create(d));
     $: activeForceX = forceX().x(centerPosition[0]);
     $: activeForceY = forceY().y(centerPosition[1]);
-    // $: activeForceCollide = forceCollide().radius(radius/2).iterations(3);
+    $: activeForceCollide = forceCollide().radius(radius).iterations(3);
     $: activeForceRadial = forceRadial()
-        .radius(radius*6)
+        .radius(radius * 4)
         .x(centerPosition[0])
         .y(centerPosition[1]);
-    $: activeForceCenter = forceCenter(width/2, height/2)
-    $: activeForceCharge = forceManyBody().strength(radius*-9);
-    $: activeForceLink = forceLink().id(d => d.id).distance((d, a, b) => {return 3 * (d.source + d.target)})
+    $: activeForceCenter = forceCenter(width / 2, height / 2);
+    $: activeForceCharge = forceManyBody().strength(radius * -9);
+    // $: activeForceLink = forceLink().id(d => d.id).distance((d, a, b) => {return 3 * (d.source + d.target)})
+    $: activeForceLink = forceLink(links).id((d) => d.id);
     $: forces = [
         ["x", activeForceX],
         ["y", activeForceY],
         // ['center', activeForceCenter],
-        useForceCharge && ['charge', activeForceCharge],
-        // ['link', activeForceLink],
+        useForceCharge && ["charge", activeForceCharge],
+        ["link", activeForceLink],
+        ["collide", activeForceCollide],
         // useForceCollide && ["collide", activeForceCollide],
         useForceRadial && ["radial", activeForceRadial],
     ].filter((d) => d);
 
     let dots;
-    let links = [];
+    let linkData = [];
     onMount(() => {
-        d3.json('./../data.json')
-            .then(res => {
+        d3.json("./../data.json")
+            .then((res) => {
                 dots = res.nodes;
-                dots.forEach(d => {
-                    if(d.connectionsOut) {
-                        d.connectionsOut.forEach(out => {
-                            links.push({'source': d.id, 'target': out})
-                        })
+                dots.forEach((d) => {
+                    if (d.connectionsOut) {
+                        d.connectionsOut.forEach((out) => {
+                            linkData.push({ source: d.id, target: out });
+                        });
                     }
-                })
-                console.log(links)
+                });
+                console.log(linkData);
             })
             .catch(() => {
-                console.error("Oh no, something horrible happened!")
-            })
+                console.error("Oh no, something horrible happened!");
+            });
     });
 
     const onClick = (e) => {
@@ -89,10 +101,9 @@
 
 <style lang="postcss">
     .controls {
-
         font-style: italic;
         color: var(--text-light);
-        @apply absolute right-4 top-1
+        @apply absolute right-4 top-1;
     }
     label + label {
         margin-left: 1em;
@@ -100,6 +111,6 @@
     .note {
         font-style: italic;
         color: var(--text-light);
-        @apply absolute left-4 top-1
+        @apply absolute left-4 top-1;
     }
 </style>

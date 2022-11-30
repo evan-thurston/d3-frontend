@@ -34,8 +34,6 @@
     let height = 600;
     const radius = 20;
     const padding = { top: 20, right: 40, bottom: 40, left: 25 };
-    $: links = data.links.map((d) => Object.create(d));
-    $: nodes = data.nodes.map((d) => Object.create(d));
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
     let simulation;
@@ -44,7 +42,7 @@
             .forceSimulation(nodes)
             .force(
                 "link",
-                d3.forceLink(links).id((d) => d.id)
+                d3.forceLink(links).id((d) => d.id).distance(60)
             )
             .force("charge", d3.forceManyBody().strength(radius * -9))
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -66,12 +64,14 @@
                     .on("zoom", zoomed)
             );
     });
+    $: links = data.links.map((d) => Object.create(d));
+    $: nodes = data.nodes.map((d) => Object.create(d));
     function simulationUpdate() {
         simulation.tick();
         nodes = [...nodes];
         links = [...links];
 
-        var linkSelection = d3.select(svg).selectAll("g.link").select('line');
+        var linkSelection = d3.select(svg).selectAll("g.link").select("line");
     }
     function zoomed(currentEvent) {
         transform = currentEvent.transform;
@@ -115,11 +115,10 @@
 />
 
 <!-- SVG was here -->
-<svg bind:this={svg} {width} height={height-24}>
+<svg bind:this={svg} {width} height={height - 24}>
+
     {#each links as link}
-        <g stroke="#999" stroke-opacity="0.6" class='link'>
-            <!-- x2={(link.target.x > link.source.x) ? link.target.x - radius : link.target.x + radius} -->
-            <!-- y2={(link.target.y > link.source.y) ? link.target.y - radius : link.target.y + radius} -->
+        <g stroke="#999" stroke-opacity="0.6" class="link">
             <line
                 x1={link.source.x}
                 y1={link.source.y}
@@ -141,25 +140,25 @@
                 orient="auto"
                 id="SvgjsMarker1019"
             >
-                <polygon
-                    points="0,5 0,0 5,2.5"
-                    fill="hsl(0, 0%, 50%)"
-                />
+                <polygon points="0,5 0,0 5,2.5" fill="hsl(0, 0%, 50%)" />
             </marker>
         </defs>
     {/each}
 
     {#each nodes as point}
-        <circle
-            class="node"
-            r={radius}
-            fill={colourScale(point.group)}
-            cx={point.x}
-            cy={point.y}
-            transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-        >
-            <title>{point.id}</title></circle
-        >
+        <g>
+            <!-- Why doesn't this show? -->
+            <text fill={colourScale(point.group)} y={-radius * 1.2} text-anchor="middle">ID: {point.id}</text>
+
+            <circle
+                class="node"
+                r={radius}
+                fill={colourScale(point.group)}
+                cx={point.x}
+                cy={point.y}
+                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+            />
+        </g>
     {/each}
 </svg>
 

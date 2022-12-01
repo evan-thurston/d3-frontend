@@ -46,19 +46,12 @@
     let transform = d3.zoomIdentity;
     let simulation;
 
-    let physicsPaused = false;
+    export let physicsPaused = false;
+    let simulationPaused = false;
 
     onMount(() => {
-        simulation = d3
-            .forceSimulation(nodes)
-            .force(
-                "link",
-                d3.forceLink(links).id((d) => d.id).distance(radius * 3)
-            )
-            .force("charge", d3.forceManyBody().strength(radius * -15))
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .on("tick", simulationUpdate);
-            
+        startSim();
+        
         d3.select(svg)
             .call(
                 d3
@@ -84,6 +77,13 @@
         nodes = [...nodes];
         links = [...links];
 
+        if (physicsPaused && !simulationPaused) {
+            pauseSim();
+            simulationPaused = true;
+        } else if (!physicsPaused && simulationPaused) {
+            startSim();
+            simulationPaused = false;
+        }
         // TODO: this doesn't work (shortening link length to display arrows, currently arrows are hidden behind nodes)
     
         // let linkSelection = d3.select(svg).selectAll("g.link").select("line");
@@ -105,11 +105,32 @@
         //         .attr("y2", m2.y);
         // });
     }
-    function zoomed(currentEvent) {
+
+    const startSim = () => {
+        simulation = d3
+            .forceSimulation(nodes)
+            .force(
+                "link",
+                d3.forceLink(links).id((d) => d.id).distance(radius * 3)
+            )
+            .force("charge", d3.forceManyBody().strength(radius * -15))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .on("tick", simulationUpdate);
+    }
+
+    const pauseSim = () => {
+        simulation.stop();
+        simulation
+            .force('link', null)
+            .force('charge', null)
+            .force('center', null)
+    }
+
+    const zoomed = (currentEvent) => {
         transform = currentEvent.transform;
         simulationUpdate();
     }
-    function dragsubject(currentEvent) {
+    const dragsubject = (currentEvent) => {
         const node = simulation.find(
             transform.invertX(currentEvent.x),
             transform.invertY(currentEvent.y),
@@ -121,21 +142,21 @@
         }
         return node;
     }
-    function dragstarted(currentEvent) {
+    const dragstarted = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0.3).restart();
         currentEvent.subject.fx = transform.invertX(currentEvent.subject.x);
         currentEvent.subject.fy = transform.invertY(currentEvent.subject.y);
     }
-    function dragged(currentEvent) {
+    const dragged = (currentEvent) => {
         currentEvent.subject.fx = transform.invertX(currentEvent.x);
         currentEvent.subject.fy = transform.invertY(currentEvent.y);
     }
-    function dragended(currentEvent) {
+    const dragended = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0);
         currentEvent.subject.fx = null;
         currentEvent.subject.fy = null;
     }
-    function resize() {
+    const resize = () => {
         ({ width, height } = svg.getBoundingClientRect());
     }
 </script>

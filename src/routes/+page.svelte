@@ -11,6 +11,7 @@
         height = 1000;
     let editorShowing = false;
     let demo = 1;
+    let physicsPaused = false;
 
     const toggle = () => {
         if (physicsPaused) {
@@ -53,10 +54,10 @@
     </div>
 {/if}
 {#if demo === 1}
-    <NetworkGraph data={dummyNodes} />
+    <NetworkGraph data={dummyNodes} {physicsPaused} />
 {/if}
 {#if demo === 2}
-    <NetworkGraph data={lesMis} />
+    <NetworkGraph data={lesMis} {physicsPaused} />
     <!-- <ForceWrapper/> -->
 {/if}
 <div class="h-8 absolute bottom-12 flex flex-row space-x-4 ml-8 items-center">

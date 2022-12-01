@@ -167,7 +167,7 @@
     on:resize={resize}
 />
 
-<svg bind:this={svg} {width} height={height - 144}>
+<svg bind:this={svg} {width} height={height}>
     {#each links as link}
         <g stroke="#999" stroke-opacity="0.6">
             <line

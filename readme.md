@@ -1,14 +1,38 @@
-# d3-front-end
+# create-svelte
 
-### Getting started
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-Todo list is in todos.md.
+## Creating a project
 
-There are no dependencies except d3 which is referenced in the html.
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-open index.html  ## opens with google chrome, etc
+# create a new project in the current directory
+npm create svelte@latest
+
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
-Open index.html with a browser and it will load. There's no backend needed.
-(If you want live-reload, run live-reload.js.)
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

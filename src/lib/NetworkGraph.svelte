@@ -45,6 +45,9 @@
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
     let simulation;
+
+    let physicsPaused = false;
+
     onMount(() => {
         simulation = d3
             .forceSimulation(nodes)
@@ -143,8 +146,7 @@
     on:resize={resize}
 />
 
-<!-- SVG was here -->
-<svg bind:this={svg} {width} height={height - 24}>
+<svg bind:this={svg} {width} height={height - 144}>
 
     {#each links as link}
         <g stroke="#999" stroke-opacity="0.6">
@@ -186,7 +188,7 @@
             </text>
 
             <circle
-                class="node -z-50"
+                class="node"
                 r={radius}
                 fill={colourScale(point.group)}
                 cx={point.x}
@@ -226,7 +228,7 @@
 
 <style lang='postcss'>
     .metadata {
-        @apply bg-slate-200 border-2 border-slate-600 rounded-lg text-center opacity-0 invisible transition-opacity duration-300 ease-in-out text-slate-600 p-2;
+        @apply bg-slate-200 border-2 border-slate-600 rounded-lg text-center opacity-0 invisible transition-opacity duration-300 ease-in-out text-slate-600 p-2 z-50;
     }
     g:hover .metadata {
         @apply opacity-100 visible;

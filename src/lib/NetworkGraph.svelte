@@ -78,7 +78,7 @@
         links = [...links];
 
         if (physicsPaused && !simulationPaused) {
-            pauseSim();
+            stopSim();
             simulationPaused = true;
         } else if (!physicsPaused && simulationPaused) {
             startSim();
@@ -118,7 +118,7 @@
             .on("tick", simulationUpdate);
     }
 
-    const pauseSim = () => {
+    const stopSim = () => {
         simulation.stop();
         simulation
             .force('link', null)
@@ -168,7 +168,6 @@
 />
 
 <svg bind:this={svg} {width} height={height - 144}>
-
     {#each links as link}
         <g stroke="#999" stroke-opacity="0.6">
             <line
@@ -198,7 +197,7 @@
 
     {#each nodes as point}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <g on:click={() => { if(!point.currentView || point.currentView === 0) point.currentView = 1; else if (point.currentView === 1) point.currentView = 2; else point.currentView = 0; console.log(width + "," + height) }}>
+        <g on:click={() => { if(!point.currentView || point.currentView === 0) point.currentView = 1; else if (point.currentView === 1) point.currentView = 2; else point.currentView = 0 }}>
             <image transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})" width={radius} height={radius} x={-radius/2} y={-radius*3} alt='node image' href={point.group > 2 ? '/dog.png' : '/bird.png'}/>
             <text 
                 fill={colourScale(point.group)} 
@@ -246,6 +245,7 @@
         </g>
     {/each}
 </svg>
+
 
 <style lang='postcss'>
     .metadata {

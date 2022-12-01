@@ -2,16 +2,25 @@
     // @ts-nocheck
 
     import NetworkGraph from "$lib/NetworkGraph.svelte";
-    import { JSONEditor } from "svelte-jsoneditor";
+    import { JSONEditor, setIn } from "svelte-jsoneditor";
     // import ForceWrapper from "./../lib/ForceWrapper.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
 
     let width,
-        height = 1000;
+        height,
+        interval = 1000;
     let editorShowing = false;
     let demo = 1;
-    let physicsPaused = false;
+    let physicsPaused;
+    let resetSim = false;
+    let updates = 0;
+    let clear
+
+    $: {
+        clearInterval(clear)
+        clear = setInterval(() => updates++, interval)
+    }
 
     const toggle = () => {
         if (physicsPaused) {
@@ -24,13 +33,13 @@
         editorShowing = !editorShowing;
     };
     const slowDown = () => {
-        return;
+        interval += 1000
     };
     const speedUp = () => {
-        return;
+        interval -= 1000
     };
-    const stop = () => {
-        return;
+    const reset = () => {
+        resetSim = !resetSim;
     };
 
     let content = {
@@ -49,35 +58,37 @@
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 {#if editorShowing}
-    <div class="fixed">
+    <div class="fixed right-32 top-32">
         <JSONEditor bind:content />
     </div>
 {/if}
-{#if demo === 1}
-    <NetworkGraph data={dummyNodes} {physicsPaused} />
-{/if}
-{#if demo === 2}
-    <NetworkGraph data={lesMis} {physicsPaused} />
-    <!-- <ForceWrapper/> -->
-{/if}
-<div class="h-8 absolute bottom-12 flex flex-row space-x-4 ml-8 items-center">
-    <button on:click={stop} class="btn btn-primary">
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-        >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-            />
-        </svg>
+{#key resetSim}
+    {#if demo === 1}
+        <NetworkGraph data={dummyNodes} {physicsPaused} />
+    {/if}
+    {#if demo === 2}
+        <NetworkGraph data={lesMis} {physicsPaused} />
+        <!-- <ForceWrapper/> -->
+    {/if}
+{/key}
+<div class="h-8 absolute bottom-12 flex flex-row space-x-4 ml-8 items-center bg-violet-900 p-12 rounded-lg">
+    <button on:click={reset} class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+          
     </button>
-    <button on:click={slowDown} class="btn btn-primary">
+    <button on:click={toggle} class="btn btn-primary">toggle physics</button>
+    <button on:click={jsonEdit} class="btn btn-primary">JSON Editor</button> 
+    <label>
+        <input type="radio" bind:group={demo} value={1} />
+        Dummy Dataset
+    </label>
+    <label>
+        <input type="radio" bind:group={demo} value={2} />
+        Les Mis Dataset
+    </label>
+    <button on:click={() => interval+=1000} class="btn btn-primary" class:btn-disabled={interval >= 10000}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -93,7 +104,7 @@
             />
         </svg>
     </button>
-    <button on:click={speedUp} class="btn btn-primary">
+    <button on:click={() => interval-=1000} class="btn btn-primary" class:btn-disabled={interval <= 1000}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -109,16 +120,12 @@
             />
         </svg>
     </button>
-    <label>
-        <input type="radio" bind:group={demo} value={1} />
-        Dummy Dataset
-    </label>
-    <label>
-        <input type="radio" bind:group={demo} value={2} />
-        Les Mis Dataset
-    </label>
-    <button on:click={toggle} class="btn btn-primary">toggle physics</button>
-    <button on:click={jsonEdit} class="btn btn-primary">JSON Editor</button>
+    <span>
+        Updates every {interval / 1000} second{interval > 1000 ? 's' : ''}
+    </span>
+    <span>
+        Updates: {updates}
+    </span>
 </div>
 
 <style lang="postcss">

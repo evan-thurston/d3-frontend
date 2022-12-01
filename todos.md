@@ -28,10 +28,10 @@ TODO: 7. add dynamic images/drawings/animation along links (gets updated constan
 * TODO: 12: create a control panel that can do the following:
    <!-- * button to toggle physics on/off for the graph -->
    * pause/unpause button (to pause a process on backend
-   <!-- * button to slow-down or speed-up backend process (change timestep) -->
-   <!-- * button to stop all sources (stop generating new consumables/movables on the backend) -->
+   * button to slow-down or speed-up backend process (change timestep)
+   * button to stop all sources (stop generating new consumables/movables on the backend)
 TODO: 13: control panel at top: movable
-TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this)
+<!-- TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this) -->
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
           only render changed nodes and do *not* re-render whole damn thing!
 <!-- TODO: 17: fix viewport too tall(no scrolling !) -->
@@ -49,10 +49,11 @@ TODO: find a way to efficiently re-render graph nodes/links without re-rendering
 <!-- evan todos -->
 
 BUGFIXES:
-* foreignobject popup hidden behind nodes (z index doesnt fix this)
+* NetworkGraph foreignobject popup hidden behind nodes (z index doesnt fix this)
     this problem is pretty difficult because svg paints elements in the order they appear in the dom
     if we want to use svelte to draw these popups in the dom, i dont know how to fix drawing order
     only solution i see is drawing the foreignobject in d3 after the nodes are drawn
     i'd like to search for a solution that avoids this, as it makes the code unnecessarily complicated
-* line 79 zoom doesnt work w metadata
-* line 94 links dont display arrows
+* NetworkGraph line 79 zoom doesnt work w metadata
+* NetworkGraph line 94 links dont display arrows
+* +page.svelte line 53 edit dataset with JSON editor

@@ -41,8 +41,7 @@
     let width = 500;
     let height = 600;
     let popupWidth = 224;
-    const radius = 30;
-    const padding = { top: 20, right: 40, bottom: 40, left: 25 };
+    const radius = (1 / Math.sqrt(data.nodes.length)) * (width + height) / 9;
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
     let simulation;
@@ -53,9 +52,10 @@
                 "link",
                 d3.forceLink(links).id((d) => d.id).distance(radius * 3)
             )
-            .force("charge", d3.forceManyBody().strength((10 / nodes.length) * radius * -90))
+            .force("charge", d3.forceManyBody().strength(radius * -15))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
+            
         d3.select(svg)
             .call(
                 d3
@@ -175,7 +175,7 @@
 
     {#each nodes as point}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <g on:click={() => { if(!point.currentView || point.currentView === 0) point.currentView = 1; else if (point.currentView === 1) point.currentView = 2; else point.currentView = 0 }}>
+        <g on:click={() => { if(!point.currentView || point.currentView === 0) point.currentView = 1; else if (point.currentView === 1) point.currentView = 2; else point.currentView = 0; console.log(width + "," + height) }}>
             <image transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})" width={radius} height={radius} x={-radius/2} y={-radius*3} alt='node image' href={point.group > 2 ? '/dog.png' : '/bird.png'}/>
             <text 
                 fill={colourScale(point.group)} 
@@ -186,7 +186,7 @@
             </text>
 
             <circle
-                class="node"
+                class="node -z-50"
                 r={radius}
                 fill={colourScale(point.group)}
                 cx={point.x}

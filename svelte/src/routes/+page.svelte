@@ -26,11 +26,12 @@
     bind:innerWidth={width}
 />
 
-<!-- {#if demo === 1} -->
+{#if demo === 1}
     <NetworkGraph data={dummyNodes}/>
-<!-- {/if}
+{/if}
 {#if demo === 2}
-    <ForceWrapper/>
+    <NetworkGraph data={lesMis}/>
+    <!-- <ForceWrapper/> -->
 {/if}
 {#if demo === 3}
 <div class='border-2 border-white p-8 rounded-md w-[800px] h-[800px]'>
@@ -45,22 +46,22 @@
 {#if demo === 4}
 	<OldGraph/>
 {/if} -->
-<!-- <div class="h-5 absolute bottom-1">
+<div class="h-5 absolute bottom-1">
     <label>
         <input type="radio" bind:group={demo} value={1} />
-        linked graph
+        Dummy Dataset
     </label>
     <label>
         <input type="radio" bind:group={demo} value={2} />
-        force directed nodes
+        Les Mis Dataset
     </label>
-    <label>
+    <!-- <label>
         <input type="radio" bind:group={demo} value={3} />
         histograms
     </label>
 	<label>
         <input type="radio" bind:group={demo} value={4} />
         Original Graph
-    </label>
+    </label> -->
     
-</div> -->
+</div>

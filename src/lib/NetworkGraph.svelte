@@ -109,7 +109,7 @@
                     .id((d) => d.id)
                     .distance((radius * 9) / ((Math.pow(Math.max(1, 750-width), 0.1 )) * (Math.pow(nodes.length, 0.1))))
             )
-            .force("charge", d3.forceManyBody().strength((radius * -40) / (( Math.pow(Math.max(1, 750-width), 0.1 ) ) * ( Math.pow(nodes.length, 0.2 )))))
+            .force("charge", d3.forceManyBody().strength((radius * -60) / (( Math.pow(Math.max(1, 750-width), 0.1 ) ) * ( Math.pow(nodes.length, 0.2 )))))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
     };

@@ -53,7 +53,8 @@
     };
 
     const updateData = () => {
-        newData = JSON.parse(JSONtext).json
+        // newData = JSON.parse(JSONtext).json
+        newData = content.json;
         reset();
     }
 </script>
@@ -61,9 +62,9 @@
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} on:resize={reset} />
 
 {#if editorShowing}
-    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4">
-        <!-- <JSONEditor bind:content /> -->
-        <textarea class='h-screen right-8 w-full' bind:value={JSONtext} />
+    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
+        <JSONEditor bind:content />
+        <!-- <textarea class='h-screen right-8 w-full' bind:value={JSONtext} /> -->
     </div>
 {/if}
 {#if !loaded}

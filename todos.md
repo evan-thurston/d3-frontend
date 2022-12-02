@@ -42,7 +42,7 @@ BUGFIXES:
 
 
 FEATURES:
-* JSON edit doesn't reflect in visualization
+<!-- DONE * JSON edit doesn't reflect in visualization -->
 <!-- DONE * Loading screen while waiting for data/d3 -->
 
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
@@ -52,14 +52,14 @@ TODO: 7. add dynamic images/drawings/animation along links (gets updated constan
    * pause/unpause button (to pause a process on backend
    <!-- * button to slow-down or speed-up backend process (change timestep) -->
    * button to stop all sources (stop generating new consumables/movables on the backend)
-   TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
-          only render changed nodes and do *not* re-render whole damn thing!
+TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
+    only render changed nodes and do *not* re-render whole damn thing!
 * TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links
 TODO: 4. rendering is optimization problem, roughly:
-      * minimize link crossing/overlap.
-      * maximize space between nodes.
-      * but keep drawing within container.
+    * minimize link crossing/overlap.
+    * maximize space between nodes.
+    * but keep drawing within container.
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
-      see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
+    see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: low priority task: render objects/nodes in the midpoint of edges/links!
 TODO: re-render nodes by id (efficiently, only 1 node at a time)

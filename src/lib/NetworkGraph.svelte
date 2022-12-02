@@ -32,7 +32,7 @@
     let svg;
     let width = 500;
     let height = 600;
-    const radius = ((1 / Math.sqrt(data.nodes.length)) * (width + height)) / 9;
+    $: radius = (2 * Math.sqrt(width + height) / Math.sqrt(data.nodes.length));
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
     let simulation;
@@ -105,9 +105,9 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(radius * 3)
+                    .distance(radius * 6)
             )
-            .force("charge", d3.forceManyBody().strength(radius * -15))
+            .force("charge", d3.forceManyBody().strength(radius * -40))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
     };

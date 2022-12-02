@@ -1,9 +1,8 @@
 <script>
-    // @ts-nocheck
-
     import ControlPanel from "$lib/ControlPanel.svelte";
     import NetworkGraph from "$lib/NetworkGraph.svelte";
     import { JSONEditor } from "svelte-jsoneditor";
+    import Draggable from "../lib/Draggable.svelte";
     // import ForceWrapper from "./../lib/ForceWrapper.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
@@ -12,11 +11,14 @@
         height = 1000;
     let editorShowing = false;
     let physicsPaused;
-    let demo = 1;
+    let dataset = 1;
     let resetSim = false;
 
+    let content = {
+        json: dummyNodes,
+    };
+
     const toggle = () => {
-        console.log(demo)
         if (physicsPaused) {
             physicsPaused = false;
         } else {
@@ -30,41 +32,35 @@
         resetSim = !resetSim;
     };
     const swapData = () => {
-        if(demo === 1) demo = 2
-        else demo = 1
-    }
-
-    let content = {
-        text: undefined, // can be used to pass a stringified JSON document instead
-        json: {
-            array: [1, 2, 3],
-            boolean: true,
-            color: "#82b92c",
-            null: null,
-            number: 123,
-            object: { a: "b", c: "d" },
-            string: "Hello World",
-        },
+        if (dataset === 1) {
+            dataset = 2;
+            content = { json: lesMis };
+        } else {
+            dataset = 1;
+            content = { json: dummyNodes };
+        }
     };
 </script>
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 {#if editorShowing}
-    <div class="fixed right-32 top-32">
+    <div class="fixed left-9 top-9 w-1/5 bottom-60">
         <JSONEditor bind:content />
     </div>
 {/if}
 {#key resetSim}
-    {#if demo === 1}
+    {#if dataset === 1}
         <NetworkGraph data={dummyNodes} {physicsPaused} />
     {/if}
-    {#if demo === 2}
+    {#if dataset === 2}
         <NetworkGraph data={lesMis} {physicsPaused} />
         <!-- <ForceWrapper/> -->
     {/if}
 {/key}
 
-<ControlPanel {reset} {toggle} {jsonEdit} {swapData}/>
+<Draggable>
+    <ControlPanel {reset} {toggle} {jsonEdit} {swapData} />
+</Draggable>
 
 <style lang="postcss">
     button {

@@ -49,11 +49,11 @@ TODO: find a way to efficiently re-render graph nodes/links without re-rendering
 <!-- evan todos -->
 
 BUGFIXES:
-* NetworkGraph foreignobject popup hidden behind nodes (z index doesnt fix this)
+<!-- DONE * NetworkGraph foreignobject popup hidden behind nodes (z index doesnt fix this)
     this problem is pretty difficult because svg paints elements in the order they appear in the dom
     if we want to use svelte to draw these popups in the dom, i dont know how to fix drawing order
     only solution i see is drawing the foreignobject in d3 after the nodes are drawn
-    i'd like to search for a solution that avoids this, as it makes the code unnecessarily complicated
+    i'd like to search for a solution that avoids this, as it makes the code unnecessarily complicated -->
 * NetworkGraph line 79 zoom doesnt work w metadata
 * NetworkGraph line 94 links dont display arrows
-* +page.svelte line 53 edit dataset with JSON editor
+<!-- DONE * +page.svelte line 53 edit dataset with JSON editor -->

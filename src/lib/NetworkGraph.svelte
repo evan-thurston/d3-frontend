@@ -37,6 +37,7 @@
     let transform = d3.zoomIdentity;
     let simulation;
     let nodeHovered;
+    export let loaded;
 
     export let physicsPaused = false;
     let simulationPaused = false;
@@ -53,6 +54,7 @@
                 .on("drag", dragged)
                 .on("end", dragended)
         );
+        loaded = true;
         // TODO: zoom doesn't work with hovering text
         // .call(
         //     d3
@@ -105,9 +107,9 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(radius * 6)
+                    .distance((radius * 9) / ((Math.pow(Math.max(1, 750-width), 0.1 )) * (Math.pow(nodes.length, 0.1))))
             )
-            .force("charge", d3.forceManyBody().strength(radius * -40))
+            .force("charge", d3.forceManyBody().strength((radius * -40) / (( Math.pow(Math.max(1, 750-width), 0.1 ) ) * ( Math.pow(nodes.length, 0.2 )))))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
     };
@@ -161,6 +163,7 @@
     on:resize={resize}
 />
 
+
 <svg bind:this={svg} {width} {height}>
     {#each links as link}
         <g stroke="#999" stroke-opacity="0.6">
@@ -201,20 +204,12 @@
                 on:mouseleave={() => (nodeHovered = null)}
                 class="node"
             >
-                <image
-                    transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})"
-                    width={radius}
-                    height={radius}
-                    x={-radius / 2}
-                    y={-radius * 3}
-                    alt="node image"
-                    href={point.group > 2 ? "/dog.png" : "/bird.png"}
-                />
+                
                 <text
                     fill={colourScale(point.group)}
                     y={-radius * 1.2}
                     text-anchor="middle"
-                    transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})"
+                    transform="translate({point.x || 0} {point.y || 0}) scale({transform.k} {transform.k})"
                 >
                     ID: {point.id}
                 </text>
@@ -231,6 +226,16 @@
         {/each}
         <g>
             {#each nodes as point}
+                <image
+                    transform="translate({point.x || 0} {point.y || 0}) scale({transform.k} {transform.k})"
+                    width={radius}
+                    height={radius}
+                    x={-radius / 2}
+                    y={-radius * 3}
+                    alt="node image"
+                    href={point.group > 2 ? "/dog.png" : "/bird.png"}
+                    class:showing={nodeHovered === point.id}
+                />
                 <MetadataPanel {point} {radius} {transform} {nodeHovered} />
             {/each}
         </g>
@@ -241,7 +246,7 @@
     image {
         @apply invisible transition-opacity duration-300 ease-in-out;
     }
-    g:hover > image {
+    image.showing {
         @apply opacity-100 visible;
     }
     svg {

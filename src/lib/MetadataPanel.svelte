@@ -19,7 +19,7 @@
     width={popupWidth}
     x={-popupWidth / 2}
     y={radius * 1.5}
-    transform="translate({point.x} {point.y}) scale({transform.k} {transform.k})"
+    transform="translate({point.x || 0} {point.y || 0}) scale({transform.k} {transform.k})"
     class:showing={nodeHovered === point.id}
 >
     {#if point.currentView === 1}

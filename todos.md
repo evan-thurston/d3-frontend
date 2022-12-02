@@ -34,6 +34,7 @@ BUGFIXES:
     if we want to use svelte to draw these popups in the dom, i dont know how to fix drawing order
     only solution i see is drawing the foreignobject in d3 after the nodes are drawn
     i'd like to search for a solution that avoids this, as it makes the code unnecessarily complicated -->
+<!-- DONE * transform translate console error -->
 <!-- DONE * +page.svelte line 53 edit dataset with JSON editor -->
 * NetworkGraph line 79 zoom doesnt work w metadata
 * NetworkGraph line 94 links dont display arrows
@@ -42,6 +43,8 @@ BUGFIXES:
 
 FEATURES:
 * JSON edit doesn't reflect in visualization
+<!-- DONE * Loading screen while waiting for data/d3 -->
+
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
 TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend)
 * TODO: 12: create a control panel that can do the following:

@@ -1,3 +1,5 @@
+Changes look good! nice job Evan
+
 All todos here:
 
 <!-- TODO: cycle between 3 to 5 states for each node -->

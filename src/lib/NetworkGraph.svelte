@@ -1,5 +1,7 @@
 <script>
     import { onMount } from "svelte";
+    import { tweened } from "svelte/motion";
+    import { draw } from "svelte/transition";
     import { scaleLinear, scaleOrdinal } from "d3-scale";
     import { zoom, zoomIdentity } from "d3-zoom";
     import { schemeAccent } from "d3-scale-chromatic";
@@ -41,7 +43,6 @@
 
     export let physicsPaused = false;
     let simulationPaused = false;
-
     onMount(() => {
         startSim();
 
@@ -77,26 +78,23 @@
             startSim();
             simulationPaused = false;
         }
-        // TODO: this doesn't work (shortening link length to display arrows, currently arrows are hidden behind nodes)
+    }
 
-        // let linkSelection = d3.select(svg).selectAll("g.link").select("line");
-
-        // linkSelection.each( (d, i, n) => {
-        //     // current path length
-        //     const pl = this.getTotalLength();
-        //     // radius of marker head plus def constant
-        //     const mrs = (d.source.size);
-        //     const mrt = (d.target.size) + 12;
-        //     // get new start and end points
-        //     const m1 = this.getPointAtLength(mrs);
-        //     const m2 = this.getPointAtLength(pl - mrt);
-        //     // new line start and end
-        //     d3.select(n[i])
-        //         .attr("x1", m1.x)
-        //         .attr("y1", m1.y)
-        //         .attr("x2", m2.x)
-        //         .attr("y2", m2.y);
-        // });
+    const pointAlongLink = (link, distance, fromEnd=false) => {
+        // Uses linear interpolation to find the point "distance" pixels
+        // along the line from link.source to link.target.
+        // If fromEnd is true, calculates the point "distance" pixels from the end
+        // of the line.
+        let totalDist = ((link.source.x - link.target.x) ** 2 + (link.source.y - link.target.y)**2) ** 0.5
+        let ratio;
+        if (fromEnd) {
+            ratio = (totalDist - distance) / totalDist;
+        } else {
+            ratio = distance / totalDist;
+        }
+        let newX = link.source.x + (link.target.x - link.source.x) * ratio
+        let newY = link.source.y + (link.target.y - link.source.y) * ratio
+        return { x: newX, y: newY }
     }
 
     const startSim = () => {
@@ -168,10 +166,10 @@
     {#each links as link}
         <g stroke="#999" stroke-opacity="0.6">
             <line
-                x1={link.source.x}
-                y1={link.source.y}
-                x2={link.target.x}
-                y2={link.target.y}
+                x1={pointAlongLink(link, radius).x}
+                y1={pointAlongLink(link, radius).y}
+                x2={pointAlongLink(link, radius + 10, true).x}
+                y2={pointAlongLink(link, radius + 10, true).y}
                 marker-end="url(#SvgjsMarker1019)"
                 transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
             />
@@ -189,6 +187,12 @@
                 <polygon points="0,5 0,0 5,2.5" fill="hsl(0, 0%, 50%)" />
             </marker>
         </defs>
+        <circle r="5" fill="red">
+            <animateMotion
+              dur="5s"
+              repeatCount="indefinite"
+              path="M{link.source.x} {link.source.y} L{link.target.x} {link.target.y}" />
+        </circle>
     {/each}
     <g>
         {#each nodes as point}
@@ -234,6 +238,7 @@
                     y={-radius * 3}
                     alt="node image"
                     href={point.group > 2 ? "/dog.png" : "/bird.png"}
+                    class="nodeimage"
                     class:showing={nodeHovered === point.id}
                 />
                 <MetadataPanel {point} {radius} {transform} {nodeHovered} />
@@ -243,7 +248,7 @@
 </svg>
 
 <style lang="postcss">
-    image {
+    image.nodeimage {
         @apply invisible transition-opacity duration-300 ease-in-out;
     }
     image.showing {

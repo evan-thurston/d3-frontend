@@ -38,22 +38,25 @@ BUGFIXES:
     i'd like to search for a solution that avoids this, as it makes the code unnecessarily complicated -->
 <!-- DONE * transform translate console error -->
 <!-- DONE * +page.svelte line 53 edit dataset with JSON editor -->
-* NetworkGraph line 79 zoom doesnt work w metadata
-* NetworkGraph line 94 links dont display arrows
+<!-- DONE * NetworkGraph line 79 zoom doesnt work w metadata -->
+* NetworkGraph line 209 update nodes still exist while paused
+    update nodes dont scale w/ zoom (temp fix: disappear on zoom)
+<!-- DONE * NetworkGraph line 94 links dont display arrows -->
 
 
 
 FEATURES:
 <!-- DONE * JSON edit doesn't reflect in visualization -->
+<!-- DONE TODO: low priority task: render objects/nodes in the midpoint of edges/links! -->
 <!-- DONE * Loading screen while waiting for data/d3 -->
+<!-- DONE * TODO: 12: create a control panel that can do the following: -->
+   <!-- * button to toggle physics on/off for the graph -->
+   <!-- * pause/unpause button (to pause a process on backend -->
+   <!-- * button to slow-down or speed-up backend process (change timestep) -->
+   <!-- * button to stop all sources (stop generating new consumables/movables on the backend) -->
+<!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
 
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
-TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend)
-* TODO: 12: create a control panel that can do the following:
-   <!-- * button to toggle physics on/off for the graph -->
-   * pause/unpause button (to pause a process on backend
-   <!-- * button to slow-down or speed-up backend process (change timestep) -->
-   * button to stop all sources (stop generating new consumables/movables on the backend)
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
 * TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links
@@ -63,5 +66,4 @@ TODO: 4. rendering is optimization problem, roughly:
     * but keep drawing within container.
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
-TODO: low priority task: render objects/nodes in the midpoint of edges/links!
 TODO: re-render nodes by id (efficiently, only 1 node at a time)

@@ -46,6 +46,11 @@
         }
         moving = false;
     };
+
+    const resize = () => {
+        left = 100;
+        right = width - 100;
+    }
 </script>
 
 <section
@@ -62,6 +67,7 @@
     bind:innerWidth={width}
     on:mouseup={onMouseUp}
     on:mousemove={onMouseMove}
+    on:resize={resize}
 />
 
 <style>

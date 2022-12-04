@@ -2,6 +2,11 @@ Changes look good! nice job Evan
 
 All todos here:
 
+TODO 0: create functionality and code quality to dynamically add/remove both nodes and links.
+We can use the JSON editor panel thing to do these updates/deletes of nodes/links.
+Creating/declaring a new node I guess should be as easy as creating a new element in the array in the JSON, likewise for links.
+
+
 <!-- TODO: cycle between 3 to 5 states for each node -->
 
 <!-- MOCKUP DONE TODO: high priority - there needs to be 3 histograms for each node:

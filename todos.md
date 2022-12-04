@@ -7,6 +7,20 @@ We can use the JSON editor panel thing to do these updates/deletes of nodes/link
 Creating/declaring a new node I guess should be as easy as creating a new element in the array in the JSON, likewise for links. -->
 
 
+TODO: The 6 histograms should have titles: 
+
+By Queue Length
+1. Input Queue 2. Processing Queue. 3. Output Queue
+
+By Time in Queue
+1. Input Queue 2. Processing Queue. 3. Output Queue
+
+
+TODO: because we may have 5-8 different "views per node", we need a way to select the current view besides "click-through",
+perhaps a drop-down menu? clicking through should still work, but the drop down can get us to desired view faster?
+Doesn't have to be a drop down, but some way to get to the right view.
+
+
 <!-- TODO: cycle between 3 to 5 states for each node -->
 
 <!-- MOCKUP DONE TODO: high priority - there needs to be 3 histograms for each node:

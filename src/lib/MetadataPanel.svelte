@@ -1,12 +1,8 @@
 <script>
     import Histogram from "./../lib/Histogram.svelte";
+    import Scatterplot from "./Scatterplot.svelte";
 
     export let point, radius, transform, nodeHovered, color;
-
-    var data1 = [30, 86, 168, 281, 303, 365];
-    var data2 = [30, 86, 130, 168, 281, 303, 365, 475];
-    var data3 = [30, 86, 168, 281];
-    var data4 = [30, 86, 130, 150, 168, 281, 336, 387, 485, 497];
 
     let height, width;
 
@@ -27,43 +23,37 @@
     class:showing={nodeHovered === point.id}
 >
     {#if point.currentView === 1}
-        <Histogram
-            data={data1}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
-        <Histogram
-            data={data2}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
-        <Histogram
-            data={data3}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
+        {#each [1, 2, 3] as graph}
+            {#if point.group % 2 === 1}
+                <Scatterplot
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {color}
+                />
+            {:else}
+                <Histogram
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {color}
+                />
+            {/if}
+        {/each}
     {:else if point.currentView === 2}
-        <Histogram
-            data={data3}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
-        <Histogram
-            data={data1}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
-        <Histogram
-            data={data4}
-            width={popupWidth - 20}
-            height={(popupWidth * 2) / 3 - 12}
-            {color}
-        />
+        {#each [2, 3, 4] as graph}
+            {#if point.group % 2 === 1}
+                <Scatterplot
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {color}
+                />
+            {:else}
+                <Histogram
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {color}
+                />
+            {/if}
+        {/each}
     {:else}
         <p>
             ID: {point.id}

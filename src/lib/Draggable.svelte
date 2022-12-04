@@ -48,20 +48,8 @@
     };
 
     const resize = () => {
-        if (e.clientX < width / 2) {
-                left = 100;
-                right = width - 100;
-            } else {
-                right = 100;
-                left = (width * 2) / 3;
-            }
-            if (e.clientY < height / 2) {
-                top = 100;
-                bottom = (height * 3) / 4;
-            } else {
-                top = height - 100;
-                bottom = 100;
-            }
+        left = 100;
+        right = width - 100;
     }
 </script>
 

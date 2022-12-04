@@ -10,20 +10,6 @@ export let dummyNodes = {
 		{ "id": "H", "group": 2, "out": ["D"] },
 		{ "id": "I", "group": 2, "out": ["D", "H"] },
 	]
-	// ,"links": [
-	// 	{ "source": "A", "target": "B"},
-	// 	{ "source": "A", "target": "C" },
-	// 	{ "source": "A", "target": "F" },
-	// 	{ "source": "B", "target": "C" },
-	// 	{ "source": "C", "target": "D" },
-	// 	{ "source": "D", "target": "E" },
-	// 	{ "source": "F", "target": "C" },
-	// 	{ "source": "F", "target": "C" },
-	// 	{ "source": "G", "target": "C" },
-	// 	{ "source": "H", "target": "D" },
-	// 	{ "source": "I", "target": "D" },
-	// 	{ "source": "I", "target": "H" }
-	// ]
 }
 export let lesMis = {
 	"nodes": [

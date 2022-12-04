@@ -166,9 +166,7 @@
         currentEvent.subject.fy = null;
     };
     const resize = () => {
-        console.log(interval)(
-            ({ width, height } = svg.getBoundingClientRect())
-        );
+        ({ width, height } = svg.getBoundingClientRect());
     };
 </script>
 

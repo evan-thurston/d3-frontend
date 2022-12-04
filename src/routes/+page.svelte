@@ -4,28 +4,34 @@
     import { JSONEditor } from "svelte-jsoneditor";
     import { onMount } from "svelte";
     import Draggable from "../lib/Draggable.svelte";
-    // import ForceWrapper from "./../lib/ForceWrapper.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
 
-    let width,
-        height = 1000;
-    let editorShowing = false;
-    let physicsPaused;
-    let dataset = 1;
-    let resetSim = false;
-    let loaded = false;
-    let newData = dummyNodes;
+    
+
+    let width = 1000,
+        height = 1000,
+        editorShowing = false,
+        physicsPaused,
+        dataset = 1,
+        group = 1,
+        resetSim = false,
+        loaded = false,
+        newData = dummyNodes,
+        paused = false,
+        maxGroups = 1,
+        content = {
+            json: dummyNodes.nodes,
+        };
+
+    $: interval = 3000;
 
     onMount(() => {
         loaded = true;
-    })
+        maxGroups = Math.max(...newData.nodes.map((o) => o.group)) - 1;
+    });
 
-    let content = {
-        json: dummyNodes,
-    };
-
-    let JSONtext = JSON.stringify(content,null,2)
+    // let JSONtext = JSON.stringify(content, null, 2);
 
     const toggle = () => {
         if (physicsPaused) {
@@ -34,32 +40,72 @@
             physicsPaused = true;
         }
     };
+    const updateLinks = () => {
+        newData.links = [];
+        newData.nodes.forEach((node) => {
+            if (node.out) {
+                node.out.forEach((out) => {
+                    if(newData.nodes.find(({ id }) => id === out)) {
+                        
+                        newData.links.push({ 'source': node.id, 'target': out });
+                    }
+                });
+            }
+        });
+    }
     const jsonEdit = () => {
         editorShowing = !editorShowing;
     };
     const reset = () => {
+        updateLinks();
         resetSim = !resetSim;
+        paused = false;
+        editorShowing = false;
+        maxGroups = Math.max(...newData.nodes.map((o) => o.group)) - 1;
+        if (group > maxGroups) group = maxGroups;
     };
     const swapData = () => {
         if (dataset === 1) {
             dataset = 2;
-            content = { json: lesMis };
+            content = { json: lesMis.nodes };
         } else {
             dataset = 1;
-            content = { json: dummyNodes };
+            content = { json: dummyNodes.nodes };
         }
-        newData = content.json
-        JSONtext = JSON.stringify(content,null,2)
+        newData = {'nodes': content.json};
+        reset();
+        // JSONtext = JSON.stringify(content,null,2)
+    };
+    const pauseUpdates = (pause) => {
+        paused = pause || !paused;
     };
 
     const updateData = () => {
         // newData = JSON.parse(JSONtext).json
-        newData = content.json;
+        newData = {'nodes': content.json};
         reset();
-    }
+    };
+
+    const incInterval = () => {
+        interval += 1000;
+    };
+    const decInterval = () => {
+        interval -= 1000;
+    };
+    const incGroup = () => {
+        group += 1;
+    };
+    const decGroup = () => {
+        group -= 1;
+    };
+    updateLinks();
 </script>
 
-<svelte:window bind:innerHeight={height} bind:innerWidth={width} on:resize={reset} />
+<svelte:window
+    bind:innerHeight={height}
+    bind:innerWidth={width}
+    on:resize={reset}
+/>
 
 {#if editorShowing}
     <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
@@ -68,19 +114,40 @@
     </div>
 {/if}
 {#if !loaded}
-    <h1 class='text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2'>loading...</h1>
+    <h1
+        class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
+    >
+        loading...
+    </h1>
 {/if}
 <div class:hidden={!loaded}>
-    {#key resetSim}
-        {#if dataset === 1}
-            <NetworkGraph data={newData} {physicsPaused} {loaded}/>
-        {/if}
-        {#if dataset === 2}
-            <NetworkGraph data={newData} {physicsPaused} {loaded} />
-            <!-- <ForceWrapper/> -->
-        {/if}
+    {#key resetSim || dataset}
+        <NetworkGraph
+            {physicsPaused}
+            {loaded}
+            data={newData}
+            {interval}
+            {group}
+            {paused}
+            {pauseUpdates}
+        />
     {/key}
     <Draggable>
-        <ControlPanel {reset} {toggle} {jsonEdit} {swapData} {updateData} />
+        <ControlPanel
+            {reset}
+            {toggle}
+            {jsonEdit}
+            {swapData}
+            {updateData}
+            {interval}
+            {incInterval}
+            {decInterval}
+            {group}
+            {maxGroups}
+            {incGroup}
+            {decGroup}
+            {paused}
+            {pauseUpdates}
+        />
     </Draggable>
 </div>

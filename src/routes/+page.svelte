@@ -20,6 +20,7 @@
         newData = dummyNodes,
         paused = false,
         maxGroups = 1,
+        treeMode = true,
         content = {
             json: dummyNodes.nodes,
         };
@@ -46,12 +47,12 @@
             if (node.out) {
                 node.out.forEach((out) => {
                     if(newData.nodes.find(({ id }) => id === out)) {
-                        
                         newData.links.push({ 'source': node.id, 'target': out });
                     }
                 });
             }
         });
+        content = {json: newData.nodes}
     }
     const jsonEdit = () => {
         editorShowing = !editorShowing;
@@ -72,20 +73,19 @@
             dataset = 1;
             content = { json: dummyNodes.nodes };
         }
-        newData = {'nodes': content.json};
-        reset();
+        updateData();
         // JSONtext = JSON.stringify(content,null,2)
     };
     const pauseUpdates = (pause) => {
         paused = pause || !paused;
     };
-
     const updateData = () => {
         // newData = JSON.parse(JSONtext).json
-        newData = {'nodes': content.json};
+        let newJson = content.json ? content.json : JSON.parse(content.text)
+        console.log(content)
+        newData = {'nodes': newJson};
         reset();
     };
-
     const incInterval = () => {
         interval += 1000;
     };
@@ -109,7 +109,7 @@
 
 {#if editorShowing}
     <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
-        <JSONEditor bind:content />
+        <JSONEditor bind:content onChangeMode={() => treeMode = !treeMode} />
         <!-- <textarea class='h-screen right-8 w-full' bind:value={JSONtext} /> -->
     </div>
 {/if}

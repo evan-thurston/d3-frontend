@@ -252,7 +252,10 @@
                     </span>
                 </div>
                 <button
-                    on:click={decGroup}
+                    on:click={() => {
+                        decGroup();
+                        resetProg();
+                    }}
                     class="btn btn-primary"
                     class:btn-disabled={group <= 1}
                 >
@@ -272,7 +275,10 @@
                     </svg>
                 </button>
                 <button
-                    on:click={incGroup}
+                    on:click={() => {
+                        incGroup();
+                        resetProg();
+                    }}
                     class="btn btn-primary"
                     class:btn-disabled={group >= maxGroups}
                 >

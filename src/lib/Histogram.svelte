@@ -5,15 +5,33 @@
 	export let height = 300;
 	export let width = 300;
 	export let color = "green";
+    export let interval, targeted, fixed = false, paused;
+    let dataInterval;
+
+	$: {
+		if (!targeted || paused) {
+			clearInterval(dataInterval);
+		} else {
+			clearInterval(dataInterval);
+			dataInterval = setInterval(generateData, interval);
+		}
+	}
 
 	for(let i=0;i<6;i++) {
-        data.push(Math.round(Math.random() * 60))
+        data.push(Math.round(Math.random() * 100))
     }
+
+    const generateData = () => {
+        data = [];
+        for(let i=0;i<6;i++) {
+			data.push(Math.round(Math.random() * 100))
+		}
+    };
 
 	const yScale = d3
 		.scaleLinear()
 		.domain([0, Math.max(...data)])
-		.range([30, height]);
+		.range([25, height - 35]);
 	
 	// TODO: algorithm to smooth out histogram
 	// const numBefore = (num) => {
@@ -31,7 +49,7 @@
 	// }
 </script>
 
-<div class="chart">
+<div class:fixed class="chart" style="height: {height}px">
 	{#each data as num}
 		<div
 			class="col"
@@ -47,10 +65,10 @@
 
 <style lang="postcss">
 	.chart {
-		@apply mb-2;
+		@apply mb-2 flex flex-row opacity-75;
 	}
 	.chart .col {
-		@apply sm:p-1 pt-0 mx-[1px] align-bottom inline-block
+		@apply sm:p-1 pt-0 mx-[1px] self-end
             font-sans text-center text-slate-600;
 	}
 	.chart .col p {

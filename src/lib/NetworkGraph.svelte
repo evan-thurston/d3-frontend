@@ -57,7 +57,7 @@
             .call(
                 d3
                     .zoom()
-                    .scaleExtent([1 / 10, 8])
+                    .scaleExtent([1/3, 3])
                     .on("zoom", zoomed)
             );
         loaded = true;
@@ -272,13 +272,19 @@
                     class="nodeimage"
                     class:showing={nodeHovered === point.id}
                 />
-                <MetadataPanel
-                    {point}
-                    {radius}
-                    {transform}
-                    {nodeHovered}
-                    color={colourScale(point.group)}
-                />
+                {#key group}
+                    <MetadataPanel
+                        {point}
+                        {radius}
+                        {transform}
+                        {nodeHovered}
+                        {interval}
+                        {data}
+                        {group}
+                        {paused}
+                        color={colourScale(point.group)}
+                    />
+                {/key}
             {/each}
         </g>
     </g>

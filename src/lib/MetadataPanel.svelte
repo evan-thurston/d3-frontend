@@ -2,9 +2,24 @@
     import Histogram from "./../lib/Histogram.svelte";
     import Scatterplot from "./Scatterplot.svelte";
 
-    export let point, radius, transform, nodeHovered, color;
+    export let point,
+        radius,
+        transform,
+        nodeHovered,
+        color,
+        interval,
+        data,
+        group,
+        paused;
 
-    let height, width;
+    let height, width, targeted;
+
+    let targetingLinks = data.links.filter(({ target }) => target === point.id);
+    targetingLinks.forEach((link) => {
+        if (data.nodes.find(({ id }) => id === link.source).group === group) {
+            targeted = true;
+        }
+    });
 
     $: popupWidth = (width + height) ** 0.65 || 200;
 </script>
@@ -24,35 +39,63 @@
 >
     {#if point.currentView === 1}
         {#each [1, 2, 3] as graph}
-            {#if point.group % 2 === 1}
+            {#if graph === 3}
                 <Scatterplot
                     width={popupWidth - 20}
                     height={(popupWidth * 2) / 3 - 12}
+                    {interval}
+                    {targeted}
                     {color}
+                    {paused}
+                    fixed={true}
+                />
+                <Histogram
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {interval}
+                    {targeted}
+                    {color}
+                    {paused}
+                />
+            {:else if point.group % 2 === 1}
+                <Scatterplot
+                    width={popupWidth - 20}
+                    height={(popupWidth * 2) / 3 - 12}
+                    {interval}
+                    {targeted}
+                    {color}
+                    {paused}
                 />
             {:else}
                 <Histogram
                     width={popupWidth - 20}
                     height={(popupWidth * 2) / 3 - 12}
+                    {interval}
+                    {targeted}
                     {color}
+                    {paused}
                 />
             {/if}
         {/each}
     {:else if point.currentView === 2}
         {#each [2, 3, 4] as graph}
-            {#if point.group % 2 === 1}
-                <Scatterplot
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {color}
-                />
-            {:else}
-                <Histogram
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {color}
-                />
-            {/if}
+            <Histogram
+                width={popupWidth - 20}
+                height={(popupWidth * 2) / 3 - 12}
+                {interval}
+                {targeted}
+                {color}
+                {paused}
+                fixed={true}
+            />
+            <Scatterplot
+                width={popupWidth - 20}
+                height={(popupWidth * 2) / 3 - 12}
+                {interval}
+                {targeted}
+                {color}
+                {paused}
+            />
         {/each}
     {:else}
         <p>
@@ -71,12 +114,16 @@
         border-2 border-slate-600 rounded-lg 
         text-center text-slate-600
         opacity-0 invisible 
-        transition-opacity duration-300 ease-in-out;
+        transition-opacity duration-300 ease-in-out
+        flex flex-col;
     }
     foreignObject.showing {
         @apply opacity-100 visible;
     }
     foreignObject p {
         @apply text-xs md:text-sm 2xl:text-base;
+    }
+    foreignObject div {
+        @apply absolute;
     }
 </style>

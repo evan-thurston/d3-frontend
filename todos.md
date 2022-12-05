@@ -68,17 +68,33 @@ BUGFIXES:
 
 FEATURES:
 
-======================
+=========
 
-TODO: create a panel in the node view that can take data like this:
+Every node should have permanently visible info:
 
 [
- {label: "<name>", value: <any>},
- {label: "<name>", value: <any>},
- {label: "<name>", value: <any>},
- {label: "<name>", value: <any>},
+{label: "<string>", value: <any>},
+{label: "<string>", value: <any>},
+{label: "<string>", value: <any>},
+{label: "<string>", value: <any>},
+// ...
+{label: "<string>", value: <any>}
+]
+
+probably only allow like 3-4 fields to be permanently visible on a node
+
+
+======================
+
+TODO: aside from the permanently visible data, create a panel in the node view that can take data like this:
+
+[
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
   // ...
- {label: "<name>", value: <any>}
+ {label: "<string>", value: <any>}
 ]
 
 if value is string, make the value field green, if number, orange, if boolean blue, something like that

@@ -8,10 +8,10 @@
         incInterval,
         decInterval,
         group,
-        maxGroups,
         incGroup,
         decGroup,
         paused,
+        groupLimit,
         pauseUpdates;
 
     let updateInterval, progressInterval;
@@ -280,7 +280,7 @@
                         resetProg();
                     }}
                     class="btn btn-primary"
-                    class:btn-disabled={group >= maxGroups}
+                    class:btn-disabled={group >= groupLimit}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

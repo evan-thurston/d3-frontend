@@ -72,6 +72,6 @@
             font-sans text-center text-slate-600;
 	}
 	.chart .col p {
-		@apply text-[0.3rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-xs 2xl:text-sm;
+		@apply text-[0.3rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-xs 2xl:text-sm text-black;
 	}
 </style>

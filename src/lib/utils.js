@@ -1,85 +1,67 @@
 export let dummyNodes = {
 	"nodes": [
-		{ "id": "A", "group": 1, "out": ["B", "C", "F"] },
-		{ "id": "B", "group": 1, "out": ["C"] },
-		{ "id": "C", "group": 2, "out": ["D"] },
-		{ "id": "D", "group": 3, "out": ["E"] },
+		{ "id": "A", "group": 1, "out": [4] },
+		{ "id": "B", "group": 2, "out": [5] },
+		{ "id": "C", "group": 3, "out": [1, 2] },
+		{ "id": "D", "group": 4, "out": [6] },
 		{ "id": "E", "group": 4 },
-		{ "id": "F", "group": 1, "out": ["C"] },
-		{ "id": "G", "group": 1, "out": ["C"] },
-		{ "id": "H", "group": 2, "out": ["D"] },
-		{ "id": "I", "group": 2, "out": ["D", "H"] },
+		{ "id": "F", "group": 4 },
+		{ "id": "G", "group": 4 },
+		{ "id": "H", "group": 5, "out": [7] },
+		{ "id": "I", "group": 5 },
+		{ "id": "J", "group": 5 },
+		{ "id": "K", "group": 6 },
+		{ "id": "L", "group": 6 },
+		{ "id": "M", "group": 7 },
+		{ "id": "N", "group": 7 },
+		{ "id": "O", "group": 7 },
 	]
 }
 export let lesMis = {
 	"nodes": [
 		{
 			"id": "Myriel",
-			"group": 1
+			"group": 1,
+			"out": [1]
 		},
 		{
 			"id": "Napoleon",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Mlle.Baptistine",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Mme.Magloire",
 			"group": 1,
 			"out": [
-				"Myriel",
 				"Mlle.Baptistine"
 			]
 		},
 		{
 			"id": "CountessdeLo",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Geborand",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Champtercier",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Cravatte",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Count",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "OldMan",
-			"group": 1,
-			"out": [
-				"Myriel"
-			]
+			"group": 1
 		},
 		{
 			"id": "Labarre",
@@ -91,8 +73,7 @@ export let lesMis = {
 			"out": [
 				"Labarre",
 				"Mme.Magloire",
-				"Mlle.Baptistine",
-				"Myriel"
+				"Mlle.Baptistine"
 			]
 		},
 		{

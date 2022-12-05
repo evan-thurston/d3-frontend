@@ -12,7 +12,7 @@
         forceManyBody,
         forceCenter,
     } from "d3-force";
-    import MetadataPanel from "./MetadataPanel.svelte";
+
     let d3 = {
         zoom,
         zoomIdentity,
@@ -27,21 +27,27 @@
         forceManyBody,
         forceCenter,
     };
-    export let data, interval, loaded, group, paused, pauseUpdates;
 
-    // $: intervalSec = interval/1000;
-    // console.log(intervalSec)
+    const colourScale = d3.scaleOrdinal(d3.schemeAccent);
+
+    import MetadataPanel from "./MetadataPanel.svelte";
+    import Modal from "../lib/Modal.svelte";
+
+    export let data,
+        interval,
+        loaded,
+        group,
+        paused,
+        physicsPaused = false;
+
     let svg;
     let width = 500;
     let height = 600;
-    $: radius = ((width + height) ** 0.5 * 2) / data.nodes.length ** 0.5;
-    const colourScale = d3.scaleOrdinal(d3.schemeAccent);
     let transform = d3.zoomIdentity;
     let simulation;
+    let simulationPaused = false;
     let nodeHovered;
 
-    export let physicsPaused = false;
-    let simulationPaused = false;
     onMount(() => {
         startSim();
         d3.select(svg)
@@ -57,14 +63,17 @@
             .call(
                 d3
                     .zoom()
-                    .scaleExtent([1/3, 3])
+                    .scaleExtent([1 / 3, 3])
                     .on("zoom", zoomed)
             );
         loaded = true;
     });
+
+    $: radius = ((width + height) ** 0.5 * 2) / data.nodes.length ** 0.5;
     $: links = data.links.map((d) => Object.create(d));
     $: nodes = data.nodes.map((d) => Object.create(d));
-    function simulationUpdate() {
+
+    const simulationUpdate = () => {
         simulation.tick();
         nodes = [...nodes];
         links = [...links];
@@ -76,7 +85,7 @@
             startSim();
             simulationPaused = false;
         }
-    }
+    };
 
     const pointAlongLink = (link, distance, fromEnd = false) => {
         // Uses linear interpolation to find the point "distance" pixels
@@ -135,7 +144,6 @@
     };
 
     const zoomed = (currentEvent) => {
-        pauseUpdates(true);
         transform = currentEvent.transform;
         simulationUpdate();
     };
@@ -167,6 +175,30 @@
     };
     const resize = () => {
         ({ width, height } = svg.getBoundingClientRect());
+    };
+    const indirectTargeted = (link) => {
+        let targeted = false;
+        if (link) {
+            if (link.source.group === group) targeted = true;
+            let foundLinks = links.filter(
+                    ({ target }) => target.id === link.source.id
+                ),
+                // 3rd degree of indirect targeting
+                parentsLinks;
+            if (foundLinks) {
+                foundLinks.forEach((foundLink) => {
+                    if (foundLink.source.group === group) targeted = true;
+                    // 3rd degree
+                    parentsLinks = links.filter(
+                        ({ target }) => target.id === foundLink.source.id
+                    );
+                    parentsLinks.forEach((parentLink) => {
+                        if (parentLink.source.group === group) targeted = true;
+                    });
+                });
+            }
+        }
+        return targeted;
     };
 </script>
 
@@ -202,19 +234,27 @@
             </marker>
         </defs>
         {#if !paused}
-            {#if link.source.group === group}
+            {#if link.source.group === group || indirectTargeted(link)}
                 {#key transform}
                     <circle
+                        class="dataNode"
                         r={radius / 5}
-                        fill={colourScale(group)}
+                        fill={colourScale(link.source.group)}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     >
-                        <animateMotion
+                        <animate
+                            attributeName="cx"
+                            values="{pointAlongLink(link, radius - 15)
+                                .x};{pointAlongLink(link, radius - 10, true).x}"
                             dur={interval / 1000 || 5 + "s"}
                             repeatCount="indefinite"
-                            path="M{link.source.x} {link.source.y} L{link.target
-                                .x} {link.target.y}"
-                            transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                        />
+                        <animate
+                            attributeName="cy"
+                            values="{pointAlongLink(link, radius - 15)
+                                .y};{pointAlongLink(link, radius - 10, true).y}"
+                            dur={interval / 1000 || 5 + "s"}
+                            repeatCount="indefinite"
                         />
                     </circle>
                 {/key}
@@ -226,10 +266,9 @@
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <g
                 on:click={() => {
-                    if (!point.currentView || point.currentView === 0)
-                        point.currentView = 1;
-                    else if (point.currentView === 1) point.currentView = 2;
-                    else point.currentView = 0;
+                    if (!point.modalOpened) point.modalOpened = true;
+                    else point.modalOpened = false;
+                    console.log(point.modalOpened);
                 }}
                 on:mouseenter={() => (nodeHovered = point.id)}
                 on:mouseleave={() => (nodeHovered = null)}
@@ -246,7 +285,6 @@
                 >
                     ID: {point.id}
                 </text>
-
                 <circle
                     class="node"
                     r={radius}
@@ -259,19 +297,6 @@
         {/each}
         <g>
             {#each nodes as point}
-                <image
-                    transform="
-                        translate({transform.x || 0} {transform.y || 0}) 
-                        scale({transform.k} {transform.k})"
-                    width={radius}
-                    height={radius}
-                    x={point.x - radius / 2 || point.x}
-                    y={point.y - radius * 3 || point.y}
-                    alt="node image"
-                    href={point.group > 2 ? "/dog.png" : "/bird.png"}
-                    class="nodeimage"
-                    class:showing={nodeHovered === point.id}
-                />
                 {#key group}
                     <MetadataPanel
                         {point}
@@ -283,8 +308,28 @@
                         {group}
                         {paused}
                         color={colourScale(point.group)}
+                        targeted={indirectTargeted(
+                            links.find(({ target }) => target.id === point.id)
+                        )}
                     />
                 {/key}
+                {#if point.modalOpened}
+                    <foreignObject {height} {width}>
+                        <Modal
+                            {data}
+                            {point}
+                            color={colourScale(point.group)}
+                            {interval}
+                            {group}
+                            {paused}
+                            targeted={indirectTargeted(
+                                links.find(
+                                    ({ target }) => target.id === point.id
+                                )
+                            )}
+                        />
+                    </foreignObject>
+                {/if}
             {/each}
         </g>
     </g>

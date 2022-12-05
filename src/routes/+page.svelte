@@ -6,8 +6,7 @@
     import Draggable from "../lib/Draggable.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
-
-    
+    import Modal from "../lib/Modal.svelte"; 
 
     let width = 1000,
         height = 1000,
@@ -20,6 +19,7 @@
         newData = dummyNodes,
         paused = false,
         maxGroups = 1,
+        groupLimit = false,
         treeMode = true,
         content = {
             json: dummyNodes.nodes,
@@ -29,10 +29,21 @@
 
     onMount(() => {
         loaded = true;
-        maxGroups = Math.max(...newData.nodes.map((o) => o.group)) - 1;
+        let maxGroupNodes,
+            i = 0;
+        maxGroups = Math.max(...newData.nodes.map((o) => o.group));
+        while (!groupLimit) {
+            maxGroupNodes = newData.nodes.filter(
+                ({ group }) => group === maxGroups - i
+            );
+            maxGroupNodes.forEach((obj) => {
+                if (newData.links.find(({ source }) => obj.id === source))
+                    groupLimit = obj.group;
+            });
+            i++;
+        }
+        if (group > groupLimit) group = groupLimit;
     });
-
-    // let JSONtext = JSON.stringify(content, null, 2);
 
     const toggle = () => {
         if (physicsPaused) {
@@ -46,14 +57,29 @@
         newData.nodes.forEach((node) => {
             if (node.out) {
                 node.out.forEach((out) => {
-                    if(newData.nodes.find(({ id }) => id === out)) {
-                        newData.links.push({ 'source': node.id, 'target': out });
+                    if (typeof out === "string") {
+                        if (newData.nodes.find(({ id }) => id === out)) {
+                            newData.links.push({
+                                source: node.id,
+                                target: out,
+                            });
+                        }
+                    } else if (typeof out === "number") {
+                        let filteredNodes = newData.nodes.filter(
+                            ({ group }) => group === out
+                        );
+                        filteredNodes.forEach((nodeOut) => {
+                            newData.links.push({
+                                source: node.id,
+                                target: nodeOut.id,
+                            });
+                        });
                     }
                 });
             }
         });
-        content = {json: newData.nodes}
-    }
+        content = { json: newData.nodes };
+    };
     const jsonEdit = () => {
         editorShowing = !editorShowing;
     };
@@ -62,8 +88,21 @@
         resetSim = !resetSim;
         paused = false;
         editorShowing = false;
-        maxGroups = Math.max(...newData.nodes.map((o) => o.group)) - 1;
-        if (group > maxGroups) group = maxGroups;
+        let maxGroupNodes,
+            i = 0;
+        maxGroups = Math.max(...newData.nodes.map((o) => o.group));
+        groupLimit = false;
+        while (!groupLimit) {
+            maxGroupNodes = newData.nodes.filter(
+                ({ group }) => group === maxGroups - i
+            );
+            maxGroupNodes.forEach((obj) => {
+                if (newData.links.find(({ source }) => obj.id === source))
+                    groupLimit = obj.group;
+            });
+            i++;
+        }
+        if (group > groupLimit) group = groupLimit;
     };
     const swapData = () => {
         if (dataset === 1) {
@@ -74,16 +113,13 @@
             content = { json: dummyNodes.nodes };
         }
         updateData();
-        // JSONtext = JSON.stringify(content,null,2)
     };
     const pauseUpdates = (pause) => {
         paused = pause || !paused;
     };
     const updateData = () => {
-        // newData = JSON.parse(JSONtext).json
-        let newJson = content.json ? content.json : JSON.parse(content.text)
-        console.log(content)
-        newData = {'nodes': newJson};
+        let newJson = content.json ? content.json : JSON.parse(content.text);
+        newData = { nodes: newJson };
         reset();
     };
     const incInterval = () => {
@@ -109,8 +145,7 @@
 
 {#if editorShowing}
     <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
-        <JSONEditor bind:content onChangeMode={() => treeMode = !treeMode} />
-        <!-- <textarea class='h-screen right-8 w-full' bind:value={JSONtext} /> -->
+        <JSONEditor bind:content onChangeMode={() => (treeMode = !treeMode)} />
     </div>
 {/if}
 {#if !loaded}
@@ -121,7 +156,7 @@
     </h1>
 {/if}
 <div class:hidden={!loaded}>
-    {#key resetSim || dataset}
+    {#key resetSim}
         <NetworkGraph
             {physicsPaused}
             {loaded}
@@ -143,7 +178,7 @@
             {incInterval}
             {decInterval}
             {group}
-            {maxGroups}
+            {groupLimit}
             {incGroup}
             {decGroup}
             {paused}

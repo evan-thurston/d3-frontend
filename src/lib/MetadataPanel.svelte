@@ -1,25 +1,6 @@
-<script>
-    import Histogram from "./../lib/Histogram.svelte";
-    import Scatterplot from "./Scatterplot.svelte";
+<script>export let point, radius, transform, nodeHovered, targeted;
 
-    export let point,
-        radius,
-        transform,
-        nodeHovered,
-        color,
-        interval,
-        data,
-        group,
-        paused;
-
-    let height, width, targeted;
-
-    let targetingLinks = data.links.filter(({ target }) => target === point.id);
-    targetingLinks.forEach((link) => {
-        if (data.nodes.find(({ id }) => id === link.source).group === group) {
-            targeted = true;
-        }
-    });
+    let height, width;
 
     $: popupWidth = (width + height) ** 0.65 || 200;
 </script>
@@ -27,9 +8,7 @@
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 
 <foreignObject
-    height={point.currentView !== 0 && point.currentView
-        ? popupWidth * 2
-        : (popupWidth * 1) / 2}
+    height={popupWidth / 1.5}
     width={popupWidth}
     x={point.x - popupWidth / 2 || point.x}
     y={point.y + radius * 1.5 || point.y}
@@ -37,75 +16,25 @@
         0}) scale({transform.k} {transform.k})"
     class:showing={nodeHovered === point.id}
 >
-    {#if point.currentView === 1}
-        {#each [1, 2, 3] as graph}
-            {#if graph === 3}
-                <Scatterplot
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {interval}
-                    {targeted}
-                    {color}
-                    {paused}
-                    fixed={true}
-                />
-                <Histogram
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {interval}
-                    {targeted}
-                    {color}
-                    {paused}
-                />
-            {:else if point.group % 2 === 1}
-                <Scatterplot
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {interval}
-                    {targeted}
-                    {color}
-                    {paused}
-                />
-            {:else}
-                <Histogram
-                    width={popupWidth - 20}
-                    height={(popupWidth * 2) / 3 - 12}
-                    {interval}
-                    {targeted}
-                    {color}
-                    {paused}
-                />
-            {/if}
-        {/each}
-    {:else if point.currentView === 2}
-        {#each [2, 3, 4] as graph}
-            <Histogram
-                width={popupWidth - 20}
-                height={(popupWidth * 2) / 3 - 12}
-                {interval}
-                {targeted}
-                {color}
-                {paused}
-                fixed={true}
-            />
-            <Scatterplot
-                width={popupWidth - 20}
-                height={(popupWidth * 2) / 3 - 12}
-                {interval}
-                {targeted}
-                {color}
-                {paused}
-            />
-        {/each}
-    {:else}
-        <p>
-            ID: {point.id}
-        </p>
-        <p>
-            group: {point.group}
-        </p>
-        <p>icon: {point.group > 2 ? "dog" : "bird"}</p>
-    {/if}
+    <img
+        class="fixed top-4 left-4"
+        width={popupWidth / 10}
+        height={popupWidth / 10}
+        alt={point.group > 2 ? "dog" : "bird"}
+        src={point.group > 2 ? "/dog.png" : "/bird.png"}
+    />
+    <p>
+        ID: {point.id}
+    </p>
+    <p>
+        group: {point.group}
+    </p>
+    <p>
+        icon: {point.group > 2 ? "dog" : "bird"}
+    </p>
+    <p>
+        targeted: {targeted || false}
+    </p>
 </foreignObject>
 
 <style lang="postcss">

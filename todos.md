@@ -7,6 +7,8 @@ We can use the JSON editor panel thing to do these updates/deletes of nodes/link
 Creating/declaring a new node I guess should be as easy as creating a new element in the array in the JSON, likewise for links. -->
 
 
+
+
 TODO: The 6 histograms should have titles: 
 
 By Queue Length
@@ -65,14 +67,30 @@ BUGFIXES:
 
 
 FEATURES:
-<!-- DONE * JSON edit doesn't reflect in visualization -->
-<!-- DONE TODO: low priority task: render objects/nodes in the midpoint of edges/links! -->
-<!-- DONE * Loading screen while waiting for data/d3 -->
-<!-- DONE * TODO: 12: create a control panel that can do the following: -->
-   <!-- * button to toggle physics on/off for the graph -->
-   <!-- * pause/unpause button (to pause a process on backend -->
-   <!-- * button to slow-down or speed-up backend process (change timestep) -->
-   <!-- * button to stop all sources (stop generating new consumables/movables on the backend) -->
+
+======================
+
+TODO: create a panel in the node view that can take data like this:
+
+[
+ {label: "<name>", value: <any>},
+ {label: "<name>", value: <any>},
+ {label: "<name>", value: <any>},
+ {label: "<name>", value: <any>},
+  // ...
+ {label: "<name>", value: <any>}
+]
+
+if value is string, make the value field green, if number, orange, if boolean blue, something like that
+
+
+====================
+
+TODO: Active/active links
+if link is active, make it blue/green, if link is inactive, change the or icon?
+
+========================
+
 <!-- TODO: 7. add dynamic images/drawings/animation along links (gets updated constantly from backend) -->
 
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
@@ -86,3 +104,16 @@ TODO: 4. rendering is optimization problem, roughly:
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: re-render nodes by id (efficiently, only 1 node at a time)
+
+
+Put finished TODOS below here!:
+
+<!-- DONE * JSON edit doesn't reflect in visualization -->
+<!-- DONE TODO: low priority task: render objects/nodes in the midpoint of edges/links! -->
+<!-- DONE * Loading screen while waiting for data/d3 -->
+<!-- DONE * TODO: 12: create a control panel that can do the following: -->
+   <!-- * button to toggle physics on/off for the graph -->
+   <!-- * pause/unpause button (to pause a process on backend -->
+   <!-- * button to slow-down or speed-up backend process (change timestep) -->
+   <!-- * button to stop all sources (stop generating new consumables/movables on the backend) -->
+

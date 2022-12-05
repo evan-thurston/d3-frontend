@@ -13,23 +13,8 @@ BUGFIXES:
 * NetworkGraph line 209 update nodes still exist while paused
 
 
+
 FEATURES:
-
-=========
-
-Every node should have permanently visible info:
-
-[
-{label: "<string>", value: <any>},
-{label: "<string>", value: <any>},
-{label: "<string>", value: <any>},
-{label: "<string>", value: <any>},
-// ...
-{label: "<string>", value: <any>}
-]
-
-probably only allow like 3-4 fields to be permanently visible on a node
-
 
 ======================
 
@@ -113,6 +98,19 @@ Put finished TODOS below here!:
 <!-- DONE TODO:2. on/in initial render, avoid crossing lines/edges -->
 <!-- DONE TODO: 13: control panel at top: movable -->
 <!-- DONE TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this) -->
+<!-- DONE Every node should have permanently visible info:
+    [
+        {label: "<string>", value: <any>},
+        {label: "<string>", value: <any>},
+        {label: "<string>", value: <any>},
+        {label: "<string>", value: <any>},
+        // ...
+        {label: "<string>", value: <any>}
+    ]
+
+    probably only allow like 3-4 fields to be permanently visible on a node -->
+
+BUGFIXES:
 <!-- DONE update nodes dont scale w/ zoom (temp fix: disappear on zoom) -->
 <!-- DONE * NetworkGraph line 94 links dont display arrows -->
 <!-- DONE * NetworkGraph foreignobject popup hidden behind nodes (z index doesnt fix this)

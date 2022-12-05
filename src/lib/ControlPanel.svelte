@@ -59,7 +59,7 @@
 <svelte:window bind:innerWidth={width} />
 
 <div
-    class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-violet-900 p-4 md:p-8 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max"
+    class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-violet-900 p-4 md:p-8 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-gray-900 shadow-2xl"
 >
     <button
         on:click={() => (panelShowing = !panelShowing)}

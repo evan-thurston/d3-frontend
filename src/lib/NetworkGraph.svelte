@@ -209,30 +209,34 @@
 />
 
 <svg bind:this={svg} {width} {height}>
+    <defs>
+        <marker
+            markerWidth="15"
+            markerHeight="15"
+            refX="2.5"
+            refY="2.5"
+            viewBox="0 0 5 5"
+            orient="auto"
+            id="marker"
+        >
+            <polygon points="0,5 0,0 5,2.5" class={"fill-neutral"} />
+        </marker>
+    </defs>
     {#each links as link}
-        <g stroke="#999" stroke-opacity="0.6">
+        <g
+            class={link.source.group === group || indirectTargeted(link)
+                ? "stroke-success"
+                : "stroke-neutral"}
+        >
             <line
                 x1={pointAlongLink(link, radius).x || 0}
                 y1={pointAlongLink(link, radius).y || 0}
                 x2={pointAlongLink(link, radius + 10, true).x || 0}
                 y2={pointAlongLink(link, radius + 10, true).y || 0}
-                marker-end="url(#SvgjsMarker1019)"
+                marker-end="url(#marker)"
                 transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
             />
         </g>
-        <defs>
-            <marker
-                markerWidth="15"
-                markerHeight="15"
-                refX="2.5"
-                refY="2.5"
-                viewBox="0 0 5 5"
-                orient="auto"
-                id="SvgjsMarker1019"
-            >
-                <polygon points="0,5 0,0 5,2.5" fill="hsl(0, 0%, 50%)" />
-            </marker>
-        </defs>
         {#if !paused}
             {#if link.source.group === group || indirectTargeted(link)}
                 {#key transform}
@@ -268,7 +272,6 @@
                 on:click={() => {
                     if (!point.modalOpened) point.modalOpened = true;
                     else point.modalOpened = false;
-                    console.log(point.modalOpened);
                 }}
                 on:mouseenter={() => (nodeHovered = point.id)}
                 on:mouseleave={() => (nodeHovered = null)}
@@ -323,11 +326,6 @@
                         {radius}
                         {transform}
                         {nodeHovered}
-                        {interval}
-                        {data}
-                        {group}
-                        {paused}
-                        color={colourScale(point.group)}
                         targeted={indirectTargeted(
                             links.find(({ target }) => target.id === point.id)
                         )}
@@ -336,11 +334,9 @@
                 {#if point.modalOpened}
                     <foreignObject {height} {width}>
                         <Modal
-                            {data}
                             {point}
                             color={colourScale(point.group)}
                             {interval}
-                            {group}
                             {paused}
                             targeted={indirectTargeted(
                                 links.find(

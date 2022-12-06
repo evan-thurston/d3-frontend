@@ -4,7 +4,6 @@
 	let data = [];
 	export let height = 300;
 	export let width = 300;
-	// export let color = "green";
 	export let interval,
 		targeted,
 		fixed = false,

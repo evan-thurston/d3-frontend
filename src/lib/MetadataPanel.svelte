@@ -1,4 +1,5 @@
-<script>export let point, radius, transform, nodeHovered, targeted;
+<script>
+    export let point, radius, transform, nodeHovered, targeted;
 
     let height, width;
 

@@ -163,7 +163,6 @@
             {interval}
             {group}
             {paused}
-            {pauseUpdates}
         />
     {/key}
     <Draggable>

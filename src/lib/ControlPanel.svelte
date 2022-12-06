@@ -185,7 +185,7 @@
                     </div>
                     <button
                         on:click={incInterval}
-                        class:btn-disabled={interval >= 10000}
+                        class:disabled={interval >= 10000}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@
                     </button>
                     <button
                         on:click={decInterval}
-                        class:btn-disabled={interval <= 1000}
+                        class:disabled={interval <= 1000}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +235,7 @@
                         decGroup();
                         resetProg();
                     }}
-                    class:btn-disabled={group <= 1}
+                    class:disabled={group <= 1}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +257,7 @@
                         incGroup();
                         resetProg();
                     }}
-                    class:btn-disabled={group >= groupLimit}
+                    class:disabled={group >= groupLimit}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -290,6 +290,9 @@
     }
     button.collapse svg {
         @apply stroke-neutral;
+    }
+    button.disabled {
+        @apply btn-disabled;
     }
     button.noMb {
         @apply mb-0 md:mb-0;

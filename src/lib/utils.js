@@ -24,39 +24,45 @@ export let dummyNodes = {
 				{ "label": "hello", "value": "world" }
 			]
 		},
-		{ "id": "C", "group": 3, "out": [1, 2],
-		"data": [
-			{ "label": "Status", "value": true },
-			{ "label": "In", "value": 5 },
-			{ "label": "Processing", "value": "starting" },
-			{ "label": "Out", "value": 2 },
-			// ...
-			{ "label": "foo", "value": "bar" },
-			{ "label": "hello", "value": "world" }
-		] },
-		{ "id": "D", "group": 4, "out": [6],
-		"data": [
-			{ "label": "Status", "value": true },
-			{ "label": "In", "value": 90 },
-			{ "label": "Processing", "value": "in progress" },
-			{ "label": "Out", "value": 64 },
-			// ...
-			{ "label": "foo", "value": "bar" },
-			{ "label": "hello", "value": "world" }
-		] },
+		{
+			"id": "C", "group": 3, "out": [1, 2],
+			"data": [
+				{ "label": "Status", "value": true },
+				{ "label": "In", "value": 5 },
+				{ "label": "Processing", "value": "starting" },
+				{ "label": "Out", "value": 2 },
+				// ...
+				{ "label": "foo", "value": "bar" },
+				{ "label": "hello", "value": "world" }
+			]
+		},
+		{
+			"id": "D", "group": 4, "out": [6],
+			"data": [
+				{ "label": "Status", "value": true },
+				{ "label": "In", "value": 90 },
+				{ "label": "Processing", "value": "in progress" },
+				{ "label": "Out", "value": 64 },
+				// ...
+				{ "label": "foo", "value": "bar" },
+				{ "label": "hello", "value": "world" }
+			]
+		},
 		{ "id": "E", "group": 4 },
 		{ "id": "F", "group": 4 },
 		{ "id": "G", "group": 4 },
-		{ "id": "H", "group": 5, "out": [7],
-		"data": [
-			{ "label": "Status", "value": false },
-			{ "label": "In", "value": 17 },
-			{ "label": "Processing", "value": "starting" },
-			{ "label": "Out", "value": 74 },
-			// ...
-			{ "label": "foo", "value": "bar" },
-			{ "label": "hello", "value": "world" }
-		] },
+		{
+			"id": "H", "group": 5, "out": [7],
+			"data": [
+				{ "label": "Status", "value": false },
+				{ "label": "In", "value": 17 },
+				{ "label": "Processing", "value": "starting" },
+				{ "label": "Out", "value": 74 },
+				// ...
+				{ "label": "foo", "value": "bar" },
+				{ "label": "hello", "value": "world" }
+			]
+		},
 		{ "id": "I", "group": 5 },
 		{ "id": "J", "group": 5 },
 		{ "id": "K", "group": 6 },

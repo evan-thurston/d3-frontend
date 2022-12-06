@@ -7,7 +7,6 @@
 
     export let height = 300,
         width = 300,
-        // color = "green",
         fixed = false,
         interval,
         targeted,
@@ -45,7 +44,7 @@
         .scaleLinear()
         .domain(d3.extent(data, (d) => d.y))
         .range([height - buffer, buffer]);
-        
+
     const xScale = d3
         .scaleLinear()
         .domain(d3.extent(data, (d) => d.x))
@@ -64,7 +63,7 @@
     {/key}
 </svg>
 
-<style lang='postcss'>
+<style lang="postcss">
     circle {
         @apply fill-primary;
     }

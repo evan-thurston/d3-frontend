@@ -1,45 +1,12 @@
 Changes look good! nice job Evan
 
-All todos here:
-
-
-
-DONT NEED TODO: 4. allow for triangle or rectangular shapes in nodes
-DONT KNOW TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom
-
-<!-- evan todos -->
-
 BUGFIXES:
 * NetworkGraph line 209 update nodes still exist while paused
-
-
+* NetworkGraph line 212 arrowhead doesn't change color w/ links
 
 FEATURES:
-
-======================
-
-TODO: aside from the permanently visible data, create a panel in the node view that can take data like this:
-
-[
- {label: "<string>", value: <any>},
- {label: "<string>", value: <any>},
- {label: "<string>", value: <any>},
- {label: "<string>", value: <any>},
-  // ...
- {label: "<string>", value: <any>}
-]
-
-if value is string, make the value field green, if number, orange, if boolean blue, something like that
-
-
-====================
-
-TODO: Active/active links
-
-if link is active, make it blue/green, if link is inactive, change the or icon?
-
-========================
-
+? TODO: 4. allow for triangle or rectangular shapes in nodes
+? TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
@@ -57,6 +24,7 @@ TODO: re-render nodes by id (efficiently, only 1 node at a time)
 
 Put finished TODOS below here!:
 
+<!-- ////// FEATURES ////// -->
 <!-- DONE * JSON edit doesn't reflect in visualization -->
 <!-- DONE TODO: low priority task: render objects/nodes in the midpoint of edges/links! -->
 <!-- DONE * Loading screen while waiting for data/d3 -->
@@ -98,7 +66,8 @@ Put finished TODOS below here!:
 <!-- DONE TODO:2. on/in initial render, avoid crossing lines/edges -->
 <!-- DONE TODO: 13: control panel at top: movable -->
 <!-- DONE TODO: 14: create generic JSON editor panel - show JSON blob and allow user to edit and save it (there should be ready-made solutions for this) -->
-<!-- DONE Every node should have permanently visible info:
+<!-- ====================== -->
+<!-- DONE TODO: Every node should have permanently visible info:
     [
         {label: "<string>", value: <any>},
         {label: "<string>", value: <any>},
@@ -107,10 +76,24 @@ Put finished TODOS below here!:
         // ...
         {label: "<string>", value: <any>}
     ]
-
     probably only allow like 3-4 fields to be permanently visible on a node -->
+<!-- ====================== -->
+<!-- DONE TODO: aside from the permanently visible data, create a panel in the node view that can take data like this:
+[
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
+ {label: "<string>", value: <any>},
+  // ...
+ {label: "<string>", value: <any>}
+]
+if value is string, make the value field green, if number, orange, if boolean blue, something like that -->
+<!-- ==================== -->
+<!-- TODO: Active/inactive links
+if link is active, make it blue/green, if link is inactive, change the or icon? -->
+<!-- ======================== -->
 
-BUGFIXES:
+<!-- ////// BUGFIXES: ////// -->
 <!-- DONE update nodes dont scale w/ zoom (temp fix: disappear on zoom) -->
 <!-- DONE * NetworkGraph line 94 links dont display arrows -->
 <!-- DONE * NetworkGraph foreignobject popup hidden behind nodes (z index doesnt fix this)

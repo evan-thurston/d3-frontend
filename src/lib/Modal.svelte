@@ -22,16 +22,6 @@
         role="dialog"
         aria-modal="true"
     >
-        <!--
-      Background backdrop, show/hide based on modal state.
-  
-      Entering: "ease-out duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
         <div
             class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
         />
@@ -40,16 +30,6 @@
             <div
                 class="flex min-h-full items-center justify-center p-4 text-center sm:p-0"
             >
-                <!--
-          Modal panel, show/hide based on modal state.
-  
-          Entering: "ease-out duration-300"
-            From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            To: "opacity-100 translate-y-0 sm:scale-100"
-          Leaving: "ease-in duration-200"
-            From: "opacity-100 translate-y-0 sm:scale-100"
-            To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        -->
                 <div
                     class="relative transform overflow-hidden rounded-lg bg-base-200 border-8 border-base-300 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-max pr-12 py-4"
                 >
@@ -110,11 +90,11 @@
                                                 <p
                                                     style="color: {typeof field.value ===
                                                     'string'
-                                                        ? "#1C8747"
+                                                        ? '#1C8747'
                                                         : typeof field.value ===
                                                           'number'
-                                                        ? "#FAAF2E"
-                                                        : "#6654b7"}"
+                                                        ? '#FAAF2E'
+                                                        : '#6654b7'}"
                                                 >
                                                     {field.label}: {field.value}
                                                 </p>
@@ -123,7 +103,7 @@
                                     {/if}
                                 </div>
                                 <div class="flex flex-row space-x-8 mt-2">
-                                    <div class='lowercase'>
+                                    <div class="lowercase">
                                         {#each [1, 2, 3] as graph}
                                             {#if graph === 1}
                                                 Input Queue
@@ -171,7 +151,7 @@
                                         {/each}
                                     </div>
 
-                                    <div class='uppercase'>
+                                    <div class="uppercase">
                                         {#each [1, 2, 3] as graph}
                                             {#if graph === 1}
                                                 Input Queue

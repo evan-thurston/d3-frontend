@@ -50,7 +50,7 @@
     const resize = () => {
         left = 100;
         right = width - 100;
-    }
+    };
 </script>
 
 <section

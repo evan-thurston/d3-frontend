@@ -8,7 +8,6 @@ BUGFIXES:
 
 FEATURES:
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
-TODO: 6. add dynamic text above node (gets updated constantly from backend)
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
 * TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links
@@ -94,6 +93,8 @@ if link is active, make it blue/green, if link is inactive, change the or icon? 
 <!-- ======================== -->
 <!-- TODO: 4. allow for triangle or rectangular shapes in nodes -->
 <!-- DONE * Histogram line 36 histogram smoothing algorithm -->
+<!-- TODO: 6. add dynamic text above node (gets updated constantly from backend) -->
+
 
 <!-- ////// BUGFIXES: ////// -->
 <!-- DONE update nodes dont scale w/ zoom (temp fix: disappear on zoom) -->

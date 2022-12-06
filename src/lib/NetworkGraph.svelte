@@ -39,13 +39,27 @@
         paused,
         physicsPaused = false;
 
-    let svg;
-    let width = 500;
-    let height = 600;
-    let transform = d3.zoomIdentity;
-    let simulation;
-    let simulationPaused = false;
-    let nodeHovered;
+    let svg,
+        width = 500,
+        height = 600,
+        transform = d3.zoomIdentity,
+        simulation,
+        simulationPaused = false,
+        nodeHovered,
+        multiplier = 1,
+        multiplierInterval;
+
+    $: {
+        if (paused) {
+            clearInterval(multiplierInterval);
+        } else {
+            clearInterval(multiplierInterval);
+            multiplierInterval = setInterval(
+                () => (multiplier = Math.round(Math.random() * 10)),
+                interval
+            );
+        }
+    }
 
     onMount(() => {
         startSim();
@@ -300,7 +314,7 @@
                                 0}) 
                                 scale({transform.k} {transform.k})"
                         >
-                            {field.label}: {field.value}
+                            {field.label}: {field.value + (typeof field.value === "number" ? multiplier * i : "")}
                         </text>
                     {/each}
                 {/if}
@@ -317,7 +331,9 @@
                 {:else if point.group === 6}
                     <polygon
                         class="node"
-                        points="{point.x - radius},{point.y + radius} {point.x + radius},{point.y + radius} {point.x},{point.y - radius}"
+                        points="{point.x - radius},{point.y + radius} {point.x +
+                            radius},{point.y + radius} {point.x},{point.y -
+                            radius}"
                         fill={colourScale(point.group)}
                         x={point.x - radius}
                         y={point.y - radius}

@@ -118,8 +118,12 @@
     };
     const updateData = () => {
         let newJson = content.json ? content.json : JSON.parse(content.text);
-        newData = { nodes: newJson };
-        reset();
+        if (newData.nodes !== newJson) {
+            newData = { nodes: newJson };
+            reset();
+        } else {
+            editorShowing = false;
+        }
     };
     const incInterval = () => {
         interval += 1000;

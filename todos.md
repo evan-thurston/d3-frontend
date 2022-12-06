@@ -1,9 +1,7 @@
 Changes look good! nice job Evan
 
 BUGFIXES:
-* NetworkGraph line 209 update nodes still exist while paused
-* NetworkGraph line 212 arrowhead doesn't change color w/ links
-* control panel loses width on window resize
+* impossible w/o svg2? NetworkGraph line 212 arrowhead doesn't change color w/ links
 * improve forces calculation
 
 FEATURES:
@@ -107,3 +105,5 @@ if link is active, make it blue/green, if link is inactive, change the or icon? 
 <!-- DONE * transform translate console error -->
 <!-- DONE * +page.svelte line 53 edit dataset with JSON editor -->
 <!-- DONE * NetworkGraph line 79 zoom doesnt work w metadata -->
+<!-- DONE * NetworkGraph line 209 update nodes still exist while paused -->
+<!-- DONE * control panel loses width on window resize -->

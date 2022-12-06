@@ -1,11 +1,11 @@
 <script>
-    import ControlPanel from "$lib/ControlPanel.svelte";
     import NetworkGraph from "$lib/NetworkGraph.svelte";
     import { JSONEditor } from "svelte-jsoneditor";
     import { onMount } from "svelte";
-    import Draggable from "../lib/Draggable.svelte";
+    import Draggable from "../lib/DraggableControlPanel.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
+    import DraggableControlPanel from "../lib/DraggableControlPanel.svelte";
 
     let width = 1000,
         height = 1000,
@@ -168,22 +168,20 @@
             {paused}
         />
     {/key}
-    <Draggable>
-        <ControlPanel
-            {reset}
-            {toggle}
-            {jsonEdit}
-            {swapData}
-            {updateData}
-            {interval}
-            {incInterval}
-            {decInterval}
-            {group}
-            {groupLimit}
-            {incGroup}
-            {decGroup}
-            {paused}
-            {pauseUpdates}
-        />
-    </Draggable>
+    <DraggableControlPanel
+        {reset}
+        {toggle}
+        {jsonEdit}
+        {swapData}
+        {updateData}
+        {interval}
+        {incInterval}
+        {decInterval}
+        {group}
+        {groupLimit}
+        {incGroup}
+        {decGroup}
+        {paused}
+        {pauseUpdates}
+    />
 </div>

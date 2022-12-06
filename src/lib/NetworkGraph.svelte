@@ -193,20 +193,20 @@
         if (link) {
             if (link.source.group === group) targeted = true;
             let foundLinks = links.filter(
-                    ({ target }) => target.id === link.source.id
-                ),
-                // 3rd degree of indirect targeting
-                parentsLinks;
+                ({ target }) => target.id === link.source.id
+            );
+            // 3rd degree of indirect targeting
+            // ,parentsLinks;
             if (foundLinks) {
                 foundLinks.forEach((foundLink) => {
                     if (foundLink.source.group === group) targeted = true;
                     // 3rd degree
-                    parentsLinks = links.filter(
-                        ({ target }) => target.id === foundLink.source.id
-                    );
-                    parentsLinks.forEach((parentLink) => {
-                        if (parentLink.source.group === group) targeted = true;
-                    });
+                    // parentsLinks = links.filter(
+                    //     ({ target }) => target.id === foundLink.source.id
+                    // );
+                    // parentsLinks.forEach((parentLink) => {
+                    //     if (parentLink.source.group === group) targeted = true;
+                    // });
                 });
             }
         }
@@ -249,30 +249,36 @@
                 transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
             />
         </g>
-        {#if !paused}
-            {#if link.source.group === group || indirectTargeted(link)}
-                <circle
-                    class="dataNode"
-                    r={radius / 5}
-                    fill={colourScale(link.source.group)}
-                    transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                >
-                    <animate
-                        attributeName="cx"
-                        values="{pointAlongLink(link, radius - 15)
-                            .x};{pointAlongLink(link, radius - 10, true).x}"
-                        dur={interval / 1000 || 5 + "s"}
-                        repeatCount="indefinite"
-                    />
-                    <animate
-                        attributeName="cy"
-                        values="{pointAlongLink(link, radius - 15)
-                            .y};{pointAlongLink(link, radius - 10, true).y}"
-                        dur={interval / 1000 || 5 + "s"}
-                        repeatCount="indefinite"
-                    />
-                </circle>
-            {/if}
+        {#if !paused && (link.source.group === group || indirectTargeted(link))}
+            <circle
+                class="dataNode"
+                r={radius / 5}
+                fill={colourScale(link.source.group)}
+                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+            >
+                <animate
+                    class="no-animation"
+                    attributeName="cx"
+                    values="{pointAlongLink(link, radius - 15)
+                        .x};{pointAlongLink(link, radius - 10, true).x}"
+                    dur={interval / 1000 || 5 + "s"}
+                    repeatCount={!paused &&
+                    (link.source.group === group || indirectTargeted(link))
+                        ? "indefinite"
+                        : "0"}
+                />
+                <animate
+                    class="no-animation"
+                    attributeName="cy"
+                    values="{pointAlongLink(link, radius - 15)
+                        .y};{pointAlongLink(link, radius - 10, true).y}"
+                    dur={interval / 1000 || 5 + "s"}
+                    repeatCount={!paused &&
+                    (link.source.group === group || indirectTargeted(link))
+                        ? "indefinite"
+                        : "0"}
+                />
+            </circle>
         {/if}
     {/each}
     <g>
@@ -314,7 +320,10 @@
                                 0}) 
                                 scale({transform.k} {transform.k})"
                         >
-                            {field.label}: {field.value + (typeof field.value === "number" ? multiplier * i : "")}
+                            {field.label}: {field.value +
+                                (typeof field.value === "number"
+                                    ? multiplier * i
+                                    : "")}
                         </text>
                     {/each}
                 {/if}

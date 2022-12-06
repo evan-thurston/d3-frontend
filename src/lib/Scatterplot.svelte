@@ -7,7 +7,7 @@
 
     export let height = 300,
         width = 300,
-        color = "green",
+        // color = "green",
         fixed = false,
         interval,
         targeted,
@@ -57,10 +57,15 @@
         {#each data as num}
             <circle
                 r={radius}
-                fill={color}
                 cx={xScale(num.x) || 0}
                 cy={yScale(num.y) || 0}
             />
         {/each}
     {/key}
 </svg>
+
+<style lang='postcss'>
+    circle {
+        @apply fill-primary;
+    }
+</style>

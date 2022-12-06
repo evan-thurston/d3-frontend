@@ -4,9 +4,12 @@
 	let data = [];
 	export let height = 300;
 	export let width = 300;
-	export let color = "green";
-    export let interval, targeted, fixed = false, paused;
-    let dataInterval;
+	// export let color = "green";
+	export let interval,
+		targeted,
+		fixed = false,
+		paused;
+	let dataInterval;
 
 	$: {
 		if (!targeted || paused) {
@@ -17,22 +20,22 @@
 		}
 	}
 
-	for(let i=0;i<6;i++) {
-        data.push(Math.round(Math.random() * 100))
-    }
+	for (let i = 0; i < 6; i++) {
+		data.push(Math.round(Math.random() * 100));
+	}
 
-    const generateData = () => {
-        data = [];
-        for(let i=0;i<6;i++) {
-			data.push(Math.round(Math.random() * 100))
+	const generateData = () => {
+		data = [];
+		for (let i = 0; i < 6; i++) {
+			data.push(Math.round(Math.random() * 100));
 		}
-    };
+	};
 
 	const yScale = d3
 		.scaleLinear()
 		.domain([0, Math.max(...data)])
 		.range([25, height - 35]);
-	
+
 	// TODO: algorithm to smooth out histogram
 	// const numBefore = (num) => {
 	// 	if(data.indexOf(num) === 0) return
@@ -53,8 +56,7 @@
 	{#each data as num}
 		<div
 			class="col"
-			style="height: {yScale(num)}px; width: {width / data.length -
-				3}px; background-color: {color}"
+			style="height: {yScale(num)}px; width: {width / data.length - 3}px;"
 		>
 			<p>
 				{num}
@@ -68,10 +70,10 @@
 		@apply mb-2 flex flex-row opacity-75;
 	}
 	.chart .col {
-		@apply sm:p-1 pt-0 mx-[1px] self-end
-            font-sans text-center text-slate-600;
+		@apply sm:p-1 pt-0 mx-[1px] self-end bg-primary
+            font-sans text-center;
 	}
 	.chart .col p {
-		@apply text-[0.3rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-xs 2xl:text-sm text-black;
+		@apply text-[0.3rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-xs 2xl:text-sm;
 	}
 </style>

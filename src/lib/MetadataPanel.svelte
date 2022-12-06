@@ -39,9 +39,9 @@
 
 <style lang="postcss">
     foreignObject {
-        @apply bg-slate-200 p-2
-        border-2 border-slate-600 rounded-lg 
-        text-center text-slate-600
+        @apply bg-base-200 p-2 shadow-xl shadow-base-300
+        border-4 border-base-300 rounded-lg 
+        text-center
         opacity-0 invisible 
         transition-opacity duration-300 ease-in-out
         flex flex-col;
@@ -51,8 +51,5 @@
     }
     foreignObject p {
         @apply text-xs md:text-sm 2xl:text-base;
-    }
-    foreignObject div {
-        @apply absolute;
     }
 </style>

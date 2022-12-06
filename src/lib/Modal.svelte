@@ -51,9 +51,9 @@
             To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         -->
                 <div
-                    class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-max pr-12 py-4"
+                    class="relative transform overflow-hidden rounded-lg bg-base-200 border-8 border-base-300 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-max pr-12 py-4"
                 >
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-base-200 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div
                                 class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[{color}] bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10"
@@ -77,31 +77,53 @@
                             <div
                                 class="mt-3 text-center sm:mt-2 sm:ml-4 sm:text-left"
                             >
-                                <pre>{"{"}</pre>
-                                <div class="ml-4">
-                                    <h3
-                                        class="text-lg font-medium leading-6 text-gray-900"
-                                        id="modal-title"
-                                    >
-                                        ID: {point.id}
-                                    </h3>
-                                    <p class="text-sm text-gray-500">
-                                        group: {point.group}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        icon: {point.group > 2 ? "dog" : "bird"}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        color: {color}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        targeted: {targeted || false}
-                                    </p>
+                                <div class="flex flex-row justify-between">
+                                    <div>
+                                        <pre>{"{"}</pre>
+                                        <div class="ml-4">
+                                            <h3
+                                                class="text-lg font-medium leading-6"
+                                                id="modal-title"
+                                            >
+                                                ID: {point.id}
+                                            </h3>
+                                            <p class="text-sm">
+                                                group: {point.group}
+                                            </p>
+                                            <p class="text-sm">
+                                                icon: {point.group > 2
+                                                    ? "dog"
+                                                    : "bird"}
+                                            </p>
+                                            <p class="text-sm">
+                                                color: {color}
+                                            </p>
+                                            <p class="text-sm">
+                                                targeted: {targeted || false}
+                                            </p>
+                                        </div>
+                                        <pre>{"}"}</pre>
+                                    </div>
+                                    {#if point.data}
+                                        <div>
+                                            {#each point.data as field, i}
+                                                <p
+                                                    style="color: {typeof field.value ===
+                                                    'string'
+                                                        ? "#1C8747"
+                                                        : typeof field.value ===
+                                                          'number'
+                                                        ? "#FAAF2E"
+                                                        : "#6654b7"}"
+                                                >
+                                                    {field.label}: {field.value}
+                                                </p>
+                                            {/each}
+                                        </div>
+                                    {/if}
                                 </div>
-                                <pre>{"}"}</pre>
-
                                 <div class="flex flex-row space-x-8 mt-2">
-                                    <div class="text-black">
+                                    <div class='lowercase'>
                                         {#each [1, 2, 3] as graph}
                                             {#if graph === 1}
                                                 Input Queue
@@ -116,7 +138,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                     fixed={true}
                                                 />
@@ -126,7 +147,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {:else if point.group % 2 === 1}
@@ -136,7 +156,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {:else}
@@ -146,14 +165,13 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {/if}
                                         {/each}
                                     </div>
 
-                                    <div class="text-black">
+                                    <div class='uppercase'>
                                         {#each [1, 2, 3] as graph}
                                             {#if graph === 1}
                                                 Input Queue
@@ -168,7 +186,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                     fixed={true}
                                                 />
@@ -178,7 +195,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {:else if point.group % 2 === 1}
@@ -188,7 +204,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {:else}
@@ -198,7 +213,6 @@
                                                         3}
                                                     {interval}
                                                     {targeted}
-                                                    {color}
                                                     {paused}
                                                 />
                                             {/if}
@@ -209,7 +223,7 @@
                         </div>
                     </div>
                     <div
-                        class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+                        class="bg-base-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
                     >
                         <button
                             type="button"

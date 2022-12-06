@@ -59,11 +59,11 @@
 <svelte:window bind:innerWidth={width} />
 
 <div
-    class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-violet-900 p-4 md:p-8 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-gray-900 shadow-2xl"
+    class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-base-200 p-4 md:p-8 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-base-300 shadow-xl border-t-4 2xl:border-4 border-base-300"
 >
     <button
         on:click={() => (panelShowing = !panelShowing)}
-        class="w-min bg-primary p-2 rounded-full mx-auto mb-4 md:mb-8 2xl:hidden 2xl:mb-0 2xl:p-0"
+        class="collapse"
         class:noMb={!panelShowing}
     >
         {#if panelShowing}
@@ -108,7 +108,6 @@
                         reset();
                         resetProg();
                     }}
-                    class="btn btn-primary"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -125,13 +124,8 @@
                         />
                     </svg>
                 </button>
-                <button on:click={toggle} class="btn btn-primary"
-                    >toggle physics</button
-                >
-                <button
-                    on:click={pauseUpdates(!paused)}
-                    class="btn btn-primary"
-                >
+                <button on:click={toggle}>toggle physics</button>
+                <button on:click={pauseUpdates(!paused)}>
                     {#if paused}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -170,17 +164,10 @@
                     on:click={() => {
                         swapData();
                         resetProg();
-                    }}
-                    class="btn btn-primary">Swap data</button
+                    }}>Swap data</button
                 >
-                <button on:click={jsonEdit} class="btn btn-primary">edit</button
-                >
-                <button on:click={updateData} class="btn btn-primary">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
-                    </svg> -->
-                    save
-                </button>
+                <button on:click={jsonEdit}>edit</button>
+                <button on:click={updateData}> save </button>
             </div>
         </div>
         <div
@@ -189,7 +176,6 @@
             <div class="flex flex-col space-y-4">
                 <div class="flex flex-row space-x-4">
                     <div class="flex flex-col text-center w-28">
-                        <!-- <span class="indicator-item indicator-center indicator-bottom badge badge-primary rounded-md top-4">{interval/1000}s</span>  -->
                         <span class="text-base font-bold">
                             Updates: {updates}
                         </span>
@@ -199,7 +185,6 @@
                     </div>
                     <button
                         on:click={incInterval}
-                        class="btn btn-primary"
                         class:btn-disabled={interval >= 10000}
                     >
                         <svg
@@ -219,7 +204,6 @@
                     </button>
                     <button
                         on:click={decInterval}
-                        class="btn btn-primary"
                         class:btn-disabled={interval <= 1000}
                     >
                         <svg
@@ -241,12 +225,7 @@
             </div>
             <div class="flex flex-row space-x-4">
                 <div class="flex flex-col text-center w-28">
-                    <!-- <span class="indicator-item indicator-center indicator-bottom badge badge-primary rounded-md top-4">{interval/1000}s</span>  -->
-
-                    <span class="text-xs uppercase">
-                        Group emitting:
-                        <!-- Color node: {colourScale(group)} -->
-                    </span>
+                    <span class="text-xs uppercase"> Group emitting: </span>
                     <span class="text-base font-bold">
                         Group {group}
                     </span>
@@ -256,7 +235,6 @@
                         decGroup();
                         resetProg();
                     }}
-                    class="btn btn-primary"
                     class:btn-disabled={group <= 1}
                 >
                     <svg
@@ -279,7 +257,6 @@
                         incGroup();
                         resetProg();
                     }}
-                    class="btn btn-primary"
                     class:btn-disabled={group >= groupLimit}
                 >
                     <svg
@@ -300,12 +277,24 @@
             </div>
         </div>
 
-        <progress class="progress w-auto" value={progress} max={interval} />
+        <progress value={progress} max={interval} />
     {/if}
 </div>
 
 <style lang="postcss">
-    .noMb {
+    button:not(.collapse) {
+        @apply btn btn-primary;
+    }
+    button.collapse {
+        @apply w-min bg-primary p-2 rounded-full mx-auto mb-4 md:mb-8 2xl:hidden 2xl:mb-0 2xl:p-0;
+    }
+    button.collapse svg {
+        @apply stroke-neutral;
+    }
+    button.noMb {
         @apply mb-0 md:mb-0;
+    }
+    progress {
+        @apply progress w-auto progress-primary;
     }
 </style>

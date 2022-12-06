@@ -289,10 +289,10 @@
                     {#each point.data.slice(0, 4) as field, i}
                         <text
                             fill={typeof field.value === "string"
-                                ? "#059669"
+                                ? "#1C8747"
                                 : typeof field.value === "number"
-                                ? "#d97706"
-                                : "#4f46e5"}
+                                ? "#FAAF2E"
+                                : "#6654b7"}
                             x={point.x}
                             y={point.y + radius * (1.7 + 0.5 * i) || point.y}
                             text-anchor="middle"

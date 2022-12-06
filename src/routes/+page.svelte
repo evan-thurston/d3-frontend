@@ -6,7 +6,6 @@
     import Draggable from "../lib/Draggable.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
-    import Modal from "../lib/Modal.svelte"; 
 
     let width = 1000,
         height = 1000,

@@ -7,8 +7,7 @@ BUGFIXES:
 * improve forces calculation
 
 FEATURES:
-? TODO: 4. allow for triangle or rectangular shapes in nodes
-? TODO: 8. change forces so the more force between nodes given more degrees of separation/freedom
+TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 6. add dynamic text above node (gets updated constantly from backend)
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
@@ -93,6 +92,7 @@ if value is string, make the value field green, if number, orange, if boolean bl
 <!-- TODO: Active/inactive links
 if link is active, make it blue/green, if link is inactive, change the or icon? -->
 <!-- ======================== -->
+<!-- TODO: 4. allow for triangle or rectangular shapes in nodes -->
 <!-- DONE * Histogram line 36 histogram smoothing algorithm -->
 
 <!-- ////// BUGFIXES: ////// -->

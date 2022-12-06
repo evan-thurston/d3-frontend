@@ -216,17 +216,17 @@
             viewBox="0 0 5 5"
             orient="auto"
             id="marker"
+            fill="context-stroke"
         >
-            <polygon points="0,5 0,0 5,2.5" class={"fill-neutral"} />
+            <polygon points="0,5 0,0 5,2.5" />
         </marker>
     </defs>
     {#each links as link}
-        <g
-            class={link.source.group === group || indirectTargeted(link)
-                ? "stroke-success"
-                : "stroke-neutral"}
-        >
+        <g>
             <line
+                class={link.source.group === group || indirectTargeted(link)
+                    ? "stroke-success"
+                    : "stroke-neutral"}
                 x1={pointAlongLink(link, radius).x || 0}
                 y1={pointAlongLink(link, radius).y || 0}
                 x2={pointAlongLink(link, radius + 10, true).x || 0}
@@ -304,14 +304,35 @@
                         </text>
                     {/each}
                 {/if}
-                <circle
-                    class="node"
-                    r={radius}
-                    fill={colourScale(point.group)}
-                    cx={point.x}
-                    cy={point.y}
-                    transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                />
+                {#if point.group === 5}
+                    <rect
+                        class="node"
+                        width={radius * 2}
+                        height={radius * 2}
+                        fill={colourScale(point.group)}
+                        x={point.x - radius}
+                        y={point.y - radius}
+                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                    />
+                {:else if point.group === 6}
+                    <polygon
+                        class="node"
+                        points="{point.x - radius},{point.y + radius} {point.x + radius},{point.y + radius} {point.x},{point.y - radius}"
+                        fill={colourScale(point.group)}
+                        x={point.x - radius}
+                        y={point.y - radius}
+                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                    />
+                {:else}
+                    <circle
+                        class="node"
+                        r={radius}
+                        fill={colourScale(point.group)}
+                        cx={point.x}
+                        cy={point.y}
+                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                    />
+                {/if}
             </g>
         {/each}
         <g>
@@ -357,7 +378,9 @@
     svg {
         float: left;
     }
-    circle {
+    circle.node,
+    rect.node,
+    polygon.node {
         stroke: #fff;
         stroke-width: 1.5;
     }

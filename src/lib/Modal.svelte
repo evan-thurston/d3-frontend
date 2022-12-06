@@ -31,7 +31,7 @@
                         <div
                             class={point.data
                                 ? "justify-between"
-                                : "justify-center"}
+                                : "justify-center 2xl:justify-between"}
                         >
                             <div>
                                 <pre>{"{"}</pre>

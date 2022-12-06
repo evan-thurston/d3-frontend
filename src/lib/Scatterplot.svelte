@@ -52,15 +52,9 @@
 </script>
 
 <svg class="opacity-75 my-1 sm:my-2 lg:my-4" class:fixed {width} {height}>
-    {#key data}
-        {#each data as num}
-            <circle
-                r={radius}
-                cx={xScale(num.x) || 0}
-                cy={yScale(num.y) || 0}
-            />
-        {/each}
-    {/key}
+    {#each data as num}
+        <circle r={radius} cx={xScale(num.x) || 0} cy={yScale(num.y) || 0} />
+    {/each}
 </svg>
 
 <style lang="postcss">

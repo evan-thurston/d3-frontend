@@ -158,7 +158,6 @@
     {#key resetSim}
         <NetworkGraph
             {physicsPaused}
-            {loaded}
             data={newData}
             {interval}
             {group}

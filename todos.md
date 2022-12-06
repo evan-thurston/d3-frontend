@@ -4,6 +4,7 @@ BUGFIXES:
 * NetworkGraph line 209 update nodes still exist while paused
 * NetworkGraph line 212 arrowhead doesn't change color w/ links
 * control panel loses width on window resize
+* improve forces calculation
 
 FEATURES:
 ? TODO: 4. allow for triangle or rectangular shapes in nodes

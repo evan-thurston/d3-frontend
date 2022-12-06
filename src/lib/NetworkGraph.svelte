@@ -35,7 +35,6 @@
 
     export let data,
         interval,
-        loaded,
         group,
         paused,
         physicsPaused = false;
@@ -66,7 +65,6 @@
                     .scaleExtent([1 / 3, 3])
                     .on("zoom", zoomed)
             );
-        loaded = true;
     });
 
     $: radius = ((width + height) ** 0.5 * 2) / data.nodes.length ** 0.5;
@@ -239,29 +237,27 @@
         </g>
         {#if !paused}
             {#if link.source.group === group || indirectTargeted(link)}
-                {#key transform}
-                    <circle
-                        class="dataNode"
-                        r={radius / 5}
-                        fill={colourScale(link.source.group)}
-                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                    >
-                        <animate
-                            attributeName="cx"
-                            values="{pointAlongLink(link, radius - 15)
-                                .x};{pointAlongLink(link, radius - 10, true).x}"
-                            dur={interval / 1000 || 5 + "s"}
-                            repeatCount="indefinite"
-                        />
-                        <animate
-                            attributeName="cy"
-                            values="{pointAlongLink(link, radius - 15)
-                                .y};{pointAlongLink(link, radius - 10, true).y}"
-                            dur={interval / 1000 || 5 + "s"}
-                            repeatCount="indefinite"
-                        />
-                    </circle>
-                {/key}
+                <circle
+                    class="dataNode"
+                    r={radius / 5}
+                    fill={colourScale(link.source.group)}
+                    transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                >
+                    <animate
+                        attributeName="cx"
+                        values="{pointAlongLink(link, radius - 15)
+                            .x};{pointAlongLink(link, radius - 10, true).x}"
+                        dur={interval / 1000 || 5 + "s"}
+                        repeatCount="indefinite"
+                    />
+                    <animate
+                        attributeName="cy"
+                        values="{pointAlongLink(link, radius - 15)
+                            .y};{pointAlongLink(link, radius - 10, true).y}"
+                        dur={interval / 1000 || 5 + "s"}
+                        repeatCount="indefinite"
+                    />
+                </circle>
             {/if}
         {/if}
     {/each}

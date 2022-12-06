@@ -291,11 +291,11 @@
                 {#if point.data}
                     {#each point.data.slice(0, 4) as field, i}
                         <text
-                            fill={typeof field.value === "string"
-                                ? "#1C8747"
+                            class={typeof field.value === "string"
+                                ? "fill-success"
                                 : typeof field.value === "number"
-                                ? "#FAAF2E"
-                                : "#6654b7"}
+                                ? "fill-warning"
+                                : "fill-error"}
                             x={point.x}
                             y={point.y + radius * (1.7 + 0.5 * i) || point.y}
                             text-anchor="middle"

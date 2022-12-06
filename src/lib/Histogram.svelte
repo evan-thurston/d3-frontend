@@ -2,11 +2,12 @@
 	import * as d3 from "d3";
 
 	let data = [];
-	export let height = 300;
-	export let width = 300;
+	export let height;
+	export let width;
 	export let interval,
 		targeted,
 		fixed = false,
+		buffer = 30,
 		paused;
 	let dataInterval;
 
@@ -30,32 +31,17 @@
 		}
 	};
 
-	const yScale = d3
+	$: yScale = d3
 		.scaleLinear()
 		.domain([0, Math.max(...data)])
-		.range([25, height - 35]);
-
-	// TODO: algorithm to smooth out histogram
-	// const numBefore = (num) => {
-	// 	if(data.indexOf(num) === 0) return
-	// 	else return data[data.indexOf(num) - 1]
-	// }
-
-	// const numAfter = (num) => {
-	// 	if(data.indexOf(num) === data.length-2) return
-	// 	else return data[data.indexOf(num) +1]
-	// }
-
-	// const avg = (num) => {
-	// 	return Math.round((numBefore(num) + num + numAfter(num)) / 3)
-	// }
+		.range([buffer, height]);
 </script>
 
-<div class:fixed class="chart" style="height: {height}px">
+<div class:fixed class="chart" style="width: {width}px; height: {height}px">
 	{#each data as num}
 		<div
 			class="col"
-			style="height: {yScale(num)}px; width: {width / data.length - 3}px;"
+			style="width: {width / data.length}px; height: {yScale(num)}px"
 		>
 			<p>
 				{num}
@@ -66,10 +52,10 @@
 
 <style lang="postcss">
 	.chart {
-		@apply mb-2 flex flex-row opacity-75;
+		@apply flex flex-row opacity-75 my-1 sm:my-2 lg:my-4;
 	}
 	.chart .col {
-		@apply sm:p-1 pt-0 mx-[1px] self-end bg-primary
+		@apply sm:p-1 pt-0 mx-[1px] self-end bg-secondary
             font-sans text-center;
 	}
 	.chart .col p {

@@ -2,7 +2,7 @@
     import * as d3 from "d3";
 
     let data = [],
-        buffer = 15,
+        buffer = 10,
         dataInterval;
 
     export let height = 300,
@@ -12,7 +12,7 @@
         targeted,
         paused;
 
-    $: radius = ((width + height) ** 0.5 * 1.5) / data.length ** 0.5;
+    $: radius = ((width + height) ** 0.4 * 1.5) / data.length ** 0.5;
 
     $: {
         if (!targeted || paused) {
@@ -40,18 +40,18 @@
         }
     };
 
-    const yScale = d3
+    $: yScale = d3
         .scaleLinear()
-        .domain(d3.extent(data, (d) => d.y))
+        .domain([0, 100])
         .range([height - buffer, buffer]);
 
-    const xScale = d3
+    $: xScale = d3
         .scaleLinear()
-        .domain(d3.extent(data, (d) => d.x))
+        .domain([0, 100])
         .range([buffer, width - buffer]);
 </script>
 
-<svg class="opacity-75" class:fixed {width} {height}>
+<svg class="opacity-75 my-1 sm:my-2 lg:my-4" class:fixed {width} {height}>
     {#key data}
         {#each data as num}
             <circle
@@ -65,6 +65,6 @@
 
 <style lang="postcss">
     circle {
-        @apply fill-primary;
+        @apply fill-secondary;
     }
 </style>

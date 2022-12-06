@@ -3,6 +3,7 @@ Changes look good! nice job Evan
 BUGFIXES:
 * NetworkGraph line 209 update nodes still exist while paused
 * NetworkGraph line 212 arrowhead doesn't change color w/ links
+* control panel loses width on window resize
 
 FEATURES:
 ? TODO: 4. allow for triangle or rectangular shapes in nodes
@@ -18,7 +19,6 @@ TODO: 4. rendering is optimization problem, roughly:
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: re-render nodes by id (efficiently, only 1 node at a time)
-* Histogram line 36 histogram smoothing algorithm
 
 
 
@@ -92,6 +92,7 @@ if value is string, make the value field green, if number, orange, if boolean bl
 <!-- TODO: Active/inactive links
 if link is active, make it blue/green, if link is inactive, change the or icon? -->
 <!-- ======================== -->
+<!-- DONE * Histogram line 36 histogram smoothing algorithm -->
 
 <!-- ////// BUGFIXES: ////// -->
 <!-- DONE update nodes dont scale w/ zoom (temp fix: disappear on zoom) -->

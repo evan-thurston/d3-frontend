@@ -305,7 +305,29 @@
                     ID: {point.id}
                 </text>
                 {#if point.data}
-                    {#each point.data.slice(0, 4) as field, i}
+                    <text
+                        class="fill-warning"
+                        x={point.x}
+                        y={point.y + radius * 1.7 || point.y}
+                        text-anchor="middle"
+                        transform="
+                                translate({transform.x || 0} {transform.y ||
+                            0}) 
+                                scale({transform.k} {transform.k})"
+                    >
+                        x: {Math.round(point.x)}
+                    </text><text
+                        class="fill-warning"
+                        x={point.x}
+                        y={point.y + radius * 2.2 || point.y}
+                        text-anchor="middle"
+                        transform="
+                            translate({transform.x || 0} {transform.y || 0}) 
+                            scale({transform.k} {transform.k})"
+                    >
+                        y: {Math.round(point.y)}
+                    </text>
+                    {#each point.data.slice(0, 3) as field, i}
                         <text
                             class={typeof field.value === "string"
                                 ? "fill-success"
@@ -313,7 +335,7 @@
                                 ? "fill-warning"
                                 : "fill-error"}
                             x={point.x}
-                            y={point.y + radius * (1.7 + 0.5 * i) || point.y}
+                            y={point.y + radius * (2.7 + 0.5 * i) || point.y}
                             text-anchor="middle"
                             transform="
                                 translate({transform.x || 0} {transform.y ||

@@ -5,6 +5,13 @@ BUGFIXES:
 * improve forces calculation
 
 FEATURES:
+TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something
+or maybe put the results in their google drive and send a link to that in an email. the results would always overwrite previous
+unless the user specified not to. not huge on google, but I don't really want to store users in db. so I think what we need to 
+do is make sure an address actually belongs to someone - that could mean "login with google" or maybe better, just click
+the link to verify an email - this could put a token in the browser proving that they own the email address, and that's all
+we really need to know? something to think about.
+
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!

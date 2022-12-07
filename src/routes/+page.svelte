@@ -2,7 +2,6 @@
     import NetworkGraph from "$lib/NetworkGraph.svelte";
     import { JSONEditor } from "svelte-jsoneditor";
     import { onMount } from "svelte";
-    import Draggable from "../lib/DraggableControlPanel.svelte";
 
     import { lesMis, dummyNodes } from "./../lib/utils";
     import DraggableControlPanel from "../lib/DraggableControlPanel.svelte";

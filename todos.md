@@ -1,8 +1,16 @@
-Changes look good! nice job Evan
+<!-- TODOS:
+(F) Feature (B) Bugfix -->
+12-7-22:
+F* snap to grid
+F* reload node locations
+F* animate multiple objects along a link, given rate parameter
+B* connect arrows to triangles
 
-BUGFIXES:
-* impossible w/o svg2? NetworkGraph line 212 arrowhead doesn't change color w/ links
-* improve forces calculation
+
+<!-- COMPLETED TODOS
+(F) Feature (B) Bugfix -->
+12-7-22
+<!-- F* save frontend locations -->
 
 FEATURES:
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
@@ -16,8 +24,10 @@ TODO: 4. rendering is optimization problem, roughly:
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: re-render nodes by id (efficiently, only 1 node at a time)
-
-
+B* impossible w/o svg2? NetworkGraph line 212 arrowhead doesn't change color w/ links
+B* improve forces calculation 
+    * create manybody force on links?
+    * create more force based on number of links indirectly targeting(but make it fast !)
 
 Put finished TODOS below here!:
 
@@ -107,3 +117,4 @@ if link is active, make it blue/green, if link is inactive, change the or icon? 
 <!-- DONE * NetworkGraph line 79 zoom doesnt work w metadata -->
 <!-- DONE * NetworkGraph line 209 update nodes still exist while paused -->
 <!-- DONE * control panel loses width on window resize -->
+

@@ -9,6 +9,10 @@ F* supabase auth
 F* persist node state to localstorage
 F* persist node state to supabase
 
+//TODO: multiple modals for multiple selected nodes:
+select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
+multiple open modals and the control panel need to co-exist somehow
+
 12-8-22
 F* grid lines on svg
 
@@ -23,13 +27,14 @@ F* grid lines on svg
 <!-- F* componentize svgs -->
 
 
-
 FEATURES:
 
 TODO: this could be a mis-take, but will think about it - 
 put a "spread out" button in the control panel - this will ensure that all nodes are at least x units apart from each other.
 I think forces between nodes already achieve this to a degree. But I guess the spread out button will like extra special force the
 spread out amount to be honored? tbd
+
+TODO: Make a PWA for desktop and mobile
 
 TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something
 or maybe put the results in their google drive and send a link to that in an email. the results would always overwrite previous
@@ -43,16 +48,19 @@ the mini-map makes things look professional and fancy, but not super high priori
 
 TODO: detect when two nodes are connected bidirectionally (furthermore, in general, there could be 3 or more links between the same two nodes),
 we should find a way to draw the arrows in a bendy manner so they can be distinguished visually. Will improve the description
-on this one soon.
+on this one soon. 
 
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
 * TODO: 3. avoid crossing links - https://stackoverflow.com/questions/74453071/avoid-crossing-links
+
 TODO: 4. rendering is optimization problem, roughly:
     * minimize link crossing/overlap.
     * maximize space between nodes.
     * but keep drawing within container.
+
+
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: re-render nodes by id (efficiently, only 1 node at a time)

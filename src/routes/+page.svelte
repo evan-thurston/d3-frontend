@@ -19,6 +19,7 @@
         maxGroups = 1,
         groupLimit = false,
         treeMode = true,
+        grid = 31,
         content = {
             json: dummyNodes.nodes,
         };
@@ -136,6 +137,12 @@
     const decGroup = () => {
         group -= 1;
     };
+    const incGrid = () => {
+        grid += 10;
+    }
+    const decGrid = () => {
+        grid -= 10;
+    }
     updateLinks();
 </script>
 
@@ -165,6 +172,7 @@
             {interval}
             {group}
             {paused}
+            {grid}
         />
     {/key}
     <DraggableControlPanel
@@ -182,5 +190,8 @@
         {decGroup}
         {paused}
         {pauseUpdates}
+        {grid}
+        {incGrid}
+        {decGrid}
     />
 </div>

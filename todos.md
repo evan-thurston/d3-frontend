@@ -1,16 +1,16 @@
 <!-- TODOS:
 (F) Feature (B) Bugfix -->
 12-7-22:
-F* snap to grid
 F* reload node locations
-F* animate multiple objects along a link, given rate parameter
 B* connect arrows to triangles
-
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
 12-7-22
 <!-- F* save frontend locations -->
+<!-- F* animate multiple objects along a link, given rate parameter -->
+<!-- F* snap to grid -->
+
 
 FEATURES:
 TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something

@@ -115,8 +115,12 @@
         } else {
             ratio = distance / totalDist;
         }
-        let newX = gridX(link.source.x) + (gridX(link.target.x) - gridX(link.source.x)) * ratio;
-        let newY = gridY(link.source.y) + (gridY(link.target.y) - gridY(link.source.y)) * ratio;
+        let newX =
+            gridX(link.source.x) +
+            (gridX(link.target.x) - gridX(link.source.x)) * ratio;
+        let newY =
+            gridY(link.source.y) +
+            (gridY(link.target.y) - gridY(link.source.y)) * ratio;
         return { x: newX, y: newY };
     };
 
@@ -174,8 +178,12 @@
     };
     const dragstarted = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0.3).restart();
-        currentEvent.subject.fx = transform.invertX(gridX(currentEvent.subject.x));
-        currentEvent.subject.fy = transform.invertY(gridY(currentEvent.subject.y));
+        currentEvent.subject.fx = transform.invertX(
+            gridX(currentEvent.subject.x)
+        );
+        currentEvent.subject.fy = transform.invertY(
+            gridY(currentEvent.subject.y)
+        );
     };
     const dragged = (currentEvent) => {
         currentEvent.subject.fx = transform.invertX(gridX(currentEvent.x));
@@ -215,13 +223,12 @@
     };
 
     const gridX = (x) => {
-        return Math.round(x/grid)*grid
-    }
+        return Math.round(x / grid) * grid || x || 0;
+    };
 
     const gridY = (y) => {
-        return Math.round(y/grid)*grid
-    }
-
+        return Math.round(y / grid) * grid || y || 0;
+    };
 </script>
 
 <svelte:window
@@ -289,7 +296,7 @@
                         : "0"}
                 />
             </circle>
-            {#each Array(link.source.group % 6) as _,i}
+            {#each Array(link.source.group % 6) as _, i}
                 <circle
                     class="dataNode"
                     r={radius / 5}
@@ -302,7 +309,7 @@
                         values="{pointAlongLink(link, radius - 15)
                             .x};{pointAlongLink(link, radius - 10, true).x}"
                         dur={interval / 1000 || 5 + "s"}
-                        begin={i * interval / 5000 || i + "s"}
+                        begin={(i * interval) / 5000 || i + "s"}
                         repeatCount={!paused &&
                         (link.source.group === group || indirectTargeted(link))
                             ? "indefinite"
@@ -314,7 +321,7 @@
                         values="{pointAlongLink(link, radius - 15)
                             .y};{pointAlongLink(link, radius - 10, true).y}"
                         dur={interval / 1000 || 5 + "s"}
-                        begin={i * interval / 5000 || i + "s"}
+                        begin={(i * interval) / 5000 || i + "s"}
                         repeatCount={!paused &&
                         (link.source.group === group || indirectTargeted(link))
                             ? "indefinite"
@@ -378,7 +385,8 @@
                                 ? "fill-warning"
                                 : "fill-error"}
                             x={gridX(point.x)}
-                            y={gridY(point.y) + radius * (2.7 + 0.5 * i) || gridY(point.y)}
+                            y={gridY(point.y) + radius * (2.7 + 0.5 * i) ||
+                                gridY(point.y)}
                             text-anchor="middle"
                             transform="
                                 translate({transform.x || 0} {transform.y ||
@@ -398,19 +406,20 @@
                         width={radius * 2}
                         height={radius * 2}
                         fill={colourScale(point.group)}
-                        x={gridX(point.x) - radius}
-                        y={gridY(point.y) - radius}
+                        x={gridX(point.x) - radius || gridX(point.x)}
+                        y={gridY(point.y) - radius || gridY(point.y)}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     />
                 {:else if point.group === 6}
                     <polygon
                         class="node"
-                        points="{gridX(point.x) - radius},{gridY(point.y) + radius} {gridX(point.x) +
-                            radius},{gridY(point.y) + radius} {gridX(point.x)},{gridY(point.y) -
-                            radius}"
+                        points=
+                            "{gridX(point.x) - radius},{gridY(point.y) + radius}
+                            {gridX(point.x) + radius},{gridY(point.y) + radius} 
+                            {gridX(point.x)},{gridY(point.y) - radius}"
                         fill={colourScale(point.group)}
-                        x={gridX(point.x) - radius}
-                        y={gridY(point.y) - radius}
+                        x={gridX(point.x) - radius || gridX(point.x)}
+                        y={gridY(point.y) - radius || gridY(point.y)}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     />
                 {:else}

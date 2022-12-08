@@ -13,6 +13,11 @@ B* connect arrows to triangles
 
 
 FEATURES:
+
+TODO: put a "spread out" button in the control panel - this will ensure that all nodes are at least x units apart from each other.
+I think forces between nodes already achieve this to a degree. But I guess the spread out button will like extra special force the
+spread out amount to be honored? tbd
+
 TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something
 or maybe put the results in their google drive and send a link to that in an email. the results would always overwrite previous
 unless the user specified not to. not huge on google, but I don't really want to store users in db. so I think what we need to 

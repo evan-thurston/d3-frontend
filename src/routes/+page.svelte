@@ -19,7 +19,7 @@
         maxGroups = 1,
         groupLimit = false,
         treeMode = true,
-        grid = 31,
+        grid = 1,
         content = {
             json: dummyNodes.nodes,
         };

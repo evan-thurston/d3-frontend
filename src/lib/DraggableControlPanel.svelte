@@ -19,7 +19,10 @@
         decGroup,
         paused,
         groupLimit,
-        pauseUpdates;
+        pauseUpdates,
+        grid,
+        incGrid,
+        decGrid;
 
     let height, width, h, w;
     let moving = false;
@@ -310,6 +313,56 @@
                             resetProg();
                         }}
                         class:disabled={group >= groupLimit}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 4.5v15m7.5-7.5h-15"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-row space-x-4">
+                    <div class="flex flex-col text-center w-16">
+                        <span class="text-xs uppercase"> Grid Size: </span>
+                        <span class="text-base font-bold">
+                            {grid-1}px
+                        </span>
+                    </div>
+                    <button
+                        on:click={() => {
+                            decGrid();
+                        }}
+                        class:disabled={grid <= 1}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M19.5 12h-15"
+                            />
+                        </svg>
+                    </button>
+                    <button
+                        on:click={() => {
+                            incGrid();
+                        }}
+                        class:disabled={grid >= 60}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

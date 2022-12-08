@@ -37,6 +37,7 @@
         interval,
         group,
         paused,
+        grid,
         physicsPaused = false;
 
     let svg,
@@ -105,8 +106,8 @@
         // If fromEnd is true, calculates the point "distance" pixels from the end
         // of the line.
         let totalDist =
-            ((link.source.x - link.target.x) ** 2 +
-                (link.source.y - link.target.y) ** 2) **
+            ((gridX(link.source.x) - gridX(link.target.x)) ** 2 +
+                (gridY(link.source.y) - gridY(link.target.y)) ** 2) **
             0.5;
         let ratio;
         if (fromEnd) {
@@ -114,8 +115,8 @@
         } else {
             ratio = distance / totalDist;
         }
-        let newX = link.source.x + (link.target.x - link.source.x) * ratio;
-        let newY = link.source.y + (link.target.y - link.source.y) * ratio;
+        let newX = gridX(link.source.x) + (gridX(link.target.x) - gridX(link.source.x)) * ratio;
+        let newY = gridY(link.source.y) + (gridY(link.target.y) - gridY(link.source.y)) * ratio;
         return { x: newX, y: newY };
     };
 
@@ -161,8 +162,8 @@
     };
     const dragsubject = (currentEvent) => {
         const node = simulation.find(
-            transform.invertX(currentEvent.x),
-            transform.invertY(currentEvent.y),
+            transform.invertX(gridX(currentEvent.x)),
+            transform.invertY(gridY(currentEvent.y)),
             radius
         );
         if (node) {
@@ -173,12 +174,12 @@
     };
     const dragstarted = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0.3).restart();
-        currentEvent.subject.fx = transform.invertX(currentEvent.subject.x);
-        currentEvent.subject.fy = transform.invertY(currentEvent.subject.y);
+        currentEvent.subject.fx = transform.invertX(gridX(currentEvent.subject.x));
+        currentEvent.subject.fy = transform.invertY(gridY(currentEvent.subject.y));
     };
     const dragged = (currentEvent) => {
-        currentEvent.subject.fx = transform.invertX(currentEvent.x);
-        currentEvent.subject.fy = transform.invertY(currentEvent.y);
+        currentEvent.subject.fx = transform.invertX(gridX(currentEvent.x));
+        currentEvent.subject.fy = transform.invertY(gridY(currentEvent.y));
     };
     const dragended = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0);
@@ -212,6 +213,15 @@
         }
         return targeted;
     };
+
+    const gridX = (x) => {
+        return Math.round(x/grid)*grid
+    }
+
+    const gridY = (y) => {
+        return Math.round(y/grid)*grid
+    }
+
 </script>
 
 <svelte:window
@@ -279,6 +289,39 @@
                         : "0"}
                 />
             </circle>
+            {#each Array(link.source.group % 6) as _,i}
+                <circle
+                    class="dataNode"
+                    r={radius / 5}
+                    fill={colourScale(link.source.group)}
+                    transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+                >
+                    <animate
+                        class="no-animation"
+                        attributeName="cx"
+                        values="{pointAlongLink(link, radius - 15)
+                            .x};{pointAlongLink(link, radius - 10, true).x}"
+                        dur={interval / 1000 || 5 + "s"}
+                        begin={i * interval / 5000 || i + "s"}
+                        repeatCount={!paused &&
+                        (link.source.group === group || indirectTargeted(link))
+                            ? "indefinite"
+                            : "0"}
+                    />
+                    <animate
+                        class="no-animation"
+                        attributeName="cy"
+                        values="{pointAlongLink(link, radius - 15)
+                            .y};{pointAlongLink(link, radius - 10, true).y}"
+                        dur={interval / 1000 || 5 + "s"}
+                        begin={i * interval / 5000 || i + "s"}
+                        repeatCount={!paused &&
+                        (link.source.group === group || indirectTargeted(link))
+                            ? "indefinite"
+                            : "0"}
+                    />
+                </circle>
+            {/each}
         {/if}
     {/each}
     <g>
@@ -295,8 +338,8 @@
             >
                 <text
                     fill={colourScale(point.group)}
-                    x={point.x}
-                    y={point.y - radius * 1.2 || point.y}
+                    x={gridX(point.x)}
+                    y={gridY(point.y) - radius * 1.2 || gridY(point.y)}
                     text-anchor="middle"
                     transform="
                         translate({transform.x || 0} {transform.y || 0}) 
@@ -307,25 +350,25 @@
                 {#if point.data}
                     <text
                         class="fill-warning"
-                        x={point.x}
-                        y={point.y + radius * 1.7 || point.y}
+                        x={gridX(point.x)}
+                        y={gridY(point.y) + radius * 1.7 || gridY(point.y)}
                         text-anchor="middle"
                         transform="
                                 translate({transform.x || 0} {transform.y ||
                             0}) 
                                 scale({transform.k} {transform.k})"
                     >
-                        x: {Math.round(point.x)}
+                        x: {Math.round(gridX(point.x))}
                     </text><text
                         class="fill-warning"
-                        x={point.x}
-                        y={point.y + radius * 2.2 || point.y}
+                        x={gridX(point.x)}
+                        y={gridY(point.y) + radius * 2.2 || gridY(point.y)}
                         text-anchor="middle"
                         transform="
                             translate({transform.x || 0} {transform.y || 0}) 
                             scale({transform.k} {transform.k})"
                     >
-                        y: {Math.round(point.y)}
+                        y: {Math.round(gridY(point.y))}
                     </text>
                     {#each point.data.slice(0, 3) as field, i}
                         <text
@@ -334,8 +377,8 @@
                                 : typeof field.value === "number"
                                 ? "fill-warning"
                                 : "fill-error"}
-                            x={point.x}
-                            y={point.y + radius * (2.7 + 0.5 * i) || point.y}
+                            x={gridX(point.x)}
+                            y={gridY(point.y) + radius * (2.7 + 0.5 * i) || gridY(point.y)}
                             text-anchor="middle"
                             transform="
                                 translate({transform.x || 0} {transform.y ||
@@ -355,19 +398,19 @@
                         width={radius * 2}
                         height={radius * 2}
                         fill={colourScale(point.group)}
-                        x={point.x - radius}
-                        y={point.y - radius}
+                        x={gridX(point.x) - radius}
+                        y={gridY(point.y) - radius}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     />
                 {:else if point.group === 6}
                     <polygon
                         class="node"
-                        points="{point.x - radius},{point.y + radius} {point.x +
-                            radius},{point.y + radius} {point.x},{point.y -
+                        points="{gridX(point.x) - radius},{gridY(point.y) + radius} {gridX(point.x) +
+                            radius},{gridY(point.y) + radius} {gridX(point.x)},{gridY(point.y) -
                             radius}"
                         fill={colourScale(point.group)}
-                        x={point.x - radius}
-                        y={point.y - radius}
+                        x={gridX(point.x) - radius}
+                        y={gridY(point.y) - radius}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     />
                 {:else}
@@ -375,8 +418,8 @@
                         class="node"
                         r={radius}
                         fill={colourScale(point.group)}
-                        cx={point.x}
-                        cy={point.y}
+                        cx={gridX(point.x)}
+                        cy={gridY(point.y)}
                         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
                     />
                 {/if}
@@ -390,6 +433,8 @@
                         {radius}
                         {transform}
                         {nodeHovered}
+                        {gridX}
+                        {gridY}
                         targeted={indirectTargeted(
                             links.find(({ target }) => target.id === point.id)
                         )}

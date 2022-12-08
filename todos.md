@@ -4,25 +4,25 @@
 F* reload node locations
 B* connect arrows to triangles
 B* metadatapanel doesnt display after closing modal (https://svelte.dev/repl/8b7d235f5d8d4042943c576107db12a9?version=3.29.0)
-F* organize control panel, network graph, related into separate components
 F* supabase auth
 F* persist node state to localstorage
 F* persist node state to supabase
 
-12-8-22
-F* grid lines on svg
+12-8-22:
+F* space nodes by 3 grid units, for example
+
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
-12-7-22
+12-7-22:
 <!-- F* save frontend locations -->
 <!-- F* animate multiple objects along a link, given rate parameter -->
 <!-- F* snap to grid -->
 
-12-8-22
+12-8-22:
 <!-- F* componentize svgs -->
-
-
+<!-- F* grid lines on svg -->
+<!-- F* organize control panel, network graph, related into separate components -->
 
 FEATURES:
 

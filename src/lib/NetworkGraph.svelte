@@ -32,6 +32,8 @@
 
     import MetadataPanel from "./MetadataPanel.svelte";
     import Modal from "../lib/Modal.svelte";
+    import Node from "./Node.svelte";
+    import DataNode from "./DataNode.svelte";
 
     export let data,
         interval,
@@ -229,6 +231,10 @@
     const gridY = (y) => {
         return Math.round(y / grid) * grid || y || 0;
     };
+
+    const setNodeHovered = (id) => {
+        nodeHovered = id || null;
+    }
 </script>
 
 <svelte:window
@@ -238,6 +244,28 @@
 />
 
 <svg bind:this={svg} {width} {height}>
+    {#if grid > 1}
+        {#each Array(Math.round(height / grid) + 1) as _, n}
+            <line
+                x1={0}
+                x2={Math.round(width / grid) * grid}
+                y1={n * grid}
+                y2={n * grid}
+                class="stroke-neutral"
+                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+            />
+        {/each}
+        {#each Array(Math.round(width / grid) + 1) as _, n}
+            <line
+                x1={n * grid}
+                x2={n * grid}
+                y1={0}
+                y2={Math.round(height / grid) * grid}
+                class="stroke-neutral"
+                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+            />
+        {/each}
+    {/if}
     <defs>
         <marker
             markerWidth="15"
@@ -267,172 +295,31 @@
             />
         </g>
         {#if !paused && (link.source.group === group || indirectTargeted(link))}
-            <circle
-                class="dataNode"
-                r={radius / 5}
-                fill={colourScale(link.source.group)}
-                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-            >
-                <animate
-                    class="no-animation"
-                    attributeName="cx"
-                    values="{pointAlongLink(link, radius - 15)
-                        .x};{pointAlongLink(link, radius - 10, true).x}"
-                    dur={interval / 1000 || 5 + "s"}
-                    repeatCount={!paused &&
-                    (link.source.group === group || indirectTargeted(link))
-                        ? "indefinite"
-                        : "0"}
-                />
-                <animate
-                    class="no-animation"
-                    attributeName="cy"
-                    values="{pointAlongLink(link, radius - 15)
-                        .y};{pointAlongLink(link, radius - 10, true).y}"
-                    dur={interval / 1000 || 5 + "s"}
-                    repeatCount={!paused &&
-                    (link.source.group === group || indirectTargeted(link))
-                        ? "indefinite"
-                        : "0"}
-                />
-            </circle>
-            {#each Array(link.source.group % 6) as _, i}
-                <circle
-                    class="dataNode"
-                    r={radius / 5}
-                    fill={colourScale(link.source.group)}
-                    transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                >
-                    <animate
-                        class="no-animation"
-                        attributeName="cx"
-                        values="{pointAlongLink(link, radius - 15)
-                            .x};{pointAlongLink(link, radius - 10, true).x}"
-                        dur={interval / 1000 || 5 + "s"}
-                        begin={(i * interval) / 5000 || i + "s"}
-                        repeatCount={!paused &&
-                        (link.source.group === group || indirectTargeted(link))
-                            ? "indefinite"
-                            : "0"}
-                    />
-                    <animate
-                        class="no-animation"
-                        attributeName="cy"
-                        values="{pointAlongLink(link, radius - 15)
-                            .y};{pointAlongLink(link, radius - 10, true).y}"
-                        dur={interval / 1000 || 5 + "s"}
-                        begin={(i * interval) / 5000 || i + "s"}
-                        repeatCount={!paused &&
-                        (link.source.group === group || indirectTargeted(link))
-                            ? "indefinite"
-                            : "0"}
-                    />
-                </circle>
-            {/each}
+            <DataNode
+                {link}
+                {colourScale}
+                {radius}
+                {pointAlongLink}
+                {interval}
+                {paused}
+                {group}
+                {indirectTargeted}
+                {transform}
+            />
         {/if}
     {/each}
     <g>
         {#each nodes as point}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <g
-                on:click={() => {
-                    if (!point.modalOpened) point.modalOpened = true;
-                    else point.modalOpened = false;
-                }}
-                on:mouseenter={() => (nodeHovered = point.id)}
-                on:mouseleave={() => (nodeHovered = null)}
-                class="node"
-            >
-                <text
-                    fill={colourScale(point.group)}
-                    x={gridX(point.x)}
-                    y={gridY(point.y) - radius * 1.2 || gridY(point.y)}
-                    text-anchor="middle"
-                    transform="
-                        translate({transform.x || 0} {transform.y || 0}) 
-                        scale({transform.k} {transform.k})"
-                >
-                    ID: {point.id}
-                </text>
-                {#if point.data}
-                    <text
-                        class="fill-warning"
-                        x={gridX(point.x)}
-                        y={gridY(point.y) + radius * 1.7 || gridY(point.y)}
-                        text-anchor="middle"
-                        transform="
-                                translate({transform.x || 0} {transform.y ||
-                            0}) 
-                                scale({transform.k} {transform.k})"
-                    >
-                        x: {Math.round(gridX(point.x))}
-                    </text><text
-                        class="fill-warning"
-                        x={gridX(point.x)}
-                        y={gridY(point.y) + radius * 2.2 || gridY(point.y)}
-                        text-anchor="middle"
-                        transform="
-                            translate({transform.x || 0} {transform.y || 0}) 
-                            scale({transform.k} {transform.k})"
-                    >
-                        y: {Math.round(gridY(point.y))}
-                    </text>
-                    {#each point.data.slice(0, 3) as field, i}
-                        <text
-                            class={typeof field.value === "string"
-                                ? "fill-success"
-                                : typeof field.value === "number"
-                                ? "fill-warning"
-                                : "fill-error"}
-                            x={gridX(point.x)}
-                            y={gridY(point.y) + radius * (2.7 + 0.5 * i) ||
-                                gridY(point.y)}
-                            text-anchor="middle"
-                            transform="
-                                translate({transform.x || 0} {transform.y ||
-                                0}) 
-                                scale({transform.k} {transform.k})"
-                        >
-                            {field.label}: {field.value +
-                                (typeof field.value === "number"
-                                    ? multiplier * i
-                                    : "")}
-                        </text>
-                    {/each}
-                {/if}
-                {#if point.group === 5}
-                    <rect
-                        class="node"
-                        width={radius * 2}
-                        height={radius * 2}
-                        fill={colourScale(point.group)}
-                        x={gridX(point.x) - radius || gridX(point.x)}
-                        y={gridY(point.y) - radius || gridY(point.y)}
-                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                    />
-                {:else if point.group === 6}
-                    <polygon
-                        class="node"
-                        points=
-                            "{gridX(point.x) - radius},{gridY(point.y) + radius}
-                            {gridX(point.x) + radius},{gridY(point.y) + radius} 
-                            {gridX(point.x)},{gridY(point.y) - radius}"
-                        fill={colourScale(point.group)}
-                        x={gridX(point.x) - radius || gridX(point.x)}
-                        y={gridY(point.y) - radius || gridY(point.y)}
-                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                    />
-                {:else}
-                    <circle
-                        class="node"
-                        r={radius}
-                        fill={colourScale(point.group)}
-                        cx={gridX(point.x)}
-                        cy={gridY(point.y)}
-                        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-                    />
-                {/if}
-            </g>
+            <Node
+                {point}
+                {colourScale}
+                {gridX}
+                {gridY}
+                {radius}
+                {multiplier}
+                {transform}
+                {setNodeHovered}
+            />
         {/each}
         <g>
             {#each nodes as point}
@@ -470,19 +357,7 @@
 </svg>
 
 <style lang="postcss">
-    image.nodeimage {
-        @apply invisible transition-opacity duration-300 ease-in-out;
-    }
-    image.showing {
-        @apply opacity-100 visible;
-    }
     svg {
         float: left;
-    }
-    circle.node,
-    rect.node,
-    polygon.node {
-        stroke: #fff;
-        stroke-width: 1.5;
     }
 </style>

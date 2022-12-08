@@ -20,7 +20,8 @@ do is make sure an address actually belongs to someone - that could mean "login 
 the link to verify an email - this could put a token in the browser proving that they own the email address, and that's all
 we really need to know? something to think about.
 
-TODO: mini map - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
+TODO: "mini map" - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
+the mini-map makes things look professional and fancy, but not super high priority.
 
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -

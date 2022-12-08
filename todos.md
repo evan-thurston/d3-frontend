@@ -23,6 +23,10 @@ we really need to know? something to think about.
 TODO: "mini map" - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
 the mini-map makes things look professional and fancy, but not super high priority.
 
+TODO: detect when two nodes are connected bidirectionally (furthermore, in general, there could be 3 or more links between the same two nodes),
+we should find a way to draw the arrows in a bendy manner so they can be distinguished visually. Will improve the description
+on this one soon.
+
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!

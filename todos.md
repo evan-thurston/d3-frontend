@@ -13,6 +13,11 @@ F* persist node state to supabase
 select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
 multiple open modals and the control panel need to co-exist somehow
 
+//TODO: control panel / modals
+On modals there is a pause button that acts as a "soft-stop" it just stops the modal from having updated data,
+but the simulation keeps running. However, on the control panel, the pause button represents are "hard-stop", which
+actually stops the simulation completely (read about SIGSTOP signal on Linux/Mac which completely pauses a process).
+
 12-8-22
 F* grid lines on svg
 

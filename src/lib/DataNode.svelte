@@ -20,7 +20,7 @@
         class="no-animation"
         attributeName="cx"
         values="{pointAlongLink(link, radius - 15).x};{pointAlongLink(link, radius - 10, true).x}"
-        dur={interval / 1000 || 5 + "s"}
+        dur={interval / 1000 / link.source.group % 6 || 5 + "s"}
         repeatCount={!paused &&
         (link.source.group === group || indirectTargeted(link))
             ? "indefinite"
@@ -30,7 +30,7 @@
         class="no-animation"
         attributeName="cy"
         values="{pointAlongLink(link, radius - 15).y};{pointAlongLink(link, radius - 10, true).y}"
-        dur={interval / 1000 || 5 + "s"}
+        dur={interval / 1000 / link.source.group % 6 || 5 + "s"}
         repeatCount={!paused &&
         (link.source.group === group || indirectTargeted(link))
             ? "indefinite"
@@ -48,8 +48,8 @@
             class="no-animation"
             attributeName="cx"
             values="{pointAlongLink(link, radius - 15).x};{pointAlongLink(link, radius - 10, true).x}"
-            dur={interval / 1000 || 5 + "s"}
-            begin={(i * interval) / 5000 || i + "s"}
+            dur={interval / 1000 / link.source.group % 6 || 5 + "s"}
+            begin={(i * interval) / 5000 / link.source.group % 6 || i + "s"}
             repeatCount={!paused &&
             (link.source.group === group || indirectTargeted(link))
                 ? "indefinite"
@@ -59,8 +59,8 @@
             class="no-animation"
             attributeName="cy"
             values="{pointAlongLink(link, radius - 15).y};{pointAlongLink(link, radius - 10, true).y}"
-            dur={interval / 1000 || 5 + "s"}
-            begin={(i * interval) / 5000 || i + "s"}
+            dur={interval / 1000 / link.source.group % 6 || 5 + "s"}
+            begin={(i * interval) / 5000 / link.source.group % 6 || i + "s"}
             repeatCount={!paused &&
             (link.source.group === group || indirectTargeted(link))
                 ? "indefinite"

@@ -2,13 +2,14 @@
     import { onMount } from "svelte";
 
     import Histogram from "./Histogram.svelte";
+    import ObjectDisplay from "./ObjectDisplay.svelte";
     import Scatterplot from "./Scatterplot.svelte";
 
     export let point, color, interval, paused, targeted;
 
     let height, width;
 
-    let modalOpen = point.modalOpened;
+    let modalOpen = point.modalOpened, close = '/close.svg';
 
     $: graphWidth = (width + height) ** 0.65 || 300;
 </script>
@@ -27,55 +28,24 @@
         <div class="wrapper">
             <div class="modalContainer">
                 <div class="modalWrapper">
+                    <div class="modalActions">
+                        <button
+                            class="btn-primary rounded-md p-2"
+                            on:click={() => {
+                                point.modalOpened = false;
+                                modalOpen = false;
+                            }}
+                            >
+                            <img src={close} alt="close modal" class='w-6 h-6 opacity-50'/>
+                        </button>
+                    </div>
                     <div class="modalBody">
-                        <div
-                            class={point.data
-                                ? "justify-between"
-                                : "justify-center 2xl:justify-between"}
-                        >
+                        <div class="modalGraphs justify-between">
                             <div>
                                 <pre>{"{"}</pre>
-                                <div class="ml-4">
-                                    <h3
-                                        class="text-lg font-medium leading-6"
-                                        id="modal-title"
-                                    >
-                                        ID: {point.id}
-                                    </h3>
-                                    <p class="text-sm">
-                                        group: {point.group}
-                                    </p>
-                                    <p class="text-sm">
-                                        icon: {point.group > 2 ? "dog" : "bird"}
-                                    </p>
-                                    <p class="text-sm">
-                                        color: {color}
-                                    </p>
-                                    <p class="text-sm">
-                                        targeted: {targeted || false}
-                                    </p>
-                                </div>
+                                <ObjectDisplay {point} {color} {targeted} />
                                 <pre>{"}"}</pre>
                             </div>
-                            {#if point.data}
-                                <div class="text-right">
-                                    {#each point.data as field, i}
-                                        <p
-                                            class={typeof field.value ===
-                                            "string"
-                                                ? "text-success"
-                                                : typeof field.value ===
-                                                  "number"
-                                                ? "text-warning"
-                                                : "text-error"}
-                                        >
-                                            {field.label}: {field.value}
-                                        </p>
-                                    {/each}
-                                </div>
-                            {/if}
-                        </div>
-                        <div class="modalGraphs justify-between">
                             <div>
                                 {#each [1, 2, 3] as graph}
                                     <div>
@@ -118,20 +88,6 @@
                                 {/each}
                             </div>
                         </div>
-                    </div>
-                    <div class="modalActions">
-                        <button
-                            class="btn btn-primary"
-                            on:click={() => {
-                                point.modalOpened = false;
-                                modalOpen = false;
-                            }}>Close</button
-                        >
-                        <!-- <button
-                        type="button"
-                        class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                        >Save</button
-                    > -->
                     </div>
                 </div>
             </div>
@@ -178,20 +134,11 @@
         .modalWrapper
         .modalBody
         > div.modalGraphs
-        > div {
-        @apply uppercase;
-    }
-    .container
-        .wrapper
-        .modalContainer
-        .modalWrapper
-        .modalBody
-        > div.modalGraphs
         > div
         > div {
-        @apply flex flex-col space-y-4 items-center text-center;
+        @apply flex flex-col space-y-4 items-center text-center uppercase;
     }
     .container .wrapper .modalContainer .modalWrapper .modalActions {
-        @apply bg-base-200 px-4 pb-2 sm:flex sm:flex-row-reverse sm:px-6;
+        @apply bg-base-200 px-4 sm:flex sm:flex-row-reverse sm:px-6;
     }
 </style>

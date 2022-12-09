@@ -23,6 +23,14 @@ F* grid lines on svg
 
 12-8-22:
 F* space nodes by 3 grid units, for example
+F* hard to grab nodes w/ grid enabled
+F* persist node location w/ reload
+F* PWA
+F* bendy arrows, repel links?
+F* pause node's data in modal
+F* multiple modals
+F* multiple nodes selected
+F* close modal on laptop screens
 
 
 <!-- COMPLETED TODOS
@@ -34,9 +42,11 @@ F* space nodes by 3 grid units, for example
 
 12-8-22:
 <!-- F* componentize svgs -->
-
 <!-- F* grid lines on svg -->
 <!-- F* organize control panel, network graph, related into separate components -->
+<!-- B* iterable object display in modal -->
+<!-- F* collapsible control panel -->
+<!-- F* datanodes move faster w/ higher rate parameter -->
 
 FEATURES:
 
@@ -75,6 +85,7 @@ TODO: 4. rendering is optimization problem, roughly:
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph
 TODO: re-render nodes by id (efficiently, only 1 node at a time)
+
 B* impossible w/o svg2? NetworkGraph line 212 arrowhead doesn't change color w/ links
 B* improve forces calculation 
     * create manybody force on links?

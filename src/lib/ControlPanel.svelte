@@ -33,7 +33,7 @@
         subtract = "/subtract.svg",
         add = "/add.svg";
 
-    let panelShowing = false;
+    $: panelShowing = width > 1536;
 </script>
 
 <button
@@ -55,50 +55,74 @@
         />
     {/if}
 </button>
-{#if panelShowing || width > 1536}
-    <div
-        class="flex flex-col md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0 items-center justify-center mb-4"
+{#if !panelShowing}
+    <button
+        class="desktopOpen hidden 2xl:block"
+        on:click={() => (panelShowing = !panelShowing)}
     >
-        <div class="flex flex-row space-x-4">
-            <button
-                on:click={() => {
-                    reset();
-                    resetProg();
-                }}
-            >
-                <img
-                    class="w-6 h-6 opacity-50"
-                    alt="restart simulation"
-                    src={restart}
-                />
-            </button>
-            <button on:click={toggle}>toggle physics</button>
-            <button on:click={pauseUpdates(!paused)}>
-                {#if paused}
+        <img
+            class="w-6 h-6 opacity-50"
+            alt="open control panel"
+            src={upArrow}
+        />
+    </button>
+{/if}
+{#if panelShowing}
+    <div class="flex flex-row justify-center 2xl:justify-between">
+        <div
+            class="flex flex-col md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0 items-center justify-center mb-4"
+        >
+            <div class="flex flex-row space-x-4">
+                <button
+                    on:click={() => {
+                        reset();
+                        resetProg();
+                    }}
+                >
                     <img
                         class="w-6 h-6 opacity-50"
-                        alt="unpause data transfer"
-                        src={play}
+                        alt="restart simulation"
+                        src={restart}
                     />
-                {:else}
-                    <img
-                        class="w-6 h-6 opacity-50"
-                        alt="pause data transfer"
-                        src={pause}
-                    />
-                {/if}
-            </button>
+                </button>
+                <button on:click={toggle}>toggle physics</button>
+                <button on:click={pauseUpdates(!paused)}>
+                    {#if paused}
+                        <img
+                            class="w-6 h-6 opacity-50"
+                            alt="unpause data transfer"
+                            src={play}
+                        />
+                    {:else}
+                        <img
+                            class="w-6 h-6 opacity-50"
+                            alt="pause data transfer"
+                            src={pause}
+                        />
+                    {/if}
+                </button>
+            </div>
+            <div class="flex flex-row space-x-4">
+                <button
+                    on:click={() => {
+                        swapData();
+                        resetProg();
+                    }}>Swap data</button
+                >
+                <button on:click={jsonEdit}>edit</button>
+                <button on:click={updateData}> save </button>
+            </div>
         </div>
-        <div class="flex flex-row space-x-4">
-            <button
-                on:click={() => {
-                    swapData();
-                    resetProg();
-                }}>Swap data</button
-            >
-            <button on:click={jsonEdit}>edit</button>
-            <button on:click={updateData}> save </button>
-        </div>
+        <button
+            class="hidden 2xl:block 2xl:btn 2xl:btn-primary"
+            on:click={() => (panelShowing = !panelShowing)}
+        >
+            <img
+                class="w-6 h-6 opacity-50"
+                alt="close control panel"
+                src={downArrow}
+            />
+        </button>
     </div>
     <div
         class="flex flex-col md:flex-row space-x-4 space-y-4 md:space-y-0 items-center justify-center mb-4"
@@ -145,7 +169,7 @@
 {/if}
 
 <style lang="postcss">
-    button:not(.collapse) {
+    button:not(.collapse):not(.desktopOpen):not(.hidden) {
         @apply btn btn-primary;
     }
     button.collapse {

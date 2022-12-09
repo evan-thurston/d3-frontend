@@ -8,19 +8,6 @@ F* supabase auth
 F* persist node state to localstorage
 F* persist node state to supabase
 
-
-//TODO: multiple modals for multiple selected nodes:
-select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
-multiple open modals and the control panel need to co-exist somehow
-
-//TODO: control panel / modals
-On modals there is a pause button that acts as a "soft-stop" it just stops the modal from having updated data,
-but the simulation keeps running. However, on the control panel, the pause button represents are "hard-stop", which
-actually stops the simulation completely (read about SIGSTOP/SIGCONT signals on Linux/Mac which completely pauses a process).
-
-12-8-22
-F* grid lines on svg
-
 12-8-22:
 F* space nodes by 3 grid units, for example
 F* hard to grab nodes w/ grid enabled
@@ -30,7 +17,8 @@ F* bendy arrows, repel links?
 F* pause node's data in modal
 F* multiple modals
 F* multiple nodes selected
-F* close modal on laptop screens
+F* setup vercel on main branch
+
 
 
 <!-- COMPLETED TODOS
@@ -46,9 +34,19 @@ F* close modal on laptop screens
 <!-- F* organize control panel, network graph, related into separate components -->
 <!-- B* iterable object display in modal -->
 <!-- F* collapsible control panel -->
+<!-- F* close modal on laptop screens -->
 <!-- F* datanodes move faster w/ higher rate parameter -->
 
 FEATURES:
+
+//TODO: multiple modals for multiple selected nodes:
+select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
+multiple open modals and the control panel need to co-exist somehow
+
+//TODO: control panel / modals
+On modals there is a pause button that acts as a "soft-stop" it just stops the modal from having updated data,
+but the simulation keeps running. However, on the control panel, the pause button represents are "hard-stop", which
+actually stops the simulation completely (read about SIGSTOP/SIGCONT signals on Linux/Mac which completely pauses a process).
 
 TODO: this could be a mis-take, but will think about it - 
 put a "spread out" button in the control panel - this will ensure that all nodes are at least x units apart from each other.

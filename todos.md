@@ -18,6 +18,7 @@ F* setup vercel on main branch
 
 12-9-22:
 B* curved datanode movement doesn't scale w/ zoom & lags program
+F* simplify gridline calculations
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -48,6 +49,11 @@ B* curved datanode movement doesn't scale w/ zoom & lags program
 <!-- TODO: detect when two nodes are connected bidirectionally (furthermore, in general, there could be 3 or more links between the same two nodes),
     we should find a way to draw the arrows in a bendy manner so they can be distinguished visually. Will improve the description
     on this one soon.  -->
+
+12-10-22:
+<!-- F* organize components by folder (src/lib) -->
+<!-- F* skeleton supabase functions -->
+<!-- B* fix console errors -->
 
 FEATURES:
 

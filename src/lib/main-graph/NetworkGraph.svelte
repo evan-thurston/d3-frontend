@@ -31,7 +31,7 @@
     const colourScale = d3.scaleOrdinal(d3.schemeAccent);
 
     import MetadataPanel from "./MetadataPanel.svelte";
-    import Modal from "../lib/Modal.svelte";
+    import Modal from "../modal/Modal.svelte";
     import Node from "./Node.svelte";
     import DataNode from "./DataNode.svelte";
     import Grid from "./Grid.svelte";

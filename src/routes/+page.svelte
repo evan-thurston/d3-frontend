@@ -1,10 +1,10 @@
 <script>
-    import NetworkGraph from "$lib/NetworkGraph.svelte";
+    import NetworkGraph from "$lib/main-graph/NetworkGraph.svelte";
     import { JSONEditor } from "svelte-jsoneditor";
     import { onMount } from "svelte";
 
-    import { lesMis, dummyNodes } from "./../lib/utils";
-    import DraggableControlPanel from "../lib/DraggableControlPanel.svelte";
+    import { lesMis, dummyNodes } from "$lib/utils";
+    import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
 
     let width = 1000,
         height = 1000,

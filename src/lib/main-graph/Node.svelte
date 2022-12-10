@@ -90,9 +90,9 @@
     {:else if point.group === 6}
         <polygon
             class="node"
-            points="{point.x - radius},{point.y + radius}
-            {point.x + radius},{point.y + radius} 
-            {point.x},{point.y - radius}"
+            points="{point.x - radius || 0},{point.y + radius || 0}
+            {point.x + radius || 0},{point.y + radius || 0} 
+            {point.x || 0},{point.y - radius || 0}"
             fill={colourScale(point.group)}
             x={point.x - radius || point.x}
             y={point.y - radius || point.y}

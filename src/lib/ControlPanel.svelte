@@ -133,7 +133,7 @@
             dec={decGrid}
             inc={incGrid}
             decLimit={grid <= 1}
-            incLimit={grid >= 60}
+            incLimit={grid >= 120}
             decSvg={subtract}
             incSvg={add}
         />

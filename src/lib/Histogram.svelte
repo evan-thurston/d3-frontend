@@ -1,24 +1,17 @@
 <script>
 	import * as d3 from "d3";
 
-	let data = [];
-	export let height;
-	export let width;
-	export let interval,
+	export let height,
+		width,
+		interval,
 		targeted,
 		fixed = false,
 		buffer = 30,
-		paused;
-	let dataInterval;
+		paused,
+		modalPaused;
 
-	$: {
-		if (!targeted || paused) {
-			clearInterval(dataInterval);
-		} else {
-			clearInterval(dataInterval);
-			dataInterval = setInterval(generateData, interval);
-		}
-	}
+	let data = [],
+		dataInterval;
 
 	for (let i = 0; i < 6; i++) {
 		data.push(Math.round(Math.random() * 100));
@@ -30,6 +23,15 @@
 			data.push(Math.round(Math.random() * 100));
 		}
 	};
+
+	$: {
+		if (!targeted || paused || modalPaused) {
+			clearInterval(dataInterval);
+		} else {
+			clearInterval(dataInterval);
+			dataInterval = setInterval(generateData, interval);
+		}
+	}
 
 	$: yScale = d3
 		.scaleLinear()

@@ -34,6 +34,8 @@
     import Modal from "../lib/Modal.svelte";
     import Node from "./Node.svelte";
     import DataNode from "./DataNode.svelte";
+    import Grid from "./Grid.svelte";
+    import Link from "./Link.svelte";
 
     export let data,
         interval,
@@ -108,8 +110,8 @@
         // If fromEnd is true, calculates the point "distance" pixels from the end
         // of the line.
         let totalDist =
-            ((gridX(link.source.x) - gridX(link.target.x)) ** 2 +
-                (gridY(link.source.y) - gridY(link.target.y)) ** 2) **
+            ((link.source.x - link.target.x) ** 2 +
+                (link.source.y - link.target.y) ** 2) **
             0.5;
         let ratio;
         if (fromEnd) {
@@ -117,12 +119,8 @@
         } else {
             ratio = distance / totalDist;
         }
-        let newX =
-            gridX(link.source.x) +
-            (gridX(link.target.x) - gridX(link.source.x)) * ratio;
-        let newY =
-            gridY(link.source.y) +
-            (gridY(link.target.y) - gridY(link.source.y)) * ratio;
+        let newX = link.source.x + (link.target.x - link.source.x) * ratio || 0;
+        let newY = link.source.y + (link.target.y - link.source.y) * ratio ||0;
         return { x: newX, y: newY };
     };
 
@@ -145,7 +143,7 @@
                 d3
                     .forceManyBody()
                     .strength(
-                        (radius * -60) /
+                        (radius * -90) /
                             (Math.max(1, 750 - width) ** 0.1 *
                                 nodes.length ** 0.2)
                     )
@@ -168,8 +166,8 @@
     };
     const dragsubject = (currentEvent) => {
         const node = simulation.find(
-            transform.invertX(gridX(currentEvent.x)),
-            transform.invertY(gridY(currentEvent.y)),
+            transform.invertX(currentEvent.x),
+            transform.invertY(currentEvent.y),
             radius
         );
         if (node) {
@@ -180,16 +178,12 @@
     };
     const dragstarted = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0.3).restart();
-        currentEvent.subject.fx = transform.invertX(
-            gridX(currentEvent.subject.x)
-        );
-        currentEvent.subject.fy = transform.invertY(
-            gridY(currentEvent.subject.y)
-        );
+        currentEvent.subject.fx = transform.invertX(currentEvent.subject.x);
+        currentEvent.subject.fy = transform.invertY(currentEvent.subject.y);
     };
     const dragged = (currentEvent) => {
-        currentEvent.subject.fx = transform.invertX(gridX(currentEvent.x));
-        currentEvent.subject.fy = transform.invertY(gridY(currentEvent.y));
+        currentEvent.subject.fx = transform.invertX(currentEvent.x);
+        currentEvent.subject.fy = transform.invertY(currentEvent.y);
     };
     const dragended = (currentEvent) => {
         if (!currentEvent.active) simulation.alphaTarget(0);
@@ -224,16 +218,16 @@
         return targeted;
     };
 
-    const gridX = (x) => {
-        return Math.round(x / grid) * grid || x || 0;
-    };
-
-    const gridY = (y) => {
-        return Math.round(y / grid) * grid || y || 0;
-    };
-
     const setNodeHovered = (id) => {
         nodeHovered = id || null;
+    };
+
+    const connectedBothWays = (link) => {
+        let connected = false, connectedToSource = links.filter(({target}) => target.id === link.source.id);
+        connectedToSource.forEach(sourceLink => {
+            if(sourceLink.source === link.target) connected = true;
+        });
+        return connected
     }
 </script>
 
@@ -245,26 +239,7 @@
 
 <svg bind:this={svg} {width} {height}>
     {#if grid > 1}
-        {#each Array(Math.round(height / grid) + 1) as _, n}
-            <line
-                x1={0}
-                x2={Math.round(width / grid) * grid}
-                y1={n * grid}
-                y2={n * grid}
-                class="stroke-neutral"
-                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-            />
-        {/each}
-        {#each Array(Math.round(width / grid) + 1) as _, n}
-            <line
-                x1={n * grid}
-                x2={n * grid}
-                y1={0}
-                y2={Math.round(height / grid) * grid}
-                class="stroke-neutral"
-                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-            />
-        {/each}
+        <Grid {width} {height} {grid} {transform} />
     {/if}
     <defs>
         <marker
@@ -281,19 +256,16 @@
         </marker>
     </defs>
     {#each links as link}
-        <g>
-            <line
-                class={link.source.group === group || indirectTargeted(link)
-                    ? "stroke-success"
-                    : "stroke-neutral"}
-                x1={pointAlongLink(link, radius).x || 0}
-                y1={pointAlongLink(link, radius).y || 0}
-                x2={pointAlongLink(link, radius + 10, true).x || 0}
-                y2={pointAlongLink(link, radius + 10, true).y || 0}
-                marker-end="url(#marker)"
-                transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-            />
-        </g>
+        <Link
+            {link}
+            {group}
+            {indirectTargeted}
+            {pointAlongLink}
+            {radius}
+            {transform}
+            {grid}
+            bothWays={connectedBothWays(link)}
+        />
         {#if !paused && (link.source.group === group || indirectTargeted(link))}
             <DataNode
                 {link}
@@ -313,8 +285,7 @@
             <Node
                 {point}
                 {colourScale}
-                {gridX}
-                {gridY}
+                {grid}
                 {radius}
                 {multiplier}
                 {transform}
@@ -329,8 +300,6 @@
                         {radius}
                         {transform}
                         {nodeHovered}
-                        {gridX}
-                        {gridY}
                         targeted={indirectTargeted(
                             links.find(({ target }) => target.id === point.id)
                         )}

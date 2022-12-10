@@ -138,11 +138,11 @@
         group -= 1;
     };
     const incGrid = () => {
-        grid += 10;
-    }
+        grid += 20;
+    };
     const decGrid = () => {
-        grid -= 10;
-    }
+        grid -= 20;
+    };
     updateLinks();
 </script>
 

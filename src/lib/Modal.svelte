@@ -7,9 +7,14 @@
 
     export let point, color, interval, paused, targeted;
 
-    let height, width;
+    let height,
+        width,
+        pause = "/pause.svg",
+        play = "/play.svg",
+        modalPaused = paused || false;
 
-    let modalOpen = point.modalOpened, close = '/close.svg';
+    let modalOpen = point.modalOpened,
+        close = "/close.svg";
 
     $: graphWidth = (width + height) ** 0.65 || 300;
 </script>
@@ -30,13 +35,35 @@
                 <div class="modalWrapper">
                     <div class="modalActions">
                         <button
-                            class="btn-primary rounded-md p-2"
+                            class="btn-primary rounded-md p-2 ml-4"
                             on:click={() => {
                                 point.modalOpened = false;
                                 modalOpen = false;
                             }}
-                            >
-                            <img src={close} alt="close modal" class='w-6 h-6 opacity-50'/>
+                        >
+                            <img
+                                src={close}
+                                alt="close modal"
+                                class="w-6 h-6 opacity-50"
+                            />
+                        </button>
+                        <button
+                            class="btn-primary rounded-md p-2"
+                            on:click={() => (modalPaused = !modalPaused)}
+                        >
+                            {#if modalPaused}
+                                <img
+                                    class="w-6 h-6 opacity-50"
+                                    alt="unpause data transfer"
+                                    src={play}
+                                />
+                            {:else}
+                                <img
+                                    class="w-6 h-6 opacity-50"
+                                    alt="pause data transfer"
+                                    src={pause}
+                                />
+                            {/if}
                         </button>
                     </div>
                     <div class="modalBody">
@@ -61,6 +88,7 @@
                                             height={graphWidth * 0.5}
                                             {interval}
                                             {targeted}
+                                            {modalPaused}
                                             {paused}
                                         />
                                     </div>
@@ -82,6 +110,7 @@
                                             height={graphWidth * 0.5}
                                             {interval}
                                             {targeted}
+                                            {modalPaused}
                                             {paused}
                                         />
                                     </div>

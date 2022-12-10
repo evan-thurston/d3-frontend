@@ -21,10 +21,6 @@
     if (!objectArr.find(({ label }) => label === "targeted")) {
         objectArr.push({ label: "targeted", value: targeted || false });
     }
-    // targeted: {targeted || false}
-
-    // console.log(Object.getPrototypeOf(point));
-    console.log(objectArr);
 </script>
 
 <div class="ml-4">

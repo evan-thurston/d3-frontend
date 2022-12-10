@@ -2,11 +2,21 @@
     export let point,
         colourScale,
         setNodeHovered,
-        gridX,
-        gridY,
+        grid,
         radius,
         multiplier,
         transform;
+
+    const gridX = (x) => {
+        return Math.round(x / grid) * grid || x || 100;
+    };
+
+    const gridY = (y) => {
+        return Math.round(y / grid) * grid || y || 100;
+    };
+    
+    $: if (grid > 1 && point.x) point.x = gridX(point.x);
+    $: if (grid > 1 && point.y) point.y = gridY(point.y);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -21,8 +31,8 @@
 >
     <text
         fill={colourScale(point.group)}
-        x={gridX(point.x)}
-        y={gridY(point.y) - radius * 1.2 || gridY(point.y)}
+        x={point.x}
+        y={point.y - radius * 1.2 || point.y}
         text-anchor="middle"
         transform="
         translate({transform.x || 0} {transform.y || 0}) 
@@ -34,16 +44,16 @@
         {#each ["x", "y"] as coord, i}
             <text
                 class="fill-warning"
-                x={gridX(point.x)}
-                y={gridY(point.y) + radius * (1.7 + 0.5 * i) || gridY(point.y)}
+                x={point.x}
+                y={point.y + radius * (1.7 + 0.5 * i) || point.y}
                 text-anchor="middle"
                 transform="
                 translate({transform.x || 0} {transform.y || 0}) 
                 scale({transform.k} {transform.k})"
             >
                 {coord === "x"
-                    ? "x: " + Math.round(gridX(point.x))
-                    : "y: " + Math.round(gridY(point.y))}
+                    ? "x: " + Math.round(point.x)
+                    : "y: " + Math.round(point.y)}
             </text>
         {/each}
         {#each point.data.slice(0, 3) as field, i}
@@ -53,8 +63,8 @@
                     : typeof field.value === "number"
                     ? "fill-warning"
                     : "fill-error"}
-                x={gridX(point.x)}
-                y={gridY(point.y) + radius * (2.7 + 0.5 * i) || gridY(point.y)}
+                x={point.x}
+                y={point.y + radius * (2.7 + 0.5 * i) || point.y}
                 text-anchor="middle"
                 transform="
                 translate({transform.x || 0} {transform.y || 0}) 
@@ -72,30 +82,30 @@
             width={radius * 2}
             height={radius * 2}
             fill={colourScale(point.group)}
-            x={gridX(point.x) - radius || gridX(point.x)}
-            y={gridY(point.y) - radius || gridY(point.y)}
+            x={point.x - radius || point.x}
+            y={point.y - radius || point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
         />
-    <!-- triangles -->
+        <!-- triangles -->
     {:else if point.group === 6}
         <polygon
             class="node"
-            points="{gridX(point.x) - radius},{gridY(point.y) + radius}
-            {gridX(point.x) + radius},{gridY(point.y) + radius} 
-            {gridX(point.x)},{gridY(point.y) - radius}"
+            points="{point.x - radius},{point.y + radius}
+            {point.x + radius},{point.y + radius} 
+            {point.x},{point.y - radius}"
             fill={colourScale(point.group)}
-            x={gridX(point.x) - radius || gridX(point.x)}
-            y={gridY(point.y) - radius || gridY(point.y)}
+            x={point.x - radius || point.x}
+            y={point.y - radius || point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
         />
-    <!-- circles -->
+        <!-- circles -->
     {:else}
         <circle
             class="node"
             r={radius}
             fill={colourScale(point.group)}
-            cx={gridX(point.x)}
-            cy={gridY(point.y)}
+            cx={point.x}
+            cy={point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
         />
     {/if}

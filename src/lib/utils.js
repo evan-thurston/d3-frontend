@@ -13,7 +13,7 @@ export let dummyNodes = {
 			]
 		},
 		{
-			"id": "B", "group": 2, "out": [5],
+			"id": "B", "group": 2, "out": [3, 5],
 			"data": [
 				{ "label": "Status", "value": false },
 				{ "label": "In", "value": 32 },
@@ -52,7 +52,7 @@ export let dummyNodes = {
 		{ "id": "F", "group": 4 },
 		{ "id": "G", "group": 4 },
 		{
-			"id": "H", "group": 5, "out": [7],
+			"id": "H", "group": 5, "out": [2, 7],
 			"data": [
 				{ "label": "Status", "value": false },
 				{ "label": "In", "value": 17 },

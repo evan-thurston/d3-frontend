@@ -1,5 +1,5 @@
 <script>
-    export let point, radius, transform, nodeHovered, targeted, gridX, gridY;
+    export let point, radius, transform, nodeHovered, targeted;
 
     let height, width;
 
@@ -11,8 +11,8 @@
 <foreignObject
     height={popupWidth / 1.5}
     width={popupWidth}
-    x={gridX(point.x) - popupWidth / 2 || gridX(point.x)}
-    y={gridY(point.y) + radius * 1.5 || gridY(point.y)}
+    x={point.x - popupWidth / 2 || point.x}
+    y={point.y + radius * 1.5 || point.y}
     transform="translate({transform.x || 0} {transform.y ||
         0}) scale({transform.k} {transform.k})"
     class:showing={nodeHovered === point.id}

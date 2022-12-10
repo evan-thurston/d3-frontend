@@ -10,16 +10,14 @@ F* persist node state to supabase
 
 12-8-22:
 F* space nodes by 3 grid units, for example
-F* hard to grab nodes w/ grid enabled
 F* persist node location w/ reload
 F* PWA
-F* bendy arrows, repel links?
-F* pause node's data in modal
 F* multiple modals
 F* multiple nodes selected
 F* setup vercel on main branch
 
-
+12-9-22:
+B* curved datanode movement doesn't scale w/ zoom & lags program
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -37,16 +35,26 @@ F* setup vercel on main branch
 <!-- F* close modal on laptop screens -->
 <!-- F* datanodes move faster w/ higher rate parameter -->
 
+12-9-22:
+<!-- F* pause node's data in modal -->
+<!-- //TODO: control panel / modals
+    On modals there is a pause button that acts as a "soft-stop" it just stops the modal from having updated data,
+    but the simulation keeps running. However, on the control panel, the pause button represents are "hard-stop", which
+    actually stops the simulation completely (read about SIGSTOP/SIGCONT signals on Linux/Mac which completely pauses a process). -->
+<!-- F* bendy arrows, repel links? -->
+<!-- B* data nodes dont follow curvy path -->
+<!-- B* hard to grab nodes w/ grid enabled -->
+<!-- F* bidirectional node detection -->
+<!-- TODO: detect when two nodes are connected bidirectionally (furthermore, in general, there could be 3 or more links between the same two nodes),
+    we should find a way to draw the arrows in a bendy manner so they can be distinguished visually. Will improve the description
+    on this one soon.  -->
+
 FEATURES:
 
 //TODO: multiple modals for multiple selected nodes:
 select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
 multiple open modals and the control panel need to co-exist somehow
 
-//TODO: control panel / modals
-On modals there is a pause button that acts as a "soft-stop" it just stops the modal from having updated data,
-but the simulation keeps running. However, on the control panel, the pause button represents are "hard-stop", which
-actually stops the simulation completely (read about SIGSTOP/SIGCONT signals on Linux/Mac which completely pauses a process).
 
 TODO: this could be a mis-take, but will think about it - 
 put a "spread out" button in the control panel - this will ensure that all nodes are at least x units apart from each other.
@@ -65,9 +73,7 @@ we really need to know? something to think about.
 TODO: "mini map" - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
 the mini-map makes things look professional and fancy, but not super high priority.
 
-TODO: detect when two nodes are connected bidirectionally (furthermore, in general, there could be 3 or more links between the same two nodes),
-we should find a way to draw the arrows in a bendy manner so they can be distinguished visually. Will improve the description
-on this one soon. 
+
 
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -

@@ -4,7 +4,6 @@
 F* reload node locations
 B* connect arrows to triangles
 B* metadatapanel doesnt display after closing modal (https://svelte.dev/repl/8b7d235f5d8d4042943c576107db12a9?version=3.29.0)
-F* supabase auth
 F* persist node state to localstorage
 F* persist node state to supabase
 
@@ -19,6 +18,10 @@ F* setup vercel on main branch
 12-9-22:
 B* curved datanode movement doesn't scale w/ zoom & lags program
 F* simplify gridline calculations
+
+12-10-22:
+B* navbar doesn't populate w/ user data on update w/o refresh
+F* move login to navbar?
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -54,6 +57,11 @@ F* simplify gridline calculations
 <!-- F* organize components by folder (src/lib) -->
 <!-- F* skeleton supabase functions -->
 <!-- B* fix console errors -->
+<!-- F* build sign in page -->
+<!-- F* build manage account page -->
+<!-- F* build out /auth route -->
+<!-- F* supabase auth -->
+<!-- F* build navbar -->
 
 FEATURES:
 

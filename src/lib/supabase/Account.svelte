@@ -121,10 +121,10 @@
 
 <style lang="postcss">
     form {
-        @apply flex flex-row justify-center mt-32 mb-8;
+        @apply flex flex-row justify-center h-screen;
     }
     form > div {
-        @apply flex flex-col space-y-4;
+        @apply flex flex-col space-y-4 my-auto;
     }
     input[type="email"],
     input[type="text"],

@@ -23,6 +23,14 @@ F* simplify gridline calculations
 B* navbar doesn't populate w/ user data on update w/o refresh
 F* move login to navbar?
 
+12-11-22:
+B* control panel smaller on laptop, collapse to corner
+
+12-12-22:
+F* move login notifications to toast
+B* secure environment variables in supabaseClient in ALL environments
+B* redirect account page on logout
+
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
 12-7-22:

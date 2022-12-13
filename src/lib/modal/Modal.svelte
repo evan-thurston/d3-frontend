@@ -5,7 +5,7 @@
     import ObjectDisplay from "./ObjectDisplay.svelte";
     import Scatterplot from "./Scatterplot.svelte";
 
-    export let point, color, interval, paused, targeted;
+    export let point, color, interval, paused, targeted, focusSvg;
 
     let height,
         width,
@@ -38,6 +38,7 @@
                             on:click={() => {
                                 point.modalOpened = false;
                                 modalOpen = false;
+                                focusSvg();
                             }}
                         >
                             <svg

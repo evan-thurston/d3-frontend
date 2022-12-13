@@ -3,7 +3,6 @@
 12-7-22:
 F* reload node locations
 B* connect arrows to triangles
-B* metadatapanel doesnt display after closing modal (https://svelte.dev/repl/8b7d235f5d8d4042943c576107db12a9?version=3.29.0)
 F* persist node state to localstorage
 F* persist node state to supabase
 
@@ -23,8 +22,9 @@ B* navbar doesn't populate w/ user data on update w/o refresh
 
 12-12-22:
 B* secure environment variables in supabaseClient in ALL environments
-B* redirect account page on logout
 F* scope display node
+B* input must have uuid console error
+F* share supabase variables globally(update account info in navbar)
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -65,6 +65,12 @@ F* scope display node
 <!-- F* build out /auth route -->
 <!-- F* supabase auth -->
 <!-- F* build navbar -->
+<!-- TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something
+or maybe put the results in their google drive and send a link to that in an email. the results would always overwrite previous
+unless the user specified not to. not huge on google, but I don't really want to store users in db. so I think what we need to 
+do is make sure an address actually belongs to someone - that could mean "login with google" or maybe better, just click
+the link to verify an email - this could put a token in the browser proving that they own the email address, and that's all
+we really need to know? something to think about. -->
 
 12-11-22:
 <!-- B* hotfix supabase env loading -->
@@ -75,6 +81,10 @@ F* scope display node
 <!-- F* simplify gridline calculations -->
 <!-- F* move login notifications to toast -->
 <!-- F* lightmode/darkmode -->
+<!-- B* metadatapanel doesnt display after closing modal -->
+<!-- F* dynamically set grid increment -->
+<!-- B* grid visual bugfix(link to top left corner of screen) -->
+<!-- B* redirect account page on logout -->
 
 FEATURES:
 
@@ -82,20 +92,12 @@ FEATURES:
 select a node with control+click (or shift+click, whatever works), we can select multiple nodes, and then multiple modals would show up.
 multiple open modals and the control panel need to co-exist somehow
 
-
 TODO: this could be a mis-take, but will think about it - 
 put a "spread out" button in the control panel - this will ensure that all nodes are at least x units apart from each other.
 I think forces between nodes already achieve this to a degree. But I guess the spread out button will like extra special force the
 spread out amount to be honored? tbd
 
 TODO: Make a PWA for desktop and mobile
-
-TODO: *login with google or something* - maybe just email address - we can email results if someone checks a box or something
-or maybe put the results in their google drive and send a link to that in an email. the results would always overwrite previous
-unless the user specified not to. not huge on google, but I don't really want to store users in db. so I think what we need to 
-do is make sure an address actually belongs to someone - that could mean "login with google" or maybe better, just click
-the link to verify an email - this could put a token in the browser proving that they own the email address, and that's all
-we really need to know? something to think about.
 
 TODO: "mini map" - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
 the mini-map makes things look professional and fancy, but not super high priority.

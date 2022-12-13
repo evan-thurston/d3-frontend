@@ -1,9 +1,10 @@
 <script>
     export let width, height, grid, transform;
-    let cols = Math.round(width / grid),
-        rows = Math.round(height / grid),
-        griddedWidth = cols * grid,
-        griddedHeight = rows * grid;
+
+    $: cols = Math.round(width / grid)
+    $: rows = Math.round(height / grid)
+    $: griddedWidth = cols * grid
+    $: griddedHeight = rows * grid;
 </script>
 
 {#each Array(3 * rows + 1) as _, n}

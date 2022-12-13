@@ -196,7 +196,7 @@
             dec={decGrid}
             inc={incGrid}
             decLimit={grid <= 1}
-            incLimit={grid >= 120}
+            incLimit={grid >= Math.round(width / 10)}
         />
     </div>
     <div

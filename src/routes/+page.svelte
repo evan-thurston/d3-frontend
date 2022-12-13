@@ -25,6 +25,7 @@
         };
 
     $: interval = 3000;
+    $: gridInc = Math.round(width / 100);
 
     onMount(() => {
         loaded = true;
@@ -138,10 +139,12 @@
         group -= 1;
     };
     const incGrid = () => {
-        grid += 20;
+        grid += gridInc;
+        reset();
     };
     const decGrid = () => {
-        grid -= 20;
+        grid -= gridInc;
+        reset();
     };
     updateLinks();
 </script>

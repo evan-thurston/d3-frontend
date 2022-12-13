@@ -24,13 +24,13 @@
     const midX = (link) => {
         return (
             (link.source.x + link.target.x) / 2 -
-            (link.target.y - link.source.y) / 9 || 0
+                (link.target.y - link.source.y) / 9 || 0
         );
     };
     const midY = (link) => {
         return (
             (link.source.y + link.target.y) / 2 +
-            (link.target.x - link.source.x) / 9 || 0
+                (link.target.x - link.source.x) / 9 || 0
         );
     };
 </script>
@@ -47,16 +47,20 @@
         marker-end="url(#marker)"
         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
     /> -->
-    <path
-        d="M {pointAlongLink(link, radius).x},{pointAlongLink(link, radius).y}
-        Q {midX(link)},{midY(link)} {pointAlongLink(link, radius + 10, true)
-            .x},{pointAlongLink(link, radius + 10, true).y}"
-        class="fill-none {link.source.group === group || indirectTargeted(link)
-            ? 'stroke-success'
-            : bothWays
-            ? 'stroke-info'
-            : 'stroke-neutral'}"
-        marker-end="url(#marker)"
-        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-    />
+    {#if link.source.x !== link.target.x || link.source.y !== link.target.y}
+        <path
+            d="M {pointAlongLink(link, radius).x},{pointAlongLink(link, radius)
+                .y}
+        Q {midX(link)},{midY(link)} {pointAlongLink(link, radius + 15, true)
+                .x},{pointAlongLink(link, radius + 15, true).y}"
+            class="fill-none {link.source.group === group ||
+            indirectTargeted(link)
+                ? 'stroke-success'
+                : bothWays
+                ? 'stroke-info'
+                : 'stroke-neutral'}"
+            marker-end="url(#marker)"
+            transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
+        />
+    {/if}
 </g>

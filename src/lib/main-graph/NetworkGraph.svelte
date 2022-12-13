@@ -120,7 +120,7 @@
             ratio = distance / totalDist;
         }
         let newX = link.source.x + (link.target.x - link.source.x) * ratio || 0;
-        let newY = link.source.y + (link.target.y - link.source.y) * ratio ||0;
+        let newY = link.source.y + (link.target.y - link.source.y) * ratio || 0;
         return { x: newX, y: newY };
     };
 
@@ -143,7 +143,7 @@
                 d3
                     .forceManyBody()
                     .strength(
-                        (radius * -90) /
+                        (radius * -70) /
                             (Math.max(1, 750 - width) ** 0.1 *
                                 nodes.length ** 0.2)
                     )
@@ -223,12 +223,19 @@
     };
 
     const connectedBothWays = (link) => {
-        let connected = false, connectedToSource = links.filter(({target}) => target.id === link.source.id);
-        connectedToSource.forEach(sourceLink => {
-            if(sourceLink.source === link.target) connected = true;
+        let connected = false,
+            connectedToSource = links.filter(
+                ({ target }) => target.id === link.source.id
+            );
+        connectedToSource.forEach((sourceLink) => {
+            if (sourceLink.source === link.target) connected = true;
         });
-        return connected
-    }
+        return connected;
+    };
+
+    const focusSvg = () => {
+        focus(svg);
+    };
 </script>
 
 <svelte:window
@@ -275,6 +282,7 @@
                 {interval}
                 {paused}
                 {group}
+                {grid}
                 {indirectTargeted}
                 {transform}
             />
@@ -317,6 +325,7 @@
                                     ({ target }) => target.id === point.id
                                 )
                             )}
+                            {focusSvg}
                         />
                     </foreignObject>
                 {/if}

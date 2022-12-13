@@ -13,6 +13,46 @@ const config = {
       "synthwave", "retro",
 
       {
+        lighttheme: {
+
+          "primary": "#f2b7ae",
+
+          "secondary": "#5dd890",
+
+          "accent": "#db81ab",
+
+          "neutral": "#201B27",
+
+          "base-100": "#EEEAF6",
+
+          "info": "#5B7CD7",
+
+          "success": "#125948",
+
+          "warning": "#F8B354",
+
+          "error": "#E87D81",
+        },
+        darkpinktheme: {
+
+          "primary": "#e567b0",
+
+          "secondary": "#f4b7ba",
+
+          "accent": "#a5f7ab",
+
+          "neutral": "#141B24",
+
+          "base-100": "#3B3748",
+
+          "info": "#88E0F2",
+
+          "success": "#2ED19D",
+
+          "warning": "#A56D0D",
+
+          "error": "#E46278",
+        },
         bluetheme: {
 
           "primary": "#6654b7",

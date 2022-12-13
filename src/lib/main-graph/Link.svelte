@@ -24,13 +24,13 @@
     const midX = (link) => {
         return (
             (link.source.x + link.target.x) / 2 -
-            (link.target.y - link.source.y) / 7 || 0
+            (link.target.y - link.source.y) / 9 || 0
         );
     };
     const midY = (link) => {
         return (
             (link.source.y + link.target.y) / 2 +
-            (link.target.x - link.source.x) / 7 || 0
+            (link.target.x - link.source.x) / 9 || 0
         );
     };
 </script>

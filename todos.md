@@ -17,19 +17,14 @@ F* setup vercel on main branch
 
 12-9-22:
 B* curved datanode movement doesn't scale w/ zoom & lags program
-F* simplify gridline calculations
 
 12-10-22:
 B* navbar doesn't populate w/ user data on update w/o refresh
-F* move login to navbar?
-
-12-11-22:
-B* control panel smaller on laptop, collapse to corner
 
 12-12-22:
-F* move login notifications to toast
 B* secure environment variables in supabaseClient in ALL environments
 B* redirect account page on logout
+F* scope display node
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -70,6 +65,16 @@ B* redirect account page on logout
 <!-- F* build out /auth route -->
 <!-- F* supabase auth -->
 <!-- F* build navbar -->
+
+12-11-22:
+<!-- B* hotfix supabase env loading -->
+<!-- F* move login to navbar? -->
+
+12-12-22:
+<!-- B* control panel smaller on laptop, collapse to corner -->
+<!-- F* simplify gridline calculations -->
+<!-- F* move login notifications to toast -->
+<!-- F* lightmode/darkmode -->
 
 FEATURES:
 

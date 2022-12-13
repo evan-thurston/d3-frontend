@@ -9,11 +9,10 @@
 
     let height,
         width,
+        modalPaused = paused || false,
+        modalOpen = point.modalOpened,
         pause = "/pause.svg",
         play = "/play.svg",
-        modalPaused = paused || false;
-
-    let modalOpen = point.modalOpened,
         close = "/close.svg";
 
     $: graphWidth = (width + height) ** 0.65 || 300;
@@ -41,28 +40,55 @@
                                 modalOpen = false;
                             }}
                         >
-                            <img
-                                src={close}
-                                alt="close modal"
-                                class="w-6 h-6 opacity-50"
-                            />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="w-6 h-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
                         </button>
                         <button
                             class="btn-primary rounded-md p-2"
                             on:click={() => (modalPaused = !modalPaused)}
                         >
                             {#if modalPaused}
-                                <img
-                                    class="w-6 h-6 opacity-50"
-                                    alt="unpause data transfer"
-                                    src={play}
-                                />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+                                    />
+                                </svg>
                             {:else}
-                                <img
-                                    class="w-6 h-6 opacity-50"
-                                    alt="pause data transfer"
-                                    src={pause}
-                                />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15.75 5.25v13.5m-7.5-13.5v13.5"
+                                    />
+                                </svg>
                             {/if}
                         </button>
                     </div>
@@ -140,7 +166,7 @@
     .container .wrapper .modalContainer .modalWrapper {
         @apply relative overflow-hidden 
         sm:w-full sm:max-w-max bg-base-200 
-        rounded-lg border-8 border-base-300 shadow-xl  
+        rounded-lg border-8 border-primary shadow-xl  
         text-left sm:my-8 py-4 bottom-8;
     }
     .container .wrapper .modalContainer .modalWrapper .modalBody {

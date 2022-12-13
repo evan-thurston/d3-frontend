@@ -26,17 +26,18 @@
         w,
         updateInterval,
         progressInterval,
+        distance = 50,
         top,
         right,
-        left = 100,
-        bottom = 100,
+        left = distance,
+        bottom = distance,
         moving = false,
         updates = 0,
         progress = 100;
 
     onMount(() => {
-        top = height - 100;
-        right = width - w - 100;
+        top = height - distance;
+        right = width - w - distance;
     });
 
     const onMouseDown = () => {
@@ -55,18 +56,18 @@
     const onMouseUp = (e) => {
         if (moving) {
             if (e.clientX < width / 2) {
-                left = 100;
-                right = width - w - 100;
+                left = distance;
+                right = width - w - distance;
             } else {
-                right = 100;
-                left = width - w - 100;
+                right = distance;
+                left = width - w - distance;
             }
             if (e.clientY < height / 2) {
-                top = 100 + h;
-                bottom = height - 100 - h;
+                top = distance + h;
+                bottom = height - distance - h;
             } else {
-                top = height - 100;
-                bottom = 100;
+                top = height - distance;
+                bottom = distance;
             }
         }
         moving = false;
@@ -117,7 +118,7 @@
     <div
         bind:clientHeight={h}
         bind:clientWidth={w}
-        class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-base-200 p-4 md:p-8 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-base-300 shadow-xl border-t-4 2xl:border-4 border-base-300"
+        class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-base-200 p-4 md:p-6 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-base-300 shadow-xl border-t-4 2xl:border-4 border-primary"
     >
         <ControlPanel
             {reset}

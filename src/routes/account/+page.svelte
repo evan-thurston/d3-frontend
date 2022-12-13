@@ -1,7 +1,14 @@
 <script>
     import { page } from "$app/stores";
     import Account from "$lib/supabase/Account.svelte";
+    import { onMount } from "svelte";
     import { browser } from '$app/environment';
+
+    onMount(() => {
+        if (browser && !$page.data.session) {
+            window.location.href = "/";
+        }
+    });
 
     $: {
         if (browser && !$page.data.session) {

@@ -2,8 +2,6 @@
     import { onMount } from "svelte";
     import { supabase } from "$lib/supabaseClient";
 
-    import { updateNav } from '$lib/Navbar.svelte'
-
     import Avatar from "./Avatar.svelte";
 
     export let session;

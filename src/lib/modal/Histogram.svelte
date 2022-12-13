@@ -57,8 +57,8 @@
 		@apply flex flex-row opacity-75 my-1 sm:my-2 lg:my-4;
 	}
 	.chart .col {
-		@apply sm:p-1 pt-0 mx-[1px] self-end bg-secondary
-            font-sans text-center;
+		@apply sm:p-1 pt-0 mx-[1px] self-end bg-primary
+            font-sans text-center rounded-md;
 	}
 	.chart .col p {
 		@apply text-[0.3rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-xs 2xl:text-sm;

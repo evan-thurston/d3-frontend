@@ -2,7 +2,6 @@
     import { onMount } from "svelte";
     import { scaleLinear, scaleOrdinal } from "d3-scale";
     import { zoom, zoomIdentity } from "d3-zoom";
-    import { schemeAccent } from "d3-scale-chromatic";
     import { select, selectAll } from "d3-selection";
     import { drag } from "d3-drag";
 
@@ -18,7 +17,6 @@
         zoomIdentity,
         scaleLinear,
         scaleOrdinal,
-        schemeAccent,
         select,
         selectAll,
         drag,
@@ -28,7 +26,7 @@
         forceCenter,
     };
 
-    const colourScale = d3.scaleOrdinal(d3.schemeAccent);
+    const colourScale = d3.scaleOrdinal(["#6e40aa","#a03db3","#d23ea7","#f9488a","#ff5e63","#ff7f41","#efa72f","#cdcf37","#aff05b"]);
 
     import MetadataPanel from "./MetadataPanel.svelte";
     import Modal from "../modal/Modal.svelte";

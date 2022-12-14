@@ -118,7 +118,14 @@
     <div
         bind:clientHeight={h}
         bind:clientWidth={w}
-        class="absolute bottom-0 2xl:bottom-4 flex flex-col px-auto 2xl:ml-4 bg-base-200 p-4 md:p-6 rounded-lg rounded-b-none 2xl:rounded-b-lg w-full 2xl:min-w-max shadow-base-300 shadow-xl border-t-4 2xl:border-4 border-primary"
+        class="
+            absolute bottom-0 2xl:bottom-4 
+            bg-base-100 flex flex-col 
+            px-auto 2xl:ml-4 p-4 md:p-6 
+            rounded-lg rounded-b-none 2xl:rounded-b-lg 
+            w-full 2xl:min-w-max 
+            shadow-base-300 shadow-xl 
+            border-t-4 2xl:border-4 border-accent"
     >
         <ControlPanel
             {reset}

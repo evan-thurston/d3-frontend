@@ -60,6 +60,6 @@
 
 <style lang="postcss">
     circle {
-        @apply fill-secondary;
+        @apply fill-primary;
     }
 </style>

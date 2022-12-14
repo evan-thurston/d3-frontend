@@ -166,12 +166,12 @@
     }
     .container .wrapper .modalContainer .modalWrapper {
         @apply relative overflow-hidden 
-        sm:w-full sm:max-w-max bg-base-200 
-        rounded-lg border-8 border-primary shadow-xl  
+        sm:w-full sm:max-w-max bg-base-100 
+        rounded-lg border-8 border-accent shadow-xl  
         text-left sm:my-8 py-4 bottom-8;
     }
     .container .wrapper .modalContainer .modalWrapper .modalBody {
-        @apply bg-base-200 p-4 pt-2 sm:py-4 sm:px-6;
+        @apply bg-base-100 p-4 pt-2 sm:py-4 sm:px-6;
     }
     .container .wrapper .modalContainer .modalWrapper .modalBody > div {
         @apply flex flex-row;
@@ -195,6 +195,6 @@
         @apply flex flex-col space-y-4 items-center text-center uppercase;
     }
     .container .wrapper .modalContainer .modalWrapper .modalActions {
-        @apply bg-base-200 px-4 sm:flex sm:flex-row-reverse sm:px-6;
+        @apply bg-base-100 px-4 sm:flex sm:flex-row-reverse sm:px-6;
     }
 </style>

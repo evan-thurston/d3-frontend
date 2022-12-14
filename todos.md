@@ -30,7 +30,10 @@ B* navbar doesn't populate w/ user data on update w/o refresh
 B* secure environment variables in supabaseClient in ALL environments
 F* scope display node
 B* input must have uuid console error
-F* share supabase variables globally(update account info in navbar)
+
+12-13-22:
+B* indirect targeting algorithm optimization
+B* clean up lesmis dataset
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -90,7 +93,12 @@ we really need to know? something to think about. -->
 <!-- B* metadatapanel doesnt display after closing modal -->
 <!-- F* dynamically set grid increment -->
 <!-- B* grid visual bugfix(link to top left corner of screen) -->
+
+12-13-22:
+<!-- F* canvas vs svg ?? answer: svg(canvas looks bad) -->
+<!-- F* new color scale -->
 <!-- B* redirect account page on logout -->
+
 
 FEATURES:
 
@@ -108,8 +116,6 @@ TODO: Make a PWA for desktop and mobile
 TODO: "mini map" - like an iframe of the whole page but in the corner - this might be useless except when using zoom etc.
 the mini-map makes things look professional and fancy, but not super high priority.
 
-
-
 TODO: 8. change forces so there's more force between nodes given more degrees of separation/freedom
 TODO: 16: need to find a way to do an ultra-efficient re-render of each node -
     only render changed nodes and do *not* re-render whole damn thing!
@@ -119,7 +125,6 @@ TODO: 4. rendering is optimization problem, roughly:
     * minimize link crossing/overlap.
     * maximize space between nodes.
     * but keep drawing within container.
-
 
 TODO: find a way to efficiently re-render graph nodes/links without re-rendering whole graph:  
     see this SO question: https://stackoverflow.com/questions/74486923/re-render-nodes-efficiently-in-d3-force-directed-graph

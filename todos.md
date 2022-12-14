@@ -1,3 +1,9 @@
+
+
+TODO: find a software pattern for declaring node with 1-in, 2-outs, where the 2-outs are visiting with probability
+p and 1-p, this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
+
+
 <!-- TODOS:
 (F) Feature (B) Bugfix -->
 12-7-22:

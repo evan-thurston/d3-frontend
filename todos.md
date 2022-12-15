@@ -3,6 +3,15 @@
 TODO: find a software pattern for declaring node with 1-in, 2-outs, where the 2-outs are visiting with probability
 p and 1-p, this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
 
+//TODO: nodes repel every other node, but subject to inverse-squared or inverse-cubed law
+// the above might result in "triangles instead of squares", but we might be able to use dummy nodes to combat that
+// use-case, want to arrange nodes onto an even grid, like a grid of city streets etc.
+
+TODO: Eventually we want some grid systems, like streets/intersections or a factory layout..your solution to snap to grid 
+will definitely help and play a part. one additional idea is to use dummy (invisible) nodes that attract a group 
+together around a center point. I attached a picture, the green are real nodes, the black are dummy/invisible nodes 
+that just are for layout purposes. Each black node is only attached to the 4 local nodes.
+
 
 <!-- TODOS:
 (F) Feature (B) Bugfix -->

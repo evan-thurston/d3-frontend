@@ -1,7 +1,18 @@
 
+Note: A "stationary entity" is a node on the front-end, whereas a "movable entity" is something that goes across links between
+nodes.
 
 TODO: find a software pattern for declaring node with 1-in, 2-outs, where the 2-outs are visiting with probability
 p and 1-p, this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
+
+TODO: find a pattern to run and display genetic/evolutionary algorithms. Every child/mutation will probably be modeled by a 
+"movable" in the backend, and the stationary components will probably be more abstract - but a tickerboard/timeline
+showing each event/mutation, would be a value-add on the front-end. For now, I think you have 4 nodes,
+a birth node (source), a death node (sink), and 2 processor nodes, which are the 2 parents of every child/mutation, where
+those children are movables.
+
+TODO: create a "timeline panel" that is basically like a ticker-board, a new event is posted and the panel scrolls down.
+So every time a new line is written to the timeline, it scrolls down a line.
 
 //TODO: nodes repel every other node, but subject to inverse-squared or inverse-cubed law
 // the above might result in "triangles instead of squares", but we might be able to use dummy nodes to combat that
@@ -16,11 +27,13 @@ So with the example above in mind, we need to make these dummy nodes and dummy l
 stored on each link and node. (We could also use dummy nodes on the exterior of shapes to pull outwards).
 
 TODO: process backend-event-queue on the front-end - basically, the front-end should consume these events at a rate
-of 1/10th of a second. The back-end will spit events up to the front-end at about 1/10th of a second. We can create a system
+of ~1/10th of a second. The back-end will spit events up to the front-end at about 1/10th of a second (the same rate).
+Front-end should read from a queue, instead of reading directly from websocket. Websocket puts events on that queue.
+We can create a system
 of backpressure where if the front-end is bogged down, we can wait to send more events to front-end. If the back-end is generating
 a lot more events than front-end can consume, we may need to use disk to store events before they go to front-end, which would be fine.
 In general, I think we should stick to 1/10th of a second on front-end, so that most updates aren't any more frequent than that,
-so that rendering doesn't often get behind events. Front-end should read from a queue, instead of reading directly from websocket.
+so that rendering doesn't often get behind events. 
 
 
 <!-- TODOS:

@@ -15,6 +15,13 @@ that just are for layout purposes. Each black node is only attached to the 4 loc
 So with the example above in mind, we need to make these dummy nodes and dummy links invisible, which is just a boolean
 stored on each link and node. (We could also use dummy nodes on the exterior of shapes to pull outwards).
 
+TODO: process backend-event-queue on the front-end - basically, the front-end should consume these events at a rate
+of 1/10th of a second. The back-end will spit events up to the front-end at about 1/10th of a second. We can create a system
+of backpressure where if the front-end is bogged down, we can wait to send more events to front-end. If the back-end is generating
+a lot more events than front-end can consume, we may need to use disk to store events before they go to front-end, which would be fine.
+In general, I think we should stick to 1/10th of a second on front-end, so that most updates aren't any more frequent than that,
+so that rendering doesn't often get behind events. Front-end should read from a queue, instead of reading directly from websocket.
+
 
 <!-- TODOS:
 (F) Feature (B) Bugfix -->

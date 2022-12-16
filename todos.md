@@ -3,7 +3,7 @@ Note: A "stationary entity" is a node on the front-end, whereas a "movable entit
 nodes.
 
 TODO: find a software pattern for declaring node with 1-in, 2-outs, where the 2-outs are visiting with probability
-p and 1-p, this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
+(p) and (1-p), this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
 
 TODO: find a pattern to run and display genetic/evolutionary algorithms. Every child/mutation will probably be modeled by a 
 "movable" in the backend, and the stationary components will probably be more abstract - but a tickerboard/timeline

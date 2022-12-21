@@ -18,7 +18,6 @@
         paused = false,
         maxGroups = 1,
         groupLimit = false,
-        treeMode = true,
         grid = 1,
         content = {
             json: dummyNodes.nodes,
@@ -157,7 +156,7 @@
 
 {#if editorShowing}
     <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
-        <JSONEditor bind:content onChangeMode={() => (treeMode = !treeMode)} />
+        <JSONEditor bind:content navigationBar={false} />
     </div>
 {/if}
 {#if !loaded}

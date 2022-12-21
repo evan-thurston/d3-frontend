@@ -66,6 +66,15 @@ B* input must have uuid console error
 12-13-22:
 B* indirect targeting algorithm optimization
 B* clean up lesmis dataset
+F* share supabase variables globally(update account info in navbar)
+F* access "global" variables from account/ route (true global variables, ie writable store?)
+
+12-18-22:
+F* edit node in modal
+F* delete node in modal
+
+12-20-22:
+B* connect to data array, rather than Object map
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -131,6 +140,8 @@ we really need to know? something to think about. -->
 <!-- F* new color scale -->
 <!-- B* redirect account page on logout -->
 
+12-20-22:
+<!-- F* migrate to sveltekit 1.0 and update other dependencies(run an npm install !) -->
 
 FEATURES:
 

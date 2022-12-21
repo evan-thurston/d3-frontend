@@ -2,7 +2,7 @@
     export let point, color, targeted;
 
     let objectArr = [],
-        keys = Object.keys(Object.assign({}, Object.getPrototypeOf(point), point));
+        keys = Object.keys(point)
 
     for (let i = 0; i < keys.length; i++) {
         if (keys[i] === "data") {

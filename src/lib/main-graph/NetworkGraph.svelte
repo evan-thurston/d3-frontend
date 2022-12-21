@@ -26,7 +26,17 @@
         forceCenter,
     };
 
-    const colourScale = d3.scaleOrdinal(["#6e40aa","#a03db3","#d23ea7","#f9488a","#ff5e63","#ff7f41","#efa72f","#cdcf37","#aff05b"]);
+    const colourScale = d3.scaleOrdinal([
+        "#6e40aa",
+        "#a03db3",
+        "#d23ea7",
+        "#f9488a",
+        "#ff5e63",
+        "#ff7f41",
+        "#efa72f",
+        "#cdcf37",
+        "#aff05b",
+    ]);
 
     import MetadataPanel from "./MetadataPanel.svelte";
     import Modal from "../modal/Modal.svelte";
@@ -85,8 +95,11 @@
     });
 
     $: radius = ((width + height) ** 0.5 * 2) / data.nodes.length ** 0.5;
-    $: links = data.links.map((d) => Object.create(d));
-    $: nodes = data.nodes.map((d) => Object.create(d));
+    $: links = data.links.map((d) => d);
+    $: nodes = data.nodes.map((d) => d);
+    // let links, nodes;
+    // links = data.links;
+    // nodes = data.nodes;
 
     const simulationUpdate = () => {
         simulation.tick();

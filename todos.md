@@ -73,8 +73,12 @@ F* access "global" variables from account/ route (true global variables, ie writ
 F* edit node in modal
 F* delete node in modal
 
-12-20-22:
-B* connect to data array, rather than Object map
+12-28-22:
+B* preserve coordinates after restarting simulation
+
+12-30-22:
+B* use proper force constant on first load
+F* save/load data from account control
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -142,6 +146,17 @@ we really need to know? something to think about. -->
 
 12-20-22:
 <!-- F* migrate to sveltekit 1.0 and update other dependencies(run an npm install !) -->
+
+12-28-22:
+<!-- B* connect to data array, rather than Object map -->
+<!-- F* persist node locations to dataset -->
+
+12-29-22:
+<!-- B* fix runtime error(repair object structure) -->
+<!-- F* refactor save/reset buttons(save data) -->
+
+12-30-22:
+<!-- F* simplify force calculation -->
 
 FEATURES:
 

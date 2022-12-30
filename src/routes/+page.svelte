@@ -84,7 +84,7 @@
     };
     const reset = () => {
         updateLinks();
-        resetSim = !resetSim;
+        resetSim = true;
         paused = false;
         editorShowing = false;
         let maxGroupNodes,
@@ -103,6 +103,9 @@
         }
         if (group > groupLimit) group = groupLimit;
     };
+    const resetTheSim = () => {
+        resetSim = false;
+    };
     const swapData = () => {
         if (dataset === 1) {
             dataset = 2;
@@ -118,12 +121,13 @@
     };
     const updateData = () => {
         let newJson = content.json ? content.json : JSON.parse(content.text);
-        if (newData.nodes !== newJson) {
-            newData = { nodes: newJson };
-            reset();
-        } else {
-            editorShowing = false;
-        }
+        // if (newData.nodes !== newJson) {
+        newData = { nodes: newJson };
+        reset();
+        // }
+    };
+    const updateDataset = (data) => {
+        content.json = data;
     };
     const incInterval = () => {
         interval += 1000;
@@ -167,16 +171,17 @@
     </h1>
 {/if}
 <div class:hidden={!loaded}>
-    {#key resetSim}
-        <NetworkGraph
-            {physicsPaused}
-            data={newData}
-            {interval}
-            {group}
-            {paused}
-            {grid}
-        />
-    {/key}
+    <NetworkGraph
+        {resetSim}
+        {resetTheSim}
+        {physicsPaused}
+        data={newData}
+        {interval}
+        {group}
+        {paused}
+        {grid}
+        {updateDataset}
+    />
     <DraggableControlPanel
         {reset}
         {toggle}

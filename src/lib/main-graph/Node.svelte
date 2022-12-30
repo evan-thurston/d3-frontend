@@ -17,22 +17,6 @@
 
     $: if (grid > 1 && point.x) point.x = gridX(point.x);
     $: if (grid > 1 && point.y) point.y = gridY(point.y);
-    // $: {
-    //     if (point && point.data) {
-    //         let dataX = point.data.find(({ label }) => label === "x");
-
-    //         if (!dataX) point.data.push({ label: "x", value: point.x });
-    //         else dataX.value = point.x;
-    //     }
-    // }
-    // $: {
-    //     if (point.data) {
-    //         let dataY = point.data.find(({ label }) => label === "y");
-
-    //         if (!dataY) point.data.push({ label: "y", value: point.y });
-    //         else dataY.value = point.y;
-    //     }
-    // }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

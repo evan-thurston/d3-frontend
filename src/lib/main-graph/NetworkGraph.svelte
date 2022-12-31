@@ -81,7 +81,7 @@
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
     $: radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
     $: forceConstant =
-        (radius * 3) / (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
+        (3 * radius) / (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
     $: if (resetSim) {
         stopSim();
         setTimeout(() => {
@@ -155,11 +155,10 @@
     };
 
     const startSim = () => {
-        console.log("force constant", forceConstant);
-        console.log("radius", radius);
-        console.log("width", width);
-        console.log("height", height);
-        console.log("nodes.length", nodes.length);
+        radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
+        forceConstant =
+            (3 * radius) /
+            (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
 
         simulation = d3
             .forceSimulation(nodes)

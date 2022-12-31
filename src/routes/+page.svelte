@@ -5,10 +5,12 @@
 
     import { lesMis, dummyNodes } from "$lib/utils";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
+    import ObjectDisplay from "../lib/modal/ObjectDisplay.svelte";
 
     let width = 1000,
         height = 1000,
         editorShowing = false,
+        tickerShowing = false,
         physicsPaused,
         dataset = 1,
         group = 1,
@@ -81,6 +83,9 @@
     };
     const jsonEdit = () => {
         editorShowing = !editorShowing;
+    };
+    const toggleTicker = () => {
+        tickerShowing = !tickerShowing;
     };
     const reset = () => {
         updateLinks();
@@ -163,6 +168,19 @@
         <JSONEditor bind:content navigationBar={false} />
     </div>
 {/if}
+{#if tickerShowing}
+    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-scroll">
+        <div class="my-8 flex flex-col space-y-8">
+            {#each newData.nodes as node}
+                <div class="text-center bg-primary p-2 rounded-lg">
+                    <pre>{"{"}</pre>
+                    <ObjectDisplay point={node} color="#fff" targeted={true} />
+                    <pre>{"}"}</pre>
+                </div>
+            {/each}
+        </div>
+    </div>
+{/if}
 {#if !loaded}
     <h1
         class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
@@ -186,6 +204,7 @@
         {reset}
         {toggle}
         {jsonEdit}
+        {toggleTicker}
         {swapData}
         {updateData}
         {interval}

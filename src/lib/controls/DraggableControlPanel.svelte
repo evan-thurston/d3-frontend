@@ -5,6 +5,7 @@
     export let reset,
         toggle,
         jsonEdit,
+        toggleTicker,
         swapData,
         updateData,
         interval,
@@ -132,6 +133,7 @@
             {resetProg}
             {toggle}
             {jsonEdit}
+            {toggleTicker}
             {swapData}
             {updateData}
             {interval}

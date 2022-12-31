@@ -48,7 +48,7 @@ F* persist node state to supabase
 F* space nodes by 3 grid units, for example
 F* persist node location w/ reload
 F* PWA
-F* multiple modals
+*** F* multiple modals
 F* multiple nodes selected
 F* setup vercel on main branch
 
@@ -77,8 +77,11 @@ F* delete node in modal
 B* preserve coordinates after restarting simulation
 
 12-30-22:
-B* use proper force constant on first load
 F* save/load data from account control
+** F* fibonacci, markov, queueing system, airport
+*** F* ticker board w/ node data
+F* tickerboard pause function
+B* d3 ticks/sec
 
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix -->
@@ -157,6 +160,10 @@ we really need to know? something to think about. -->
 
 12-30-22:
 <!-- F* simplify force calculation -->
+<!-- B* use proper force constant on first load -->
+<!-- F* tickerboard basic implementation -->
+<!-- B* remove svg files -->
+
 
 FEATURES:
 

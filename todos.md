@@ -2,6 +2,8 @@
 Note: A "stationary entity" is a node on the front-end, whereas a "movable entity" is something that goes across links between
 nodes.
 
+TODO: allow read from Excel/Google Sheets/Airtable, for user to setup simulation etc.
+
 TODO: find a software pattern for declaring node with 1-in, 2-outs, where the 2-outs are visiting with probability
 (p) and (1-p), this info should be declared in the node, not links, most likely. Likewise, for 3-outs, 4-outs, etc.
 

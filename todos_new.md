@@ -47,7 +47,6 @@ B* d3 ticks/sec
 
 1-7-23:
 B* pause dots while updates paused
-B* ticker swap data
 F* JSON editor css
 F* undo function
 B* add node populate x/y

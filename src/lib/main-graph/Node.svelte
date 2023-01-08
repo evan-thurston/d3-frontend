@@ -41,7 +41,7 @@
         ID: {point.id}
     </text>
     {#if point.data}
-        {#each ["x", "y"] as coord, i}
+        <!-- {#each ["x", "y"] as coord, i}
             <text
                 class="fill-warning"
                 x={point.x}
@@ -55,7 +55,7 @@
                     ? "x: " + Math.round(point.x)
                     : "y: " + Math.round(point.y)}
             </text>
-        {/each}
+        {/each} -->
         {#each point.data.slice(0, 3) as field, i}
             <text
                 class={typeof field.value === "string"
@@ -64,7 +64,7 @@
                     ? "fill-warning"
                     : "fill-error"}
                 x={point.x}
-                y={point.y + radius * (2.7 + 0.5 * i) || point.y}
+                y={point.y + radius * (1.7 + 0.5 * i) || point.y}
                 text-anchor="middle"
                 transform="
                 translate({transform.x || 0} {transform.y || 0}) 
@@ -82,6 +82,8 @@
             width={radius * 2}
             height={radius * 2}
             fill={colourScale(point.group)}
+            stroke-opacity={0.6}
+            stroke={colourScale(point.group)}
             x={point.x - radius || point.x}
             y={point.y - radius || point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
@@ -94,6 +96,8 @@
             {point.x + radius || 0},{point.y + radius || 0} 
             {point.x || 0},{point.y - radius || 0}"
             fill={colourScale(point.group)}
+            stroke-opacity={0.6}
+            stroke={colourScale(point.group)}
             x={point.x - radius || point.x}
             y={point.y - radius || point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
@@ -104,6 +108,8 @@
             class="node"
             r={radius}
             fill={colourScale(point.group)}
+            stroke-opacity={0.6}
+            stroke={colourScale(point.group)}
             cx={point.x}
             cy={point.y}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
@@ -115,7 +121,6 @@
     circle.node,
     rect.node,
     polygon.node {
-        stroke: #fff;
-        stroke-width: 1.5;
+        @apply stroke-[0.9rem];
     }
 </style>

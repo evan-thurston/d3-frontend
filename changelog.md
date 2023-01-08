@@ -1,13 +1,20 @@
 <!-- COMPLETED TODOS
-(F) Feature (B) Bugfix (M) Meta -->
+(F) Feature (B) Bugfix (M) Meta (V) Visual -->
 
-12-7-23:
+1-8-23:
+<!-- B* overflow ticker content into an ellipsis & hover popup -->
+<!-- F* sticky ticker's key to the top of the tickerboard -->
+<!-- B* when swapping data, ticker tries to keep previous dataset in memory -->
+<!-- V* visual changes to nodes -->
+
+
+1-7-23:
 <!-- B* remove d3 helper fields from objectdisplay -->
 <!-- F* tickerboard layout/basic css -->
 <!-- M* todos cleanup -->
 <!-- F* tickerboard css cleanup (no longer using objectdisplay) -->
 
-12-5-23:
+1-5-23:
 <!-- F* add field selection to objectdisplay component -->
 <!-- F* tickerboard refactor -->
 

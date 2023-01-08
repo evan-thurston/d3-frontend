@@ -5,7 +5,7 @@
 
     import { lesMis, dummyNodes } from "$lib/utils";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
-    import ObjectDisplay from "../lib/modal/ObjectDisplay.svelte";
+    import Ticker from "../lib/Ticker.svelte";
 
     let width = 1000,
         height = 1000,
@@ -83,9 +83,11 @@
     };
     const jsonEdit = () => {
         editorShowing = !editorShowing;
+        if(editorShowing) tickerShowing = false;
     };
     const toggleTicker = () => {
         tickerShowing = !tickerShowing;
+        if(tickerShowing) editorShowing = false;
     };
     const reset = () => {
         updateLinks();
@@ -133,6 +135,8 @@
     };
     const updateDataset = (data) => {
         content.json = data;
+        // console.log(JSON.stringify(content.json))
+        // updateData();
     };
     const incInterval = () => {
         interval += 1000;
@@ -164,21 +168,13 @@
 />
 
 {#if editorShowing}
-    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
+    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen">
         <JSONEditor bind:content navigationBar={false} />
     </div>
 {/if}
 {#if tickerShowing}
-    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-scroll">
-        <div class="my-8 flex flex-col space-y-8">
-            {#each newData.nodes as node}
-                <div class="text-center bg-primary p-2 rounded-lg">
-                    <pre>{"{"}</pre>
-                    <ObjectDisplay point={node} color="#fff" targeted={true} />
-                    <pre>{"}"}</pre>
-                </div>
-            {/each}
-        </div>
+    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-scroll">
+        <Ticker newData={content.json ? content.json : JSON.parse(content.text)} />
     </div>
 {/if}
 {#if !loaded}

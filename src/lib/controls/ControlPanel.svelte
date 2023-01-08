@@ -5,6 +5,7 @@
         resetProg,
         toggle,
         jsonEdit,
+        toggleTicker,
         swapData,
         updateData,
         interval,
@@ -22,16 +23,6 @@
         width,
         updates,
         progress;
-
-    // let downArrow = "/down_arrow.svg",
-    //     upArrow = "/up_arrow.svg",
-    //     restart = "/restart.svg",
-    //     pause = "/pause.svg",
-    //     play = "/play.svg",
-    //     rewind = "/rewind.svg",
-    //     fastforward = "/fastforward.svg",
-    //     subtract = "/subtract.svg",
-    //     add = "/add.svg";
 
     $: panelShowing = width > 1536;
 </script>
@@ -155,6 +146,7 @@
                         </svg>
                     {/if}
                 </button>
+                <button on:click={toggleTicker}>ticker</button>
             </div>
         </div>
         <button

@@ -26,7 +26,17 @@
         forceCenter,
     };
 
-    const colourScale = d3.scaleOrdinal(["#6e40aa","#a03db3","#d23ea7","#f9488a","#ff5e63","#ff7f41","#efa72f","#cdcf37","#aff05b"]);
+    const colourScale = d3.scaleOrdinal([
+        "#6e40aa",
+        "#a03db3",
+        "#d23ea7",
+        "#f9488a",
+        "#ff5e63",
+        "#ff7f41",
+        "#efa72f",
+        "#cdcf37",
+        "#aff05b",
+    ]);
 
     import MetadataPanel from "./MetadataPanel.svelte";
     import Modal from "../modal/Modal.svelte";
@@ -40,6 +50,9 @@
         group,
         paused,
         grid,
+        updateDataset,
+        resetSim,
+        resetTheSim,
         physicsPaused = false;
 
     let svg,
@@ -64,6 +77,24 @@
         }
     }
 
+    $: links = data.links.map((d) => Object.assign({}, d));
+    $: nodes = data.nodes.map((d) => Object.assign({}, d));
+    $: radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
+    $: forceConstant =
+        (3 * radius) / (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
+    $: if (resetSim) {
+        stopSim();
+        setTimeout(() => {
+            startSim();
+            simulation.restart();
+            simulation.tick();
+
+            if (physicsPaused) simulationPaused = false;
+        }, 5);
+
+        resetTheSim();
+    }
+
     onMount(() => {
         startSim();
         d3.select(svg)
@@ -84,20 +115,21 @@
             );
     });
 
-    $: radius = ((width + height) ** 0.5 * 2) / data.nodes.length ** 0.5;
-    $: links = data.links.map((d) => Object.create(d));
-    $: nodes = data.nodes.map((d) => Object.create(d));
-
     const simulationUpdate = () => {
         simulation.tick();
         nodes = [...nodes];
         links = [...links];
 
+        updateDataset(nodes);
+
         if (physicsPaused && !simulationPaused) {
             stopSim();
+
             simulationPaused = true;
         } else if (!physicsPaused && simulationPaused) {
             startSim();
+            simulation.restart();
+
             simulationPaused = false;
         }
     };
@@ -123,6 +155,11 @@
     };
 
     const startSim = () => {
+        radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
+        forceConstant =
+            (3 * radius) /
+            (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
+
         simulation = d3
             .forceSimulation(nodes)
             .force(
@@ -130,22 +167,9 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(
-                        (radius * 9) /
-                            (Math.max(1, 750 - width) ** 0.1 *
-                                nodes.length ** 0.1)
-                    )
+                    .distance(forceConstant)
             )
-            .force(
-                "charge",
-                d3
-                    .forceManyBody()
-                    .strength(
-                        (radius * -70) /
-                            (Math.max(1, 750 - width) ** 0.1 *
-                                nodes.length ** 0.2)
-                    )
-            )
+            .force("charge", d3.forceManyBody().strength(forceConstant * -15))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
     };

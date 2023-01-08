@@ -5,10 +5,12 @@
 
     import { lesMis, dummyNodes } from "$lib/utils";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
+    import Ticker from "../lib/Ticker.svelte";
 
     let width = 1000,
         height = 1000,
         editorShowing = false,
+        tickerShowing = false,
         physicsPaused,
         dataset = 1,
         group = 1,
@@ -81,10 +83,15 @@
     };
     const jsonEdit = () => {
         editorShowing = !editorShowing;
+        if(editorShowing) tickerShowing = false;
+    };
+    const toggleTicker = () => {
+        tickerShowing = !tickerShowing;
+        if(tickerShowing) editorShowing = false;
     };
     const reset = () => {
         updateLinks();
-        resetSim = !resetSim;
+        resetSim = true;
         paused = false;
         editorShowing = false;
         let maxGroupNodes,
@@ -103,6 +110,9 @@
         }
         if (group > groupLimit) group = groupLimit;
     };
+    const resetTheSim = () => {
+        resetSim = false;
+    };
     const swapData = () => {
         if (dataset === 1) {
             dataset = 2;
@@ -118,12 +128,15 @@
     };
     const updateData = () => {
         let newJson = content.json ? content.json : JSON.parse(content.text);
-        if (newData.nodes !== newJson) {
-            newData = { nodes: newJson };
-            reset();
-        } else {
-            editorShowing = false;
-        }
+        // if (newData.nodes !== newJson) {
+        newData = { nodes: newJson };
+        reset();
+        // }
+    };
+    const updateDataset = (data) => {
+        content.json = data;
+        // console.log(JSON.stringify(content.json))
+        // updateData();
     };
     const incInterval = () => {
         interval += 1000;
@@ -155,8 +168,13 @@
 />
 
 {#if editorShowing}
-    <div class="fixed right-0 md:right-9 w-full md:w-1/3 2xl:w-1/4 h-screen">
+    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen">
         <JSONEditor bind:content navigationBar={false} />
+    </div>
+{/if}
+{#if tickerShowing}
+    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-scroll">
+        <Ticker newData={content.json ? content.json : JSON.parse(content.text)} />
     </div>
 {/if}
 {#if !loaded}
@@ -167,20 +185,22 @@
     </h1>
 {/if}
 <div class:hidden={!loaded}>
-    {#key resetSim}
-        <NetworkGraph
-            {physicsPaused}
-            data={newData}
-            {interval}
-            {group}
-            {paused}
-            {grid}
-        />
-    {/key}
+    <NetworkGraph
+        {resetSim}
+        {resetTheSim}
+        {physicsPaused}
+        data={newData}
+        {interval}
+        {group}
+        {paused}
+        {grid}
+        {updateDataset}
+    />
     <DraggableControlPanel
         {reset}
         {toggle}
         {jsonEdit}
+        {toggleTicker}
         {swapData}
         {updateData}
         {interval}

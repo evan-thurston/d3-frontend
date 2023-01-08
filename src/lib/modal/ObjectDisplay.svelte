@@ -1,26 +1,54 @@
 <script>
-    export let point, color, targeted;
+    import { onMount } from "svelte";
+
+    export let point,
+        color,
+        targeted,
+        fields = null;
 
     let objectArr = [],
-        keys = Object.keys(Object.assign({}, Object.getPrototypeOf(point), point));
+        keys = Object.keys(point),
+        ignoredKeys = new Set(["vx", "vy", "fx", "fy"]),
+        coords = new Set(["x", "y"]);
+
+    if (!fields) {
+        fields = keys;
+        fields.push("targeted", "color", "icon");
+    }
+
+    onMount(() => {
+        // fields = new Set(fields)
+        // console.log(fields);
+    });
 
     for (let i = 0; i < keys.length; i++) {
-        if (keys[i] === "data") {
+        if (keys[i] === "data" && fields.includes("targeted")) {
             objectArr.push({ label: "targeted", value: targeted || false });
         }
-        objectArr.push({ label: keys[i], value: point[keys[i]] });
-        if (keys[i] === "group") {
-            objectArr.push({ label: "color", value: color });
-
+        if (fields.includes(keys[i]) && !ignoredKeys.has(keys[i]))
             objectArr.push({
-                label: "icon",
-                value: point.group > 2 ? "dog" : "bird",
+                label: keys[i],
+                value: coords.has(keys[i])
+                    ? Math.round(point[keys[i]])
+                    : point[keys[i]],
             });
+        if (keys[i] === "group") {
+            if (fields.includes("color"))
+                objectArr.push({ label: "color", value: color });
+
+            if (fields.includes("icon")) {
+                objectArr.push({
+                    label: "icon",
+                    value: point.group > 2 ? "dog" : "bird",
+                });
+            }
         }
     }
     if (!objectArr.find(({ label }) => label === "targeted")) {
         objectArr.push({ label: "targeted", value: targeted || false });
     }
+
+    if (!fields) fields = keys;
 </script>
 
 <div class="ml-4">
@@ -41,10 +69,9 @@
                     ? "text-info"
                     : "text-error"}
             >
-            {typeof field.value === 'object' ? "[" : ""}
+                {typeof field.value === "object" ? "[" : ""}
                 {field.label === "data" ? "" : field.value}
-            {typeof field.value === 'object' ? "]" : ""}
-
+                {typeof field.value === "object" ? "]" : ""}
             </span>
         </p>
         {#if field.label === "data"}

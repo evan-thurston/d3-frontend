@@ -53,7 +53,8 @@
         updateDataset,
         resetSim,
         resetTheSim,
-        physicsPaused = false;
+        physicsPaused = false,
+        deleteNode;
 
     let svg,
         width = 500,
@@ -134,26 +135,6 @@
         }
     };
 
-    const pointAlongLink = (link, distance, fromEnd = false) => {
-        // Uses linear interpolation to find the point "distance" pixels
-        // along the line from link.source to link.target.
-        // If fromEnd is true, calculates the point "distance" pixels from the end
-        // of the line.
-        let totalDist =
-            ((link.source.x - link.target.x) ** 2 +
-                (link.source.y - link.target.y) ** 2) **
-            0.5;
-        let ratio;
-        if (fromEnd) {
-            ratio = (totalDist - distance) / totalDist;
-        } else {
-            ratio = distance / totalDist;
-        }
-        let newX = link.source.x + (link.target.x - link.source.x) * ratio || 0;
-        let newY = link.source.y + (link.target.y - link.source.y) * ratio || 0;
-        return { x: newX, y: newY };
-    };
-
     const startSim = () => {
         radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
         forceConstant =
@@ -167,7 +148,7 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(forceConstant)
+                    .distance(forceConstant * 2)
             )
             .force("charge", d3.forceManyBody().strength(forceConstant * -15))
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -272,14 +253,14 @@
     {/if}
     <defs>
         <marker
-            markerWidth="15"
-            markerHeight="15"
+            markerWidth="9"
+            markerHeight="9"
             refX="2.5"
             refY="2.5"
             viewBox="0 0 5 5"
             orient="auto"
             id="marker"
-            fill="context-stroke"
+            class="fill-primary"
         >
             <polygon points="0,5 0,0 5,2.5" />
         </marker>
@@ -289,8 +270,6 @@
             {link}
             {group}
             {indirectTargeted}
-            {pointAlongLink}
-            {radius}
             {transform}
             {grid}
             bothWays={connectedBothWays(link)}
@@ -300,7 +279,6 @@
                 {link}
                 {colourScale}
                 {radius}
-                {pointAlongLink}
                 {interval}
                 {paused}
                 {group}
@@ -348,6 +326,7 @@
                                 )
                             )}
                             {focusSvg}
+                            {deleteNode}
                         />
                     </foreignObject>
                 {/if}

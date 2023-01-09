@@ -138,6 +138,15 @@
         // console.log(JSON.stringify(content.json))
         // updateData();
     };
+    const deleteNode = (idToRemove) => {
+        let filteredNodes = content.json.filter(({id}) => id !== idToRemove)
+        if(filteredNodes && filteredNodes.length > 4) {
+            newData = { nodes: filteredNodes };
+            reset();
+        }
+
+        
+    }
     const incInterval = () => {
         interval += 1000;
     };
@@ -173,8 +182,8 @@
     </div>
 {/if}
 {#if tickerShowing}
-    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-scroll">
-        <Ticker newData={content.json ? content.json : JSON.parse(content.text)} />
+    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-y-scroll">
+        <Ticker newData={content.json ? content.json : JSON.parse(content.text)} {deleteNode} />
     </div>
 {/if}
 {#if !loaded}
@@ -195,6 +204,7 @@
         {paused}
         {grid}
         {updateDataset}
+        {deleteNode}
     />
     <DraggableControlPanel
         {reset}

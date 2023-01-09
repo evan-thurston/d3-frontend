@@ -2,8 +2,6 @@
     export let link,
         group,
         indirectTargeted,
-        pointAlongLink,
-        radius,
         transform,
         grid,
         bothWays;
@@ -21,45 +19,53 @@
     $: if (grid > 1 && link.target.x) link.target.x = gridX(link.target.x);
     $: if (grid > 1 && link.target.y) link.target.y = gridY(link.target.y);
 
-    const midX = (link) => {
-        return (
-            (link.source.x + link.target.x) / 2 -
-                (link.target.y - link.source.y) / 9 || 0
-        );
+    $: first = control(link.source.x, link.source.y, midX(), midY());
+    $: second = control(midX(), midY(), link.target.x, link.target.y);
+    $: controlPoint = control(
+        link.source.x,
+        link.source.y,
+        link.target.x,
+        link.target.y
+    );
+
+    const midX = () => {
+        return (link.source.x + link.target.x) / 2;
     };
-    const midY = (link) => {
-        return (
-            (link.source.y + link.target.y) / 2 +
-                (link.target.x - link.source.x) / 9 || 0
-        );
+
+    const midY = () => {
+        return (link.source.y + link.target.y) / 2;
+    };
+
+    const control = (x1, y1, x2, y2) => {
+        let midX = (x1 + x2) / 2;
+        let midY = (y1 + y2) / 2;
+
+        let theta = Math.atan2(y2 - y1, x2 - x1) - Math.PI / 2;
+        let offset = 30;
+        let deltaX = offset * Math.cos(theta);
+        let deltaY = offset * Math.sin(theta);
+
+        return { x: midX + deltaX, y: midY + deltaY };
     };
 </script>
 
 <g>
-    <!-- <line
-        class={link.source.group === group || indirectTargeted(link)
-            ? "stroke-success"
-            : "stroke-neutral"}
-        x1={pointAlongLink(link, radius).x || 0}
-        y1={pointAlongLink(link, radius).y || 0}
-        x2={pointAlongLink(link, radius + 10, true).x || 0}
-        y2={pointAlongLink(link, radius + 10, true).y || 0}
-        marker-end="url(#marker)"
-        transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-    /> -->
     {#if link.source.x !== link.target.x || link.source.y !== link.target.y}
         <path
-            d="M {pointAlongLink(link, radius).x},{pointAlongLink(link, radius)
-                .y}
-        Q {midX(link)},{midY(link)} {pointAlongLink(link, radius + 15, true)
-                .x},{pointAlongLink(link, radius + 15, true).y}"
-            class="fill-none {link.source.group === group ||
-            indirectTargeted(link)
+            d="
+                M {link.source.x}, {link.source.y}
+                Q {first.x} {first.y}
+                    {controlPoint.x} {controlPoint.y} 
+                Q {second.x} {second.y}
+                    {link.target.x}, {link.target.y}
+            "
+            class="fill-none 
+            {link.source.group === group || indirectTargeted(link)
                 ? 'stroke-success'
                 : bothWays
                 ? 'stroke-info'
                 : 'stroke-neutral'}"
-            marker-end="url(#marker)"
+            marker-mid="url(#marker)"
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
         />
     {/if}

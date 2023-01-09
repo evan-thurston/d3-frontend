@@ -2,7 +2,6 @@
     export let link,
         colourScale,
         radius,
-        pointAlongLink,
         interval,
         paused,
         group,
@@ -23,17 +22,31 @@
     $: if (grid > 1 && link.target.x) link.target.x = gridX(link.target.x);
     $: if (grid > 1 && link.target.y) link.target.y = gridY(link.target.y);
 
-    const midX = (link) => {
-        return (
-            (link.source.x + link.target.x) / 2 -
-            (link.target.y - link.source.y) / 10
-        );
+    $: first = control(link.source.x, link.source.y, midX(), midY(), 21);
+    $: second = control(midX(), midY(), link.target.x, link.target.y, 21);
+    $: controlPoint = control(
+        link.source.x,
+        link.source.y,
+        link.target.x,
+        link.target.y
+    );
+
+    const midX = () => {
+        return (link.source.x + link.target.x) / 2;
     };
-    const midY = (link) => {
-        return (
-            (link.source.y + link.target.y) / 2 +
-            (link.target.x - link.source.x) / 10
-        );
+    const midY = () => {
+        return (link.source.y + link.target.y) / 2;
+    };
+
+    const control = (x1, y1, x2, y2, offset = 30) => {
+        let midX = (x1 + x2) / 2;
+        let midY = (y1 + y2) / 2;
+
+        let theta = Math.atan2(y2 - y1, x2 - x1) - Math.PI / 2;
+        let deltaX = offset * Math.cos(theta);
+        let deltaY = offset * Math.sin(theta);
+
+        return { x: midX + deltaX, y: midY + deltaY };
     };
 </script>
 
@@ -47,9 +60,8 @@
         <animate
             class="no-animation"
             attributeName="cx"
-            values="{pointAlongLink(link, radius - 15).x};{midX(
-                link
-            )};{pointAlongLink(link, radius - 10, true).x}"
+            values="{link.source.x};{first.x};{controlPoint.x};{second.x};{link
+                .target.x}"
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
             repeatCount={!paused &&
             (link.source.group === group || indirectTargeted(link))
@@ -59,26 +71,14 @@
         <animate
             class="no-animation"
             attributeName="cy"
-            values="{pointAlongLink(link, radius - 15).y};{midY(
-                link
-            )};{pointAlongLink(link, radius - 10, true).y}"
+            values="{link.source.y};{first.y};{controlPoint.y};{second.y};{link
+                .target.y}"
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
             repeatCount={!paused &&
             (link.source.group === group || indirectTargeted(link))
                 ? "indefinite"
                 : "0"}
         />
-        <!-- <animateMotion
-        dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-        repeatCount={!paused &&
-        (link.source.group === group || indirectTargeted(link))
-            ? "indefinite"
-            : "0"}
-        path="M {pointAlongLink(link, radius).x},{pointAlongLink(link, radius)
-            .y}
-            Q {midX(link)},{midY(link)} {pointAlongLink(link, radius, true)
-            .x},{pointAlongLink(link, radius, true).y}"
-    /> -->
     </circle>
     {#each Array(link.source.group % 6) as _, i}
         <circle
@@ -86,15 +86,12 @@
             r={radius / 5}
             fill={colourScale(link.source.group)}
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
-            cx={-300}
-            cy={-300}
         >
             <animate
                 class="no-animation"
                 attributeName="cx"
-                values="{pointAlongLink(link, radius - 15).x};{midX(
-                    link
-                )};{pointAlongLink(link, radius - 10, true).x}"
+                values="{link.source
+                    .x};{first.x};{controlPoint.x};{second.x};{link.target.x}"
                 dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
                 begin={((i * interval) / 5000 / link.source.group) % 6 ||
                     i + "s"}
@@ -106,9 +103,8 @@
             <animate
                 class="no-animation"
                 attributeName="cy"
-                values="{pointAlongLink(link, radius - 15).y};{midY(
-                    link
-                )};{pointAlongLink(link, radius - 10, true).y}"
+                values="{link.source
+                    .y};{first.y};{controlPoint.y};{second.y};{link.target.y}"
                 dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
                 begin={((i * interval) / 5000 / link.source.group) % 6 ||
                     i + "s"}
@@ -117,20 +113,6 @@
                     ? "indefinite"
                     : "0"}
             />
-            <!-- <animateMotion
-            dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            begin={((i * interval) / 5000 / link.source.group) % 6 || i + "s"}
-            repeatCount={!paused &&
-            (link.source.group === group || indirectTargeted(link))
-                ? "indefinite"
-                : "0"}
-            path="M {pointAlongLink(link, radius).x},{pointAlongLink(
-                link,
-                radius
-            ).y}
-            Q {midX(link)},{midY(link)} {pointAlongLink(link, radius, true)
-                .x},{pointAlongLink(link, radius, true).y}"
-        /> -->
         </circle>
     {/each}
 {/if}

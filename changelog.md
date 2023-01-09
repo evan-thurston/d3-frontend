@@ -6,7 +6,11 @@
 <!-- F* sticky ticker's key to the top of the tickerboard -->
 <!-- B* when swapping data, ticker tries to keep previous dataset in memory -->
 <!-- V* visual changes to nodes -->
-
+<!-- F* delete node by id -->
+<!-- B* fix datanode path -->
+<!-- F* improve link path calculation & marker -->
+<!-- F* delete node from tickerboard -->
+<!-- F* delete node from modal -->
 
 1-7-23:
 <!-- B* remove d3 helper fields from objectdisplay -->

@@ -54,3 +54,6 @@ M* organize todos.md based on priority
 B* fix bidirectional arrow angle
 M* find todo standard to follow/use trello?
 F* use objectdisplay for tickerboard(refactor) ?
+
+1-8-23:
+B* control panel collapse sticky corner

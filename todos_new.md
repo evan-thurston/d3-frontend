@@ -1,8 +1,6 @@
 <!-- TODOS:
 (F) Feature (B) Bugfix (M) Meta --> 
 12-7-22:
-F* reload node locations
-B* connect arrows to triangles
 F* persist node state to localstorage
 F* persist node state to supabase
 
@@ -13,9 +11,6 @@ F* PWA
 *** F* multiple modals
 F* multiple nodes selected
 F* setup vercel on main branch
-
-12-9-22:
-B* curved datanode movement doesn't scale w/ zoom & lags program
 
 12-10-22:
 B* navbar doesn't populate w/ user data on update w/o refresh
@@ -33,7 +28,6 @@ F* access "global" variables from account/ route (true global variables, ie writ
 
 12-18-22:
 F* edit node in modal
-F* delete node in modal
 
 12-28-22:
 B* preserve coordinates after restarting simulation
@@ -42,7 +36,6 @@ B* preserve coordinates after restarting simulation
 F* save/load data from account control
 ***** F* fibonacci, markov, queueing system, airport, traffic
 *** F* ticker board w/ node data
-F* tickerboard pause function
 B* d3 ticks/sec
 
 1-7-23:
@@ -51,9 +44,9 @@ F* JSON editor css
 F* undo function
 B* add node populate x/y
 M* organize todos.md based on priority
-B* fix bidirectional arrow angle
 M* find todo standard to follow/use trello?
 F* use objectdisplay for tickerboard(refactor) ?
 
 1-8-23:
 B* control panel collapse sticky corner
+B* tickerboard svg alignment

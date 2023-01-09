@@ -83,11 +83,11 @@
     };
     const jsonEdit = () => {
         editorShowing = !editorShowing;
-        if(editorShowing) tickerShowing = false;
+        if (editorShowing) tickerShowing = false;
     };
     const toggleTicker = () => {
         tickerShowing = !tickerShowing;
-        if(tickerShowing) editorShowing = false;
+        if (tickerShowing) editorShowing = false;
     };
     const reset = () => {
         updateLinks();
@@ -139,14 +139,12 @@
         // updateData();
     };
     const deleteNode = (idToRemove) => {
-        let filteredNodes = content.json.filter(({id}) => id !== idToRemove)
-        if(filteredNodes && filteredNodes.length > 4) {
+        let filteredNodes = content.json.filter(({ id }) => id !== idToRemove);
+        if (filteredNodes && filteredNodes.length > 4) {
             newData = { nodes: filteredNodes };
             reset();
         }
-
-        
-    }
+    };
     const incInterval = () => {
         interval += 1000;
     };
@@ -182,8 +180,14 @@
     </div>
 {/if}
 {#if tickerShowing}
-    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-y-scroll">
-        <Ticker newData={content.json ? content.json : JSON.parse(content.text)} {deleteNode} />
+    <div
+        class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-y-scroll"
+    >
+        <Ticker
+            newData={content.json ? content.json : JSON.parse(content.text)}
+            {deleteNode}
+            {toggleTicker}
+        />
     </div>
 {/if}
 {#if !loaded}

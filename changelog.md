@@ -11,6 +11,12 @@
 <!-- F* improve link path calculation & marker -->
 <!-- F* delete node from tickerboard -->
 <!-- F* delete node from modal -->
+<!-- B* fix bidirectional arrow angle -->
+<!-- F* tickerboard pause function -->
+<!-- F* close tickerboard from panel -->
+<!-- B* curved datanode movement doesn't scale w/ zoom & lags program -->
+<!-- B* connect arrows to triangles -->
+<!-- F* reload node locations -->
 
 1-7-23:
 <!-- B* remove d3 helper fields from objectdisplay -->
@@ -32,11 +38,9 @@
 <!-- B* fix runtime error(repair object structure) -->
 <!-- F* refactor save/reset buttons(save data) -->
 
-
 12-28-22:
 <!-- B* connect to data array, rather than Object map -->
 <!-- F* persist node locations to dataset -->
-
 
 12-20-22:
 <!-- F* migrate to sveltekit 1.0 and update other dependencies(run an npm install !) -->

@@ -181,7 +181,7 @@
 {/if}
 {#if tickerShowing}
     <div
-        class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen overflow-y-scroll"
+        class="fixed right-0 w-full md:w-1/2 2xl:w-1/3 h-screen overflow-y-scroll"
     >
         <Ticker
             newData={content.json ? content.json : JSON.parse(content.text)}

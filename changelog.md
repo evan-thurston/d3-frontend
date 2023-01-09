@@ -1,6 +1,10 @@
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix (M) Meta (V) Visual -->
 
+1-9-23:
+<!-- V* tickerboard visual updates -->
+<!-- V* tickerboard responsiveness -->
+
 1-8-23:
 <!-- B* overflow ticker content into an ellipsis & hover popup -->
 <!-- F* sticky ticker's key to the top of the tickerboard -->

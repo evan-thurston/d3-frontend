@@ -1,6 +1,11 @@
 <!-- COMPLETED TODOS
 (F) Feature (B) Bugfix (M) Meta (V) Visual -->
 
+1-10-23:
+<!-- F* helper class to highlight datatype -->
+<!-- F* move floating data info from nodes to metadata panel -->
+<!-- F* highlight data in tickerboard -->
+
 1-9-23:
 <!-- V* tickerboard visual updates -->
 <!-- V* tickerboard responsiveness -->

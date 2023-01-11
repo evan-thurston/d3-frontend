@@ -32,7 +32,7 @@
     <text
         fill={colourScale(point.group)}
         x={point.x}
-        y={point.y - radius * 1.2 || point.y}
+        y={point.y - radius * 1.5 || point.y}
         text-anchor="middle"
         transform="
         translate({transform.x || 0} {transform.y || 0}) 
@@ -40,41 +40,7 @@
     >
         ID: {point.id}
     </text>
-    {#if point.data}
-        <!-- {#each ["x", "y"] as coord, i}
-            <text
-                class="fill-warning"
-                x={point.x}
-                y={point.y + radius * (1.7 + 0.5 * i) || point.y}
-                text-anchor="middle"
-                transform="
-                translate({transform.x || 0} {transform.y || 0}) 
-                scale({transform.k} {transform.k})"
-            >
-                {coord === "x"
-                    ? "x: " + Math.round(point.x)
-                    : "y: " + Math.round(point.y)}
-            </text>
-        {/each} -->
-        {#each point.data.slice(0, 3) as field, i}
-            <text
-                class={typeof field.value === "string"
-                    ? "fill-success"
-                    : typeof field.value === "number"
-                    ? "fill-warning"
-                    : "fill-error"}
-                x={point.x}
-                y={point.y + radius * (1.7 + 0.5 * i) || point.y}
-                text-anchor="middle"
-                transform="
-                translate({transform.x || 0} {transform.y || 0}) 
-                scale({transform.k} {transform.k})"
-            >
-                {field.label}: {field.value +
-                    (typeof field.value === "number" ? multiplier * i : "")}
-            </text>
-        {/each}
-    {/if}
+    
     <!-- squares -->
     {#if point.group === 5}
         <rect

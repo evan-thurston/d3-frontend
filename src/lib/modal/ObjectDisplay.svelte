@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import Highlight from "../Highlight.svelte";
 
     export let point,
         color,
@@ -59,36 +60,21 @@
                 : "text-sm"}
         >
             {field.label}:
-            <span
-                style={field.label === "color" ? "color: " + field.value : ""}
-                class={typeof field.value === "string"
-                    ? "text-success"
-                    : typeof field.value === "number"
-                    ? "text-warning"
-                    : typeof field.value === "object"
-                    ? "text-info"
-                    : "text-error"}
-            >
+            <Highlight value={field.value}>
                 {typeof field.value === "object" ? "[" : ""}
                 {field.label === "data" ? "" : field.value}
                 {typeof field.value === "object" ? "]" : ""}
-            </span>
+            </Highlight>
         </p>
+
         {#if field.label === "data"}
             <div class="ml-4">
                 {#each field.value as obj}
                     <p class="text-sm">
                         {obj.label}:
-                        <span
-                            class={typeof obj.value === "string"
-                                ? "text-success"
-                                : typeof obj.value === "number"
-                                ? "text-warning"
-                                : typeof obj.value === "object"
-                                ? "text-info"
-                                : "text-error"}
-                            >{obj.value}
-                        </span>
+                        <Highlight value={obj.value}>
+                            {obj.value}
+                        </Highlight>
                     </p>
                 {/each}
             </div>

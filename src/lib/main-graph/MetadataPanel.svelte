@@ -27,15 +27,26 @@
     <p>
         ID: {point.id}
     </p>
-    <p>
-        group: {point.group}
-    </p>
-    <p>
-        icon: {point.group > 2 ? "dog" : "bird"}
-    </p>
-    <p>
-        targeted: {targeted || false}
-    </p>
+
+    <p>Data exists: {point.data ? 'true': 'false'}</p>
+
+    {#if point.data}
+        {#each point.data.slice(0, 3) as field, i}
+            <p>
+                {field.label}: {field.value}
+            </p>
+        {/each}
+    {:else}
+        <p>
+            group: {point.group}
+        </p>
+        <p>
+            icon: {point.group > 2 ? "dog" : "bird"}
+        </p>
+        <p>
+            targeted: {targeted || false}
+        </p>
+    {/if}
 </foreignObject>
 
 <style lang="postcss">

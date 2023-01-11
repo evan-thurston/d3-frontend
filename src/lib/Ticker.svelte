@@ -1,4 +1,6 @@
 <script>
+    import Highlight from "$lib/Highlight.svelte";
+
     export let newData, deleteNode, toggleTicker;
 
     let tickerPaused = false,
@@ -16,23 +18,23 @@
         <h3>y:</h3>
         <h3>delete</h3>
         {#each tickerData as node}
-            <div class="rounded-l-xl"><p title={node.id}>{node.id}</p></div>
-            <div>{node.group}</div>
+            <div class="rounded-l-xl"><p title={node.id}><Highlight value={node.id}>{node.id}</Highlight></p></div>
+            <div><Highlight value={node.group}>{node.group}</Highlight></div>
             <div>
                 {#if node.out}
                     {#if typeof node.out[0] === "string"}
                         {#each node.out as out}
-                            <p title={out}>{out}</p>
+                            <p title={out}><Highlight value={out}>{out}</Highlight></p>
                         {/each}
                     {:else}
-                        <p title={node.out}>{node.out}</p>
+                        <p title={node.out}><Highlight value={node.out}>{node.out}</Highlight></p>
                     {/if}
                 {:else}
                     none
                 {/if}
             </div>
-            <div>{Math.round(node.x)}</div>
-            <div>{Math.round(node.y)}</div>
+            <div><Highlight value={Math.round(node.x)}>{Math.round(node.x)}</Highlight></div>
+            <div><Highlight value={Math.round(node.y)}>{Math.round(node.y)}</Highlight></div>
             <button
                 on:click={deleteNode(node.id)}
                 class:btn-disabled={tickerData.length < 6}

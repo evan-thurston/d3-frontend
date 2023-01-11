@@ -50,3 +50,12 @@ F* use objectdisplay for tickerboard(refactor) ?
 1-8-23:
 B* control panel collapse sticky corner
 B* tickerboard svg alignment
+
+1-10-23:
+F* popout tickerboard
+F* manual stepforwards
+F* writable stores
+F* CSV import
+F* export
+F* many simulations, one session
+F* multiple scenarios

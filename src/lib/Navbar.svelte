@@ -83,7 +83,7 @@
 </script>
 
 <nav>
-    <div class="flex flex-row space-x-4">
+    <!-- <div class="flex flex-row space-x-4">
         <button on:click={switchTheme}>
             {#if inDarkMode}
                 <svg
@@ -120,7 +120,7 @@
         <a class="btn btn-primary" href="./"
             >d3<span class="hidden md:inline-block">&nbsp;frontend</span></a
         >
-    </div>
+    </div> -->
 
     {#if !session}
         <form on:submit|preventDefault={signIn}>

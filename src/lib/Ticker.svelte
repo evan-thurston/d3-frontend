@@ -58,7 +58,7 @@
         {/each}
     </div>
     <div class="controls">
-        <button
+        <!-- <button
             on:click={() => {
                 toggleTicker();
             }}
@@ -77,8 +77,8 @@
                     d="M6 18L18 6M6 6l12 12"
                 />
             </svg>
-        </button>
-        <button class='mr-4 xl:mr-0' on:click={() => (tickerPaused = !tickerPaused)}>
+        </button> -->
+        <!-- <button class='mr-4 xl:mr-0' on:click={() => (tickerPaused = !tickerPaused)}>
             {#if tickerPaused}
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@
                     />
                 </svg>
             {/if}
-        </button>
+        </button> -->
     </div>
 </div>
 

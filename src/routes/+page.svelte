@@ -6,6 +6,7 @@
     import { lesMis, dummyNodes } from "$lib/utils";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
     import Ticker from "../lib/Ticker.svelte";
+    import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
 
     let width = 1000,
         height = 1000,
@@ -229,5 +230,10 @@
         {grid}
         {incGrid}
         {decGrid}
+    />
+    <DrawerWrapper
+        newData={content.json ? content.json : JSON.parse(content.text)}
+        {deleteNode}
+        {toggleTicker}
     />
 </div>

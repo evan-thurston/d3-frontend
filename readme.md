@@ -1,38 +1,19 @@
-# create-svelte
+# d3-systems frontend
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A generic D3 frontend to model any type of system
 
-## Creating a project
+## Getting started
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+To get started, pull the repo and run the following commands:
 
 ```bash
-npm run dev
+# install necessary dependencies
+npm i
 
-# or start the server and open the app in a new browser tab
+# startup a local server & open the app in your web browser
 npm run dev -- --open
 ```
 
-## Building
+## Public test server
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+[Click here](https://d3-systems.vercel.app) to open a live test server that is dynamically updated based on the main branch of this repo

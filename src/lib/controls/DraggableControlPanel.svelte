@@ -3,11 +3,9 @@
     import ControlPanel from "./ControlPanel.svelte";
 
     export let reset,
-        toggle,
-        jsonEdit,
-        toggleTicker,
+        togglePhysics,
+        physicsPaused,
         swapData,
-        updateData,
         interval,
         incInterval,
         decInterval,
@@ -131,11 +129,9 @@
         <ControlPanel
             {reset}
             {resetProg}
-            {toggle}
-            {jsonEdit}
-            {toggleTicker}
+            {togglePhysics}
+            {physicsPaused}
             {swapData}
-            {updateData}
             {interval}
             {incInterval}
             {decInterval}

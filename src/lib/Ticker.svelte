@@ -1,7 +1,7 @@
 <script>
     import Highlight from "$lib/Highlight.svelte";
 
-    export let newData, deleteNode, toggleTicker;
+    export let newData, deleteNode;
 
     let tickerPaused = false,
         tickerData;
@@ -9,7 +9,7 @@
     $: if (!tickerPaused) tickerData = newData;
 </script>
 
-<div class="flex flex-col-reverse  xl:flex-row xl:space-x-8 bg-base-100 shadow-xl px-8">
+<div class="flex flex-col-reverse xl:flex-row xl:space-x-8 bg-base-100 px-8">
     <div class="ticker">
         <h3>ID:</h3>
         <h3>group:</h3>
@@ -57,8 +57,8 @@
             </button>
         {/each}
     </div>
-    <div class="controls">
-        <!-- <button
+    <!-- <div class="controls">
+        <button
             on:click={() => {
                 toggleTicker();
             }}
@@ -77,8 +77,8 @@
                     d="M6 18L18 6M6 6l12 12"
                 />
             </svg>
-        </button> -->
-        <!-- <button class='mr-4 xl:mr-0' on:click={() => (tickerPaused = !tickerPaused)}>
+        </button>
+        <button class='mr-4 xl:mr-0' on:click={() => (tickerPaused = !tickerPaused)}>
             {#if tickerPaused}
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,8 +110,8 @@
                     />
                 </svg>
             {/if}
-        </button> -->
-    </div>
+        </button>
+    </div> -->
 </div>
 
 <style lang="postcss">

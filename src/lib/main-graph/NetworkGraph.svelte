@@ -148,9 +148,9 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(forceConstant * 2)
+                    .distance(forceConstant * 2.4)
             )
-            .force("charge", d3.forceManyBody().strength(forceConstant * -15))
+            .force("charge", d3.forceManyBody().strength(forceConstant * -9))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", simulationUpdate);
     };

@@ -1,17 +1,13 @@
 <script>
     import NetworkGraph from "$lib/main-graph/NetworkGraph.svelte";
-    import { JSONEditor } from "svelte-jsoneditor";
     import { onMount } from "svelte";
 
     import { lesMis, dummyNodes } from "$lib/utils";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
-    import Ticker from "../lib/Ticker.svelte";
     import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
 
     let width = 1000,
         height = 1000,
-        editorShowing = false,
-        tickerShowing = false,
         physicsPaused,
         dataset = 1,
         group = 1,
@@ -47,7 +43,7 @@
         if (group > groupLimit) group = groupLimit;
     });
 
-    const toggle = () => {
+    const togglePhysics = () => {
         if (physicsPaused) {
             physicsPaused = false;
         } else {
@@ -82,19 +78,10 @@
         });
         content = { json: newData.nodes };
     };
-    const jsonEdit = () => {
-        editorShowing = !editorShowing;
-        if (editorShowing) tickerShowing = false;
-    };
-    const toggleTicker = () => {
-        tickerShowing = !tickerShowing;
-        if (tickerShowing) editorShowing = false;
-    };
     const reset = () => {
         updateLinks();
         resetSim = true;
         paused = false;
-        editorShowing = false;
         let maxGroupNodes,
             i = 0;
         maxGroups = Math.max(...newData.nodes.map((o) => o.group));
@@ -175,22 +162,6 @@
     on:resize={reset}
 />
 
-{#if editorShowing}
-    <div class="fixed right-0 w-full md:w-1/3 2xl:w-1/4 h-screen">
-        <JSONEditor bind:content navigationBar={false} />
-    </div>
-{/if}
-{#if tickerShowing}
-    <div
-        class="fixed right-0 w-full md:w-1/2 2xl:w-1/3 h-screen overflow-y-scroll"
-    >
-        <Ticker
-            newData={content.json ? content.json : JSON.parse(content.text)}
-            {deleteNode}
-            {toggleTicker}
-        />
-    </div>
-{/if}
 {#if !loaded}
     <h1
         class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
@@ -213,11 +184,9 @@
     />
     <DraggableControlPanel
         {reset}
-        {toggle}
-        {jsonEdit}
-        {toggleTicker}
+        {togglePhysics}
+        {physicsPaused}
         {swapData}
-        {updateData}
         {interval}
         {incInterval}
         {decInterval}
@@ -234,6 +203,8 @@
     <DrawerWrapper
         newData={content.json ? content.json : JSON.parse(content.text)}
         {deleteNode}
-        {toggleTicker}
+        bind:content
+        {updateData}
+
     />
 </div>

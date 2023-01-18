@@ -3,7 +3,7 @@
         colourScale,
         radius,
         interval,
-        paused,
+        updatesPaused,
         group,
         grid,
         indirectTargeted,
@@ -63,7 +63,7 @@
             values="{link.source.x};{first.x};{controlPoint.x};{second.x};{link
                 .target.x}"
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={!paused &&
+            repeatCount={
             (link.source.group === group || indirectTargeted(link))
                 ? "indefinite"
                 : "0"}
@@ -74,13 +74,13 @@
             values="{link.source.y};{first.y};{controlPoint.y};{second.y};{link
                 .target.y}"
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={!paused &&
+            repeatCount={
             (link.source.group === group || indirectTargeted(link))
                 ? "indefinite"
                 : "0"}
         />
     </circle>
-    {#each Array(link.source.group % 6) as _, i}
+    <!-- {#each Array(link.source.group % 6) as _, i}
         <circle
             class="dataNode"
             r={radius / 5}
@@ -114,5 +114,5 @@
                     : "0"}
             />
         </circle>
-    {/each}
+    {/each} -->
 {/if}

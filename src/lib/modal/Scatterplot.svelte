@@ -10,13 +10,13 @@
         fixed = false,
         interval,
         targeted,
-        paused,
+        updatesPaused,
         modalPaused;
 
     $: radius = ((width + height) ** 0.4 * 1.5) / data.length ** 0.5;
 
     $: {
-        if (!targeted || paused || modalPaused) {
+        if (!targeted || updatesPaused || modalPaused) {
             clearInterval(dataInterval);
         } else {
             clearInterval(dataInterval);

@@ -48,12 +48,12 @@
     export let data,
         interval,
         group,
-        paused,
+        updatesPaused,
         grid,
         updateDataset,
         resetSim,
         resetTheSim,
-        physicsPaused = false,
+        physicsPaused,
         deleteNode;
 
     let svg,
@@ -67,7 +67,7 @@
         multiplierInterval;
 
     $: {
-        if (paused) {
+        if (updatesPaused) {
             clearInterval(multiplierInterval);
         } else {
             clearInterval(multiplierInterval);
@@ -247,6 +247,9 @@
     on:resize={resize}
 />
 
+<!-- <p class='fixed w-full h-full py-auto text-3xl bg-gray-100 bg-opacity-30 text-center'>
+    click here to start simulation
+</p> -->
 <svg bind:this={svg} {width} {height}>
     {#if grid > 1}
         <Grid {width} {height} {grid} {transform} />
@@ -274,13 +277,13 @@
             {grid}
             bothWays={connectedBothWays(link)}
         />
-        {#if !paused && (link.source.group === group || indirectTargeted(link))}
+        {#if !updatesPaused && (link.source.group === group || indirectTargeted(link))}
             <DataNode
                 {link}
                 {colourScale}
                 {radius}
                 {interval}
-                {paused}
+                {updatesPaused}
                 {group}
                 {grid}
                 {indirectTargeted}
@@ -319,7 +322,7 @@
                             {point}
                             color={colourScale(point.group)}
                             {interval}
-                            {paused}
+                            {updatesPaused}
                             targeted={indirectTargeted(
                                 links.find(
                                     ({ target }) => target.id === point.id

@@ -81,7 +81,9 @@
 </script>
 
 <nav>
-    <a class="btn btn-primary" href="./"
+    <a
+        class="btn btn-primary"
+        href='/'
         ><svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

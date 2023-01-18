@@ -5,14 +5,13 @@
         resetProg,
         togglePhysics,
         physicsPaused,
-        swapData,
         interval,
         incInterval,
         decInterval,
         group,
         incGroup,
         decGroup,
-        paused,
+        updatesPaused,
         groupLimit,
         pauseUpdates,
         grid,
@@ -113,12 +112,6 @@
         class="flex flex-col md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0 items-center justify-center mb-4"
     >
         <div class="flex flex-row space-x-4">
-            <button
-                on:click={() => {
-                    swapData();
-                    resetProg();
-                }}>Swap data</button
-            >
             <AmountSelector
                 label="Updates every {interval / 1000}s"
                 value="Updates: {updates}"
@@ -154,8 +147,8 @@
                 />
             </svg>
         </button>
-        <button on:click={pauseUpdates(!paused)}>
-            {#if paused}
+        <button on:click={pauseUpdates()}>
+            {#if updatesPaused}
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

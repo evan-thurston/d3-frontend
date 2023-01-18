@@ -5,11 +5,11 @@
     import ObjectDisplay from "./ObjectDisplay.svelte";
     import Scatterplot from "./Scatterplot.svelte";
 
-    export let point, color, interval, paused, targeted, focusSvg, deleteNode;
+    export let point, color, interval, updatesPaused, targeted, focusSvg, deleteNode;
 
     let height,
         width,
-        modalPaused = paused || false,
+        modalPaused = updatesPaused || false,
         modalOpen = point.modalOpened,
         pause = "/pause.svg",
         play = "/play.svg",
@@ -135,7 +135,7 @@
                                             {interval}
                                             {targeted}
                                             {modalPaused}
-                                            {paused}
+                                            {updatesPaused}
                                         />
                                     </div>
                                 {/each}
@@ -157,7 +157,7 @@
                                             {interval}
                                             {targeted}
                                             {modalPaused}
-                                            {paused}
+                                            {updatesPaused}
                                         />
                                     </div>
                                 {/each}

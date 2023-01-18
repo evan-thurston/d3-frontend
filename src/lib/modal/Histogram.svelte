@@ -7,7 +7,7 @@
 		targeted,
 		fixed = false,
 		buffer = 30,
-		paused,
+		updatesPaused,
 		modalPaused;
 
 	let data = [],
@@ -25,7 +25,7 @@
 	};
 
 	$: {
-		if (!targeted || paused || modalPaused) {
+		if (!targeted || updatesPaused || modalPaused) {
 			clearInterval(dataInterval);
 		} else {
 			clearInterval(dataInterval);

@@ -5,14 +5,13 @@
     export let reset,
         togglePhysics,
         physicsPaused,
-        swapData,
         interval,
         incInterval,
         decInterval,
         group,
         incGroup,
         decGroup,
-        paused,
+        updatesPaused,
         groupLimit,
         pauseUpdates,
         grid,
@@ -89,7 +88,7 @@
     };
 
     $: {
-        if (paused) {
+        if (updatesPaused) {
             clearInterval(updateInterval);
         } else {
             clearInterval(updateInterval);
@@ -98,7 +97,7 @@
         }
     }
     $: {
-        if (paused) {
+        if (updatesPaused) {
             clearInterval(progressInterval);
             progress = interval / 10;
         } else {
@@ -131,14 +130,13 @@
             {resetProg}
             {togglePhysics}
             {physicsPaused}
-            {swapData}
             {interval}
             {incInterval}
             {decInterval}
             {group}
             {incGroup}
             {decGroup}
-            {paused}
+            {updatesPaused}
             {groupLimit}
             {pauseUpdates}
             {grid}

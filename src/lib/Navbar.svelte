@@ -157,7 +157,7 @@
 
 <style lang="postcss">
     nav {
-        @apply fixed w-full top-0 p-8 flex flex-row items-center space-x-4;
+        @apply fixed w-full top-0 h-28 px-8 flex flex-row items-center space-x-4;
     }
     button {
         @apply btn btn-primary;

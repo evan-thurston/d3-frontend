@@ -55,7 +55,7 @@
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
     }
     .controls {
-        @apply fixed -ml-24 mt-8 flex flex-col space-y-8;
+        @apply fixed -ml-8 -translate-x-full mt-8 flex flex-col space-y-8;
     }
     button {
         @apply transition-all;

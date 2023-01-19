@@ -80,6 +80,7 @@
             }
         });
     };
+
     const reset = () => {
         updateLinks();
         content = { json: newData.nodes };
@@ -87,12 +88,15 @@
         updatesPaused = false;
         setGroupLimit();
     };
+
     const resetTheSim = () => {
         resetSim = false;
     };
+
     const pauseUpdates = (val) => {
         updatesPaused = val || !updatesPaused;
     };
+
     const updateData = () => {
         let newJson = content.json ? content.json : JSON.parse(content.text);
         // if (newData.nodes !== newJson) {
@@ -100,11 +104,13 @@
         reset();
         // }
     };
+
     const updateDataset = (data) => {
         content.json = data;
         // console.log(JSON.stringify(content.json))
         // updateData();
     };
+
     const deleteNode = (idToRemove) => {
         let filteredNodes = content.json.filter(({ id }) => id !== idToRemove);
         if (filteredNodes && filteredNodes.length > 4) {
@@ -112,26 +118,25 @@
             reset();
         }
     };
-    const incInterval = () => {
-        interval += 1000;
-    };
-    const decInterval = () => {
-        interval -= 1000;
-    };
-    const incGroup = () => {
-        group += 1;
-    };
-    const decGroup = () => {
-        group -= 1;
-    };
+
+    const incInterval = () => interval += 1000;
+
+    const decInterval = () => interval -= 1000;
+
+    const incGroup = () => group += 1;
+
+    const decGroup = () => group -= 1;
+    
     const incGrid = () => {
         grid += gridInc;
         reset();
     };
+
     const decGrid = () => {
         grid -= gridInc;
         reset();
     };
+
     updateLinks();
 
     const selectSimulation = (id) => {
@@ -148,19 +153,17 @@
 <svelte:window on:resize={reset} />
 
 {#if !loaded}
-    <h1
-        class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
-    >
+    <h1 class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2">
         loading...
     </h1>
 {:else if !simulationSelected}
-    <div class="grid grid-cols-2 pt-32 px-32 gap-8">
+    <div class="grid grid-cols-2 p-32 gap-8 h-full">
         <button
             class="btn btn-primary h-full"
             on:click={() => selectSimulation(0)}
         >
-            <p class="my-16">Dummy Dataset</p></button
-        >
+            <p class="my-16">Dummy Dataset</p>
+        </button>
         <button
             class="btn btn-primary h-full"
             on:click={() => selectSimulation(1)}

@@ -8,10 +8,7 @@
     import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
 
     let loaded = false,
-        newData = dummyNodes,
-        content = {
-            json: dummyNodes.nodes,
-        },
+        data = { nodes: dummyNodes.nodes },
         physicsPaused = false,
         updatesPaused = true,
         group = 1,
@@ -22,6 +19,10 @@
         simulation = null,
         simulationData = [],
         optionsSelected = false;
+
+        
+    $: links = data.links.map((d) => Object.assign({}, d));
+    $: nodes = data.nodes.map((d) => Object.assign({}, d));
 
     $: interval = 3000;
     $: gridInc = 30;
@@ -34,14 +35,14 @@
 
     const setGroupLimit = () => {
         let maxGroupNodes,
-            maxGroups = Math.max(...newData.nodes.map((o) => o.group)),
+            maxGroups = Math.max(...data.nodes.map((o) => o.group)),
             i = 0;
         while (!groupLimit) {
-            maxGroupNodes = newData.nodes.filter(
+            maxGroupNodes = data.nodes.filter(
                 ({ group }) => group === maxGroups - i
             );
             maxGroupNodes.forEach((obj) => {
-                if (newData.links.find(({ source }) => obj.id === source))
+                if (data.links.find(({ source }) => obj.id === source))
                     groupLimit = obj.group;
             });
             i++;
@@ -54,23 +55,23 @@
     };
 
     const updateLinks = () => {
-        newData.links = [];
-        newData.nodes.forEach((node) => {
+        data.links = [];
+        data.nodes.forEach((node) => {
             if (node.out) {
                 node.out.forEach((out) => {
                     if (typeof out === "string") {
-                        if (newData.nodes.find(({ id }) => id === out)) {
-                            newData.links.push({
+                        if (data.nodes.find(({ id }) => id === out)) {
+                            data.links.push({
                                 source: node.id,
                                 target: out,
                             });
                         }
                     } else if (typeof out === "number") {
-                        let filteredNodes = newData.nodes.filter(
+                        let filteredNodes = data.nodes.filter(
                             ({ group }) => group === out
                         );
                         filteredNodes.forEach((nodeOut) => {
-                            newData.links.push({
+                            data.links.push({
                                 source: node.id,
                                 target: nodeOut.id,
                             });
@@ -83,7 +84,6 @@
 
     const reset = () => {
         updateLinks();
-        content = { json: newData.nodes };
         resetSim = true;
         updatesPaused = false;
         setGroupLimit();
@@ -97,36 +97,30 @@
         updatesPaused = val || !updatesPaused;
     };
 
-    const updateData = () => {
-        let newJson = content.json ? content.json : JSON.parse(content.text);
-        // if (newData.nodes !== newJson) {
-        newData = { nodes: newJson };
-        reset();
-        // }
-    };
-
-    const updateDataset = (data) => {
-        content.json = data;
-        // console.log(JSON.stringify(content.json))
-        // updateData();
-    };
-
     const deleteNode = (idToRemove) => {
-        let filteredNodes = content.json.filter(({ id }) => id !== idToRemove);
+        let filteredNodes = data.nodes.filter(({ id }) => id !== idToRemove);
         if (filteredNodes && filteredNodes.length > 4) {
-            newData = { nodes: filteredNodes };
+            data = { nodes: filteredNodes };
             reset();
         }
     };
 
-    const incInterval = () => interval += 1000;
+    const setNodes = (newNodes) => {
+        nodes = newNodes;
+    }
 
-    const decInterval = () => interval -= 1000;
+    const setLinks = (newLinks) => {
+        links = newLinks;
+    }
 
-    const incGroup = () => group += 1;
+    const incInterval = () => (interval += 1000);
 
-    const decGroup = () => group -= 1;
-    
+    const decInterval = () => (interval -= 1000);
+
+    const incGroup = () => (group += 1);
+
+    const decGroup = () => (group -= 1);
+
     const incGrid = () => {
         grid += gridInc;
         reset();
@@ -146,17 +140,18 @@
             ? (simulationData = dummyNodes)
             : (simulationData = lesMis);
         // content = { json: simulationData.nodes }
-        // updateData();
     };
 </script>
 
 <svelte:window on:resize={reset} />
 
 {#if !loaded}
-    <h1 class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2">
+    <h1
+        class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
+    >
         loading...
     </h1>
-{:else if !simulationSelected}
+<!-- {:else if !simulationSelected}
     <div class="grid grid-cols-2 p-32 gap-8 h-full">
         <button
             class="btn btn-primary h-full"
@@ -199,20 +194,23 @@
                 </div>
             {/each}
         </form>
-    </div>
+    </div> -->
 {:else}
     <div class:hidden={!loaded}>
         <NetworkGraph
             {resetSim}
             {resetTheSim}
             {physicsPaused}
-            data={newData}
+            {data}
             {interval}
             {group}
             {updatesPaused}
             {grid}
-            {updateDataset}
             {deleteNode}
+            {nodes}
+            {links}
+            {setNodes}
+            {setLinks}
         />
         <DraggableControlPanel
             {reset}
@@ -231,12 +229,7 @@
             {incGrid}
             {decGrid}
         />
-        <DrawerWrapper
-            newData={content.json ? content.json : JSON.parse(content.text)}
-            {deleteNode}
-            bind:content
-            {updateData}
-        />
+        <DrawerWrapper {nodes} {deleteNode} />
     </div>
 {/if}
 

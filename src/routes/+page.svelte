@@ -1,26 +1,23 @@
 <script>
     import { onMount } from "svelte";
 
-    import { lesMis, dummyNodes } from "$lib/utils";
+    import { dummyNodes } from "$lib/utils";
 
     import NetworkGraph from "$lib/main-graph/NetworkGraph.svelte";
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
     import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
+    import SelectorWrapper from "../lib/selector/SelectorWrapper.svelte";
 
     let loaded = false,
-        data = { nodes: dummyNodes.nodes },
+        data = dummyNodes,
         physicsPaused = false,
         updatesPaused = true,
         group = 1,
         groupLimit = false,
         resetSim = false,
         grid = 1,
-        simulationSelected = false,
-        simulation = null,
-        simulationData = [],
-        optionsSelected = false;
+        simulationSelected = false;
 
-        
     $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
 
@@ -33,25 +30,15 @@
         setGroupLimit();
     });
 
-    const setGroupLimit = () => {
-        let maxGroupNodes,
-            maxGroups = Math.max(...data.nodes.map((o) => o.group)),
-            i = 0;
-        while (!groupLimit) {
-            maxGroupNodes = data.nodes.filter(
-                ({ group }) => group === maxGroups - i
-            );
-            maxGroupNodes.forEach((obj) => {
-                if (data.links.find(({ source }) => obj.id === source))
-                    groupLimit = obj.group;
-            });
-            i++;
-        }
-        if (group > groupLimit) group = groupLimit;
+    const reset = () => {
+        updateLinks();
+        resetSim = true;
+        updatesPaused = false;
+        setGroupLimit();
     };
 
-    const togglePhysics = () => {
-        physicsPaused = !physicsPaused;
+    const resetTheSim = () => {
+        resetSim = false;
     };
 
     const updateLinks = () => {
@@ -82,19 +69,29 @@
         });
     };
 
-    const reset = () => {
-        updateLinks();
-        resetSim = true;
-        updatesPaused = false;
-        setGroupLimit();
+    const setGroupLimit = () => {
+        let maxGroupNodes,
+            maxGroups = Math.max(...data.nodes.map((o) => o.group)),
+            i = 0;
+        while (!groupLimit) {
+            maxGroupNodes = data.nodes.filter(
+                ({ group }) => group === maxGroups - i
+            );
+            maxGroupNodes.forEach((obj) => {
+                if (data.links.find(({ source }) => obj.id === source))
+                    groupLimit = obj.group;
+            });
+            i++;
+        }
+        if (group > groupLimit) group = groupLimit;
     };
 
-    const resetTheSim = () => {
-        resetSim = false;
+    const setNodes = (newNodes) => {
+        nodes = newNodes;
     };
 
-    const pauseUpdates = (val) => {
-        updatesPaused = val || !updatesPaused;
+    const setLinks = (newLinks) => {
+        links = newLinks;
     };
 
     const deleteNode = (idToRemove) => {
@@ -105,21 +102,13 @@
         }
     };
 
-    const setNodes = (newNodes) => {
-        nodes = newNodes;
-    }
+    const toggleUpdates = (paused) => {
+        updatesPaused = paused || !updatesPaused;
+    };
 
-    const setLinks = (newLinks) => {
-        links = newLinks;
-    }
-
-    const incInterval = () => (interval += 1000);
-
-    const decInterval = () => (interval -= 1000);
-
-    const incGroup = () => (group += 1);
-
-    const decGroup = () => (group -= 1);
+    const togglePhysics = () => {
+        physicsPaused = !physicsPaused;
+    };
 
     const incGrid = () => {
         grid += gridInc;
@@ -131,16 +120,25 @@
         reset();
     };
 
-    updateLinks();
+    const incInterval = () => (interval += 1000);
 
-    const selectSimulation = (id) => {
+    const decInterval = () => (interval -= 1000);
+
+    const incGroup = () => (group += 1);
+
+    const decGroup = () => (group -= 1);
+
+    const selectSimulation = (simulationData) => {
+        data = simulationData;
+        updateLinks();
         simulationSelected = true;
-        simulation = id;
-        simulation === 0
-            ? (simulationData = dummyNodes)
-            : (simulationData = lesMis);
-        // content = { json: simulationData.nodes }
     };
+
+    const newPreset = () => {
+        simulationSelected = false;
+    }
+
+    updateLinks();
 </script>
 
 <svelte:window on:resize={reset} />
@@ -151,50 +149,13 @@
     >
         loading...
     </h1>
-<!-- {:else if !simulationSelected}
-    <div class="grid grid-cols-2 p-32 gap-8 h-full">
-        <button
-            class="btn btn-primary h-full"
-            on:click={() => selectSimulation(0)}
-        >
-            <p class="my-16">Dummy Dataset</p>
-        </button>
-        <button
-            class="btn btn-primary h-full"
-            on:click={() => selectSimulation(1)}
-        >
-            <p class="my-16">Les Mis Visualization</p>
-        </button>
-    </div>
-{:else if !optionsSelected}
-    <div
-        class="flex flex-col space-y-8 pt-32 pb-16 text-center h-full overflow-y-scroll"
-    >
-        <h3 class="text-3xl">
-            simulation {simulation === "a" ? "dummyNodes" : "lesMis"}
-        </h3>
-
-        <form
-            class="flex flex-col space-y-8 mx-auto"
-            on:submit={() => {
-                optionsSelected = true;
-            }}
-        >
-            <input type="submit" />
-            <div class="flex flex-row space-x-4 justify-around">
-                <p>id</p>
-                <p>group</p>
-                <p>out</p>
-            </div>
-            {#each simulationData.nodes as obj}
-                <div class="flex flex-row space-x-4">
-                    <input type="text" value={obj.id} />
-                    <input type="text" value={obj.group} />
-                    <input type="text" value={obj.out} />
-                </div>
-            {/each}
-        </form>
-    </div> -->
+{:else if !simulationSelected}
+    <SelectorWrapper
+        {simulationSelected}
+        {setNodes}
+        {reset}
+        {selectSimulation}
+    />
 {:else}
     <div class:hidden={!loaded}>
         <NetworkGraph
@@ -224,20 +185,12 @@
             {incGroup}
             {decGroup}
             {updatesPaused}
-            {pauseUpdates}
+            {toggleUpdates}
             {grid}
             {incGrid}
             {decGrid}
+            {newPreset}
         />
         <DrawerWrapper {nodes} {deleteNode} />
     </div>
 {/if}
-
-<style lang="postcss">
-    input[type="text"] {
-        @apply input input-primary;
-    }
-    input[type="submit"] {
-        @apply btn btn-primary;
-    }
-</style>

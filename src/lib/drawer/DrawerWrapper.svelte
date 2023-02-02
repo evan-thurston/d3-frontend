@@ -33,11 +33,11 @@
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 0)}>DATA</button
         >
-        <button
+        <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 1)}>EDIT</button
         >
-        <!-- {#if open && currentView === 1}
+        {#if open && currentView === 1}
             <button
                 class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
                 on:click={updateData}>SAVE</button

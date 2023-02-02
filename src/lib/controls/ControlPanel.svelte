@@ -13,13 +13,14 @@
         decGroup,
         updatesPaused,
         groupLimit,
-        pauseUpdates,
+        toggleUpdates,
         grid,
         incGrid,
         decGrid,
         width,
         updates,
-        progress;
+        progress,
+        newPreset;
 
     $: panelShowing = width > 1536;
 </script>
@@ -111,6 +112,7 @@
     <div
         class="flex flex-col md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0 items-center justify-center mb-4"
     >
+        <button on:click={newPreset()}>New Preset</button>
         <div class="flex flex-row space-x-4">
             <AmountSelector
                 label="Updates every {interval / 1000}s"
@@ -147,7 +149,7 @@
                 />
             </svg>
         </button>
-        <button on:click={pauseUpdates()}>
+        <button on:click={toggleUpdates()}>
             {#if updatesPaused}
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

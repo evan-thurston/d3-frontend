@@ -13,10 +13,11 @@
         decGroup,
         updatesPaused,
         groupLimit,
-        pauseUpdates,
+        toggleUpdates,
         grid,
         incGrid,
-        decGrid;
+        decGrid,
+        newPreset;
 
     let height,
         width,
@@ -138,13 +139,14 @@
             {decGroup}
             {updatesPaused}
             {groupLimit}
-            {pauseUpdates}
+            {toggleUpdates}
             {grid}
             {incGrid}
             {decGrid}
             {width}
             {updates}
             {progress}
+            {newPreset}
         />
     </div>
 </section>

@@ -1,12 +1,13 @@
 <script>
     import Ticker from "../Ticker.svelte";
-    import { JSONEditor } from "svelte-jsoneditor";
+    // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let newData, deleteNode, content, updateData;
+    export let nodes, deleteNode;
 
     //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
     let open = false,
         currentView = 0;
+
 </script>
 
 <div class="wrapper {open ? 'w-1/3' : 'w-0'}">
@@ -32,7 +33,7 @@
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 0)}>DATA</button
         >
-        <button
+        <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 1)}>EDIT</button
         >
@@ -41,12 +42,12 @@
                 class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
                 on:click={updateData}>SAVE</button
             >
-        {/if}
+        {/if} -->
     </div>
     {#if currentView === 0}
-        <Ticker {newData} {deleteNode} />
-    {:else if currentView === 1}
-        <JSONEditor bind:content navigationBar={false} />
+        <Ticker {nodes} {deleteNode} />
+        <!-- {:else if currentView === 1}
+        <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>
 
@@ -55,7 +56,7 @@
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
     }
     .controls {
-        @apply fixed -ml-24 mt-8 flex flex-col space-y-8;
+        @apply fixed -ml-8 -translate-x-full mt-8 flex flex-col space-y-8;
     }
     button {
         @apply transition-all;

@@ -45,16 +45,17 @@
     import Grid from "./Grid.svelte";
     import Link from "./Link.svelte";
 
-    export let data,
+    export let links, nodes,
         interval,
         group,
         updatesPaused,
         grid,
-        updateDataset,
         resetSim,
         resetTheSim,
         physicsPaused,
-        deleteNode;
+        deleteNode,
+        setNodes,
+        setLinks;
 
     let svg,
         width = 500,
@@ -78,8 +79,7 @@
         }
     }
 
-    $: links = data.links.map((d) => Object.assign({}, d));
-    $: nodes = data.nodes.map((d) => Object.assign({}, d));
+
     $: radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
     $: forceConstant =
         (3 * radius) / (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
@@ -118,10 +118,8 @@
 
     const simulationUpdate = () => {
         simulation.tick();
-        nodes = [...nodes];
-        links = [...links];
-
-        updateDataset(nodes);
+        setNodes([...nodes]);
+        setLinks([...links]);
 
         if (physicsPaused && !simulationPaused) {
             stopSim();

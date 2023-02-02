@@ -1,12 +1,13 @@
 <script>
     import Highlight from "$lib/Highlight.svelte";
 
-    export let newData, deleteNode;
+    export let nodes, deleteNode;
 
     let tickerPaused = false,
         tickerData;
 
-    $: if (!tickerPaused) tickerData = newData;
+    $: if (!tickerPaused) tickerData = nodes;
+
 </script>
 
 <div class="flex flex-col-reverse xl:flex-row xl:space-x-8 bg-base-100 px-8">

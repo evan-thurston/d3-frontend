@@ -16,7 +16,8 @@
         groupLimit = false,
         resetSim = false,
         grid = 1,
-        simulationSelected = false;
+        simulationSelected = false,
+        selectedNodes = [];
 
     $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
@@ -128,9 +129,14 @@
 
     const decGroup = () => (group -= 1);
 
+    const selectNode = (id) => {
+        selectedNodes.includes(id) ? selectedNodes = selectedNodes.filter((val) => val !== id) : selectedNodes.push(id)
+    }
+
     const selectSimulation = (simulationData) => {
         data = simulationData;
         updateLinks();
+        selectedNodes = []
         simulationSelected = true;
     };
 
@@ -172,6 +178,7 @@
             {links}
             {setNodes}
             {setLinks}
+            {selectNode}
         />
         <DraggableControlPanel
             {reset}
@@ -191,6 +198,6 @@
             {decGrid}
             {newPreset}
         />
-        <DrawerWrapper {nodes} {deleteNode} />
+        <DrawerWrapper {nodes} {deleteNode} {selectedNodes}/>
     </div>
 {/if}

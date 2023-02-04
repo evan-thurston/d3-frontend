@@ -5,7 +5,8 @@
         grid,
         radius,
         multiplier,
-        transform;
+        transform,
+        selectNode;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -22,8 +23,9 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <g
     on:click={() => {
-        if (!point.modalOpened) point.modalOpened = true;
-        else point.modalOpened = false;
+        // if (!point.modalOpened) point.modalOpened = true;
+        // else point.modalOpened = false;
+        selectNode(point.id)
     }}
     on:mouseenter={setNodeHovered(point.id)}
     on:mouseleave={setNodeHovered}

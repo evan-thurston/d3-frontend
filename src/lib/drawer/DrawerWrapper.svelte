@@ -1,13 +1,13 @@
 <script>
     import Ticker from "../Ticker.svelte";
+    import DrawerModal from "./DrawerModal.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, deleteNode;
+    export let nodes, deleteNode, selectedNodes;
 
     //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
     let open = false,
         currentView = 0;
-
 </script>
 
 <div class="wrapper {open ? 'w-1/3' : 'w-0'}">
@@ -30,8 +30,16 @@
             </svg>
         </button>
         <button
-            class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
-            on:click={() => (currentView = 0)}>DATA</button
+            class={!open || currentView !== 0
+                ? "btn btn-primary"
+                : "btn btn-disabled btn-ghost"}
+            on:click={() => {if(!open) open = !open; currentView = 0}}>DATA</button
+        >
+        <button
+            class={selectedNodes.length > 0 && (!open || currentView !== 1)
+                ? "btn btn-primary"
+                : "btn btn-disabled btn-ghost"}
+            on:click={() => {if(!open) open = !open; currentView = 1}}>MODAL</button
         >
         <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
@@ -44,10 +52,15 @@
             >
         {/if} -->
     </div>
-    {#if currentView === 0}
+    {#if currentView === 0 || selectedNodes.length === 0}
         <Ticker {nodes} {deleteNode} />
-        <!-- {:else if currentView === 1}
-        <JSONEditor bind:content navigationBar={false} /> -->
+    {:else if currentView === 1}
+        <!-- {#key nodes} -->
+        {#each selectedNodes as nodeId}
+            <DrawerModal node={nodes.find(({ id }) => id === nodeId)} />
+        {/each}
+        <!-- {/key} -->
+        <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>
 

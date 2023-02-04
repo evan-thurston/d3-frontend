@@ -55,7 +55,8 @@
         physicsPaused,
         deleteNode,
         setNodes,
-        setLinks;
+        setLinks,
+        selectNode;
 
     let svg,
         width = 500,
@@ -299,11 +300,12 @@
                 {multiplier}
                 {transform}
                 {setNodeHovered}
+                {selectNode}
             />
         {/each}
         <g>
             {#each nodes as point}
-                {#key group}
+                <!-- {#key group}
                     <MetadataPanel
                         {point}
                         {radius}
@@ -313,7 +315,7 @@
                             links.find(({ target }) => target.id === point.id)
                         )}
                     />
-                {/key}
+                {/key} -->
                 {#if point.modalOpened}
                     <foreignObject {height} {width}>
                         <Modal

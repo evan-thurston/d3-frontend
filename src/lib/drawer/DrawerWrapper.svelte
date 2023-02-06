@@ -3,7 +3,7 @@
     import DrawerModal from "./DrawerModal.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, deleteNode, selectedNodes;
+    export let nodes, deleteNode, selectedNodes, selectNode;
 
     //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
     let open = false,
@@ -33,14 +33,40 @@
             class={!open || currentView !== 0
                 ? "btn btn-primary"
                 : "btn btn-disabled btn-ghost"}
-            on:click={() => {if(!open) open = !open; currentView = 0}}>DATA</button
+            on:click={() => {
+                if (!open) open = !open;
+                currentView = 0;
+            }}>DATA</button
         >
-        <button
-            class={selectedNodes.length > 0 && (!open || currentView !== 1)
-                ? "btn btn-primary"
-                : "btn btn-disabled btn-ghost"}
-            on:click={() => {if(!open) open = !open; currentView = 1}}>MODAL</button
-        >
+        {#if selectedNodes.length > 0}
+            <button
+                class={!open || currentView !== 1
+                    ? "btn btn-primary"
+                    : "btn btn-disabled btn-ghost"}
+                on:click={() => {
+                    if (!open) open = !open;
+                    currentView = 1;
+                }}>MODAL</button
+            >
+        {/if}
+        <!-- <button
+                class="btn btn-primary"
+                on:click={() => {
+                    if(window) window.location.href = '#A'
+                }}>A</button
+            >
+            <button
+                class="btn btn-primary"
+                on:click={() => {
+                    if(window) window.location.href = '#B'
+                }}>B</button
+            >
+            <button
+                class="btn btn-primary"
+                on:click={() => {
+                    if(window) window.location.href = '#C'
+                }}>C</button
+            > -->
         <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 1)}>EDIT</button
@@ -55,11 +81,13 @@
     {#if currentView === 0 || selectedNodes.length === 0}
         <Ticker {nodes} {deleteNode} />
     {:else if currentView === 1}
-        <!-- {#key nodes} -->
-        {#each selectedNodes as nodeId}
-            <DrawerModal node={nodes.find(({ id }) => id === nodeId)} />
-        {/each}
-        <!-- {/key} -->
+        {#key selectedNodes}
+            {#each selectedNodes as nodeId}
+                <div id={nodeId}>
+                    <DrawerModal node={nodes.find(({ id }) => id === nodeId)} {selectNode}/>
+                </div>
+            {/each}
+        {/key}
         <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>
@@ -69,7 +97,7 @@
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
     }
     .controls {
-        @apply fixed -ml-8 -translate-x-full mt-8 flex flex-col space-y-8;
+        @apply fixed -ml-8 -translate-x-full mt-8 flex flex-col space-y-8 w-16;
     }
     button {
         @apply transition-all;

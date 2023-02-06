@@ -45,7 +45,8 @@
     import Grid from "./Grid.svelte";
     import Link from "./Link.svelte";
 
-    export let links, nodes,
+    export let links,
+        nodes,
         interval,
         group,
         updatesPaused,
@@ -56,7 +57,8 @@
         deleteNode,
         setNodes,
         setLinks,
-        selectNode;
+        selectNode,
+        nodeSelected;
 
     let svg,
         width = 500,
@@ -79,7 +81,6 @@
             );
         }
     }
-
 
     $: radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
     $: forceConstant =
@@ -287,6 +288,7 @@
                 {grid}
                 {indirectTargeted}
                 {transform}
+                bothWays={connectedBothWays(link)}
             />
         {/if}
     {/each}
@@ -301,6 +303,7 @@
                 {transform}
                 {setNodeHovered}
                 {selectNode}
+                {nodeSelected}
             />
         {/each}
         <g>

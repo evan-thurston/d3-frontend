@@ -130,19 +130,26 @@
     const decGroup = () => (group -= 1);
 
     const selectNode = (id) => {
-        selectedNodes.includes(id) ? selectedNodes = selectedNodes.filter((val) => val !== id) : selectedNodes.push(id)
-    }
+        selectedNodes.includes(id)
+            ? (selectedNodes = selectedNodes.filter((val) => val !== id))
+            : (selectedNodes = [id, ...selectedNodes]);
+        console.log("inserted " + id, selectedNodes);
+    };
+
+    const nodeSelected = (id) => {
+        return selectedNodes.find((val) => val === id);
+    };
 
     const selectSimulation = (simulationData) => {
         data = simulationData;
         updateLinks();
-        selectedNodes = []
+        selectedNodes = [];
         simulationSelected = true;
     };
 
     const newPreset = () => {
         simulationSelected = false;
-    }
+    };
 
     updateLinks();
 </script>
@@ -179,6 +186,7 @@
             {setNodes}
             {setLinks}
             {selectNode}
+            {nodeSelected}
         />
         <DraggableControlPanel
             {reset}
@@ -198,6 +206,6 @@
             {decGrid}
             {newPreset}
         />
-        <DrawerWrapper {nodes} {deleteNode} {selectedNodes}/>
+        <DrawerWrapper {nodes} {deleteNode} {selectedNodes} {selectNode} />
     </div>
 {/if}

@@ -6,7 +6,8 @@
         radius,
         multiplier,
         transform,
-        selectNode;
+        selectNode,
+        nodeSelected;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -18,6 +19,8 @@
 
     $: if (grid > 1 && point.x) point.x = gridX(point.x);
     $: if (grid > 1 && point.y) point.y = gridY(point.y);
+
+    $: selected = nodeSelected(point.id);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -25,7 +28,7 @@
     on:click={() => {
         // if (!point.modalOpened) point.modalOpened = true;
         // else point.modalOpened = false;
-        selectNode(point.id)
+        selectNode(point.id);
     }}
     on:mouseenter={setNodeHovered(point.id)}
     on:mouseleave={setNodeHovered}
@@ -42,11 +45,11 @@
     >
         ID: {point.id}
     </text>
-    
+
     <!-- squares -->
     {#if point.group === 5}
         <rect
-            class="node"
+            class={selected ? "stroke-[0.9rem]" : "stroke-[0.3rem]"}
             width={radius * 2}
             height={radius * 2}
             fill={colourScale(point.group)}
@@ -59,7 +62,7 @@
         <!-- triangles -->
     {:else if point.group === 6}
         <polygon
-            class="node"
+            class={selected ? "stroke-[0.9rem]" : "stroke-[0.3rem]"}
             points="{point.x - radius || 0},{point.y + radius || 0}
             {point.x + radius || 0},{point.y + radius || 0} 
             {point.x || 0},{point.y - radius || 0}"
@@ -73,7 +76,7 @@
         <!-- circles -->
     {:else}
         <circle
-            class="node"
+            class={selected ? "stroke-[0.9rem]" : "stroke-[0.3rem]"}
             r={radius}
             fill={colourScale(point.group)}
             stroke-opacity={0.6}
@@ -84,11 +87,3 @@
         />
     {/if}
 </g>
-
-<style lang="postcss">
-    circle.node,
-    rect.node,
-    polygon.node {
-        @apply stroke-[0.9rem];
-    }
-</style>

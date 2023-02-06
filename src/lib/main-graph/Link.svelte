@@ -1,10 +1,5 @@
 <script>
-    export let link,
-        group,
-        indirectTargeted,
-        transform,
-        grid,
-        bothWays;
+    export let link, group, indirectTargeted, transform, grid, bothWays;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -54,10 +49,12 @@
         <path
             d="
                 M {link.source.x}, {link.source.y}
-                Q {first.x} {first.y}
-                    {controlPoint.x} {controlPoint.y} 
-                Q {second.x} {second.y}
-                    {link.target.x}, {link.target.y}
+                {bothWays
+                ? `Q ${first.x},${first.y} ${controlPoint.x},${controlPoint.y}
+                    Q ${second.x},${second.y} ${link.target.x},${link.target.y}`
+                : `L ${(link.source.x + link.target.x) / 2},
+                    ${(link.source.y + link.target.y) / 2} 
+                    L ${link.target.x},${link.target.y}`}
             "
             class="fill-none 
             {link.source.group === group || indirectTargeted(link)

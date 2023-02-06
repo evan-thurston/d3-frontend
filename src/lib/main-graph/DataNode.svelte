@@ -7,7 +7,8 @@
         group,
         grid,
         indirectTargeted,
-        transform;
+        transform,
+        bothWays;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -60,22 +61,22 @@
         <animate
             class="no-animation"
             attributeName="cx"
-            values="{link.source.x};{first.x};{controlPoint.x};{second.x};{link
-                .target.x}"
+            values={bothWays
+                ? `${link.source.x};${first.x};${controlPoint.x};${second.x};${link.target.x}`
+                : `${link.source.x};${link.target.x}`}
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={
-            (link.source.group === group || indirectTargeted(link))
+            repeatCount={link.source.group === group || indirectTargeted(link)
                 ? "indefinite"
                 : "0"}
         />
         <animate
             class="no-animation"
             attributeName="cy"
-            values="{link.source.y};{first.y};{controlPoint.y};{second.y};{link
-                .target.y}"
+            values={bothWays
+                ? `${link.source.y};${first.y};${controlPoint.y};${second.y};${link.target.y}`
+                : `${link.source.y};${link.target.y}`}
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={
-            (link.source.group === group || indirectTargeted(link))
+            repeatCount={link.source.group === group || indirectTargeted(link)
                 ? "indefinite"
                 : "0"}
         />

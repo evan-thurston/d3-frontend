@@ -3,7 +3,7 @@
     import Histogram from "$lib/modal/Histogram.svelte";
     import Scatterplot from "$lib/modal/Scatterplot.svelte";
 
-    export let node, fields;
+    export let node, fields, selectNode;
 
     let width,
         height,
@@ -32,11 +32,26 @@
     }
 
     $: graphWidth = (width + height) ** 0.65 || 300;
-
 </script>
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 
+<button on:click={selectNode(node.id)} class="relative left-[85%] top-7 w-12 h-12 btn btn-primary">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+    >
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+        />
+    </svg>
+</button>
 <div class="wrapper">
     <div>
         {#each objectArr as field}
@@ -48,7 +63,13 @@
                 {field.label}:
                 <Highlight value={field.value}>
                     {typeof field.value === "object" ? "[" : ""}
-                    {field.label === "data" ? "" : field.value}
+                    {#if field.label === "out" && typeof field.value[0] === "string"}
+                        {#each field.value as out}
+                            <p><Highlight value={out}>{out}</Highlight></p>
+                        {/each}
+                    {:else}
+                        {field.label === "data" ? "" : field.value}
+                    {/if}
                     {typeof field.value === "object" ? "]" : ""}
                 </Highlight>
             </p>
@@ -113,7 +134,7 @@
 
 <style lang="postcss">
     .wrapper {
-        @apply px-6 py-4 mx-6 mt-6
+        @apply px-6 py-4 mx-6 -mt-8
         border-4 border-primary rounded-xl 
         grid grid-cols-3;
     }

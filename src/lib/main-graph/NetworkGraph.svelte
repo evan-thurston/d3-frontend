@@ -57,6 +57,7 @@
         deleteNode,
         setNodes,
         setLinks,
+        selectedNodes,
         selectNode,
         nodeSelected;
 
@@ -97,6 +98,8 @@
 
         resetTheSim();
     }
+
+    $: selectedNodes && simulation && simulationUpdate();
 
     onMount(() => {
         startSim();
@@ -250,6 +253,8 @@
 <!-- <p class='fixed w-full h-full py-auto text-3xl bg-gray-100 bg-opacity-30 text-center'>
     click here to start simulation
 </p> -->
+<!-- <svg bind:this={svg} class='fixed bottom-0 right-0 w-1/12 h-1/12 z-50'/> -->
+
 <svg bind:this={svg} {width} {height}>
     {#if grid > 1}
         <Grid {width} {height} {grid} {transform} />
@@ -340,6 +345,7 @@
         </g>
     </g>
 </svg>
+
 
 <style lang="postcss">
     svg {

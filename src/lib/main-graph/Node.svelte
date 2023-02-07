@@ -29,6 +29,7 @@
         // if (!point.modalOpened) point.modalOpened = true;
         // else point.modalOpened = false;
         selectNode(point.id);
+        if(window && !selected) window.location.href = "#" + point.id;
     }}
     on:mouseenter={setNodeHovered(point.id)}
     on:mouseleave={setNodeHovered}

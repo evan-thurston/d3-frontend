@@ -133,7 +133,6 @@
         selectedNodes.includes(id)
             ? (selectedNodes = selectedNodes.filter((val) => val !== id))
             : (selectedNodes = [id, ...selectedNodes]);
-        console.log("inserted " + id, selectedNodes);
     };
 
     const nodeSelected = (id) => {
@@ -185,6 +184,7 @@
             {links}
             {setNodes}
             {setLinks}
+            {selectedNodes}
             {selectNode}
             {nodeSelected}
         />
@@ -206,6 +206,6 @@
             {decGrid}
             {newPreset}
         />
-        <DrawerWrapper {nodes} {deleteNode} {selectedNodes} {selectNode} />
+        <DrawerWrapper {nodes} {deleteNode} {selectedNodes} {selectNode} {nodeSelected}/>
     </div>
 {/if}

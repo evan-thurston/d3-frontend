@@ -3,7 +3,7 @@
     import DrawerModal from "./DrawerModal.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, deleteNode, selectedNodes, selectNode;
+    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;
 
     //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
     let open = false,
@@ -38,7 +38,7 @@
                 currentView = 0;
             }}>DATA</button
         >
-        {#if selectedNodes.length > 0}
+        <!-- {#if selectedNodes.length > 0}
             <button
                 class={!open || currentView !== 1
                     ? "btn btn-primary"
@@ -48,7 +48,7 @@
                     currentView = 1;
                 }}>MODAL</button
             >
-        {/if}
+        {/if} -->
         <!-- <button
                 class="btn btn-primary"
                 on:click={() => {
@@ -79,15 +79,15 @@
         {/if} -->
     </div>
     {#if currentView === 0 || selectedNodes.length === 0}
-        <Ticker {nodes} {deleteNode} />
-    {:else if currentView === 1}
+        <Ticker {nodes} {deleteNode} {selectedNodes} {selectNode} {nodeSelected}/>
+    <!-- {:else if currentView === 1}
         {#key selectedNodes}
             {#each selectedNodes as nodeId}
                 <div id={nodeId}>
                     <DrawerModal node={nodes.find(({ id }) => id === nodeId)} {selectNode}/>
                 </div>
             {/each}
-        {/key}
+        {/key} -->
         <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>

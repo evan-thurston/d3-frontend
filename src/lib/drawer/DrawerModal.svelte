@@ -9,11 +9,11 @@
         height,
         objectArr = [],
         keys = Object.keys(node),
-        ignoredKeys = new Set(["vx", "vy", "fx", "fy"]),
+        ignoredKeys = new Set(["x", "y", "vx", "vy", "fx", "fy"]),
         coords = new Set(["x", "y"]);
 
     if (!fields) fields = keys;
-
+ 
     keys = Object.keys(node);
     for (let i = 0; i < keys.length; i++) {
         if (fields.includes(keys[i]) && !ignoredKeys.has(keys[i]))
@@ -36,7 +36,7 @@
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 
-<button on:click={selectNode(node.id)} class="relative left-[85%] top-7 w-12 h-12 btn btn-primary">
+<!-- <button on:click={selectNode(node.id)} class="relative left-[85%] top-7 w-12 h-12 btn btn-primary">
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -51,8 +51,8 @@
             d="M6 18L18 6M6 6l12 12"
         />
     </svg>
-</button>
-<div class="wrapper">
+</button> -->
+<div class="wrapper" >
     <div>
         {#each objectArr as field}
             <p
@@ -87,6 +87,8 @@
                 </div>
             {/if}
         {/each}
+        <p class='text-lg'>x: <Highlight value={Math.round(node.x)}>{Math.round(node.x)}</Highlight></p>
+        <p class='text-lg'>y: <Highlight value={Math.round(node.y)}>{Math.round(node.y)}</Highlight></p>
     </div>
     <div>
         {#each [1, 2, 3] as graph}
@@ -134,7 +136,7 @@
 
 <style lang="postcss">
     .wrapper {
-        @apply px-6 py-4 mx-6 -mt-8
+        @apply px-6 py-4
         border-4 border-primary rounded-xl 
         grid grid-cols-3;
     }

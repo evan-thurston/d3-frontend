@@ -1,13 +1,15 @@
 <script>
-    import Highlight from "$lib/Highlight.svelte";
+    import { scale, fade } from "svelte/transition";
 
-    export let nodes, deleteNode;
+    import Highlight from "$lib/Highlight.svelte";
+    import DrawerModal from "$lib/drawer/DrawerModal.svelte";
+
+    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;
 
     let tickerPaused = false,
         tickerData;
 
     $: if (!tickerPaused) tickerData = nodes;
-
 </script>
 
 <div class="flex flex-col-reverse xl:flex-row xl:space-x-8 bg-base-100 px-8">
@@ -19,23 +21,39 @@
         <h3>y:</h3>
         <h3>delete</h3>
         {#each tickerData as node}
-            <div class="rounded-l-xl"><p title={node.id}><Highlight value={node.id}>{node.id}</Highlight></p></div>
+            <button on:click={selectNode(node.id)} class="rounded-l-xl" id={node.id}>
+                <p title={node.id}>
+                    <Highlight value={node.id}>{node.id}</Highlight>
+                </p>
+            </button>
             <div><Highlight value={node.group}>{node.group}</Highlight></div>
             <div>
                 {#if node.out}
                     {#if typeof node.out[0] === "string"}
                         {#each node.out as out}
-                            <p title={out}><Highlight value={out}>{out}</Highlight></p>
+                            <p title={out}>
+                                <Highlight value={out}>{out}</Highlight>
+                            </p>
                         {/each}
                     {:else}
-                        <p title={node.out}><Highlight value={node.out}>{node.out}</Highlight></p>
+                        <p title={node.out}>
+                            <Highlight value={node.out}>{node.out}</Highlight>
+                        </p>
                     {/if}
                 {:else}
                     none
                 {/if}
             </div>
-            <div><Highlight value={Math.round(node.x)}>{Math.round(node.x)}</Highlight></div>
-            <div><Highlight value={Math.round(node.y)}>{Math.round(node.y)}</Highlight></div>
+            <div>
+                <Highlight value={Math.round(node.x)}
+                    >{Math.round(node.x)}</Highlight
+                >
+            </div>
+            <div>
+                <Highlight value={Math.round(node.y)}
+                    >{Math.round(node.y)}</Highlight
+                >
+            </div>
             <button
                 on:click={deleteNode(node.id)}
                 class:btn-disabled={tickerData.length < 6}
@@ -56,6 +74,17 @@
                     />
                 </svg>
             </button>
+            {#key selectedNodes}
+                {#if nodeSelected(node.id)}
+                    <section
+                        class="col-span-6 transition-transform"
+                        in:scale
+                        out:fade
+                    >
+                        <DrawerModal {node} {selectNode} />
+                    </section>
+                {/if}
+            {/key}
         {/each}
     </div>
     <!-- <div class="controls">

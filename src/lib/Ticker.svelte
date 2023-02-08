@@ -81,7 +81,7 @@
                         in:scale
                         out:fade
                     >
-                        <DrawerModal {node} {selectNode} />
+                        <DrawerModal {node} />
                     </section>
                 {/if}
             {/key}

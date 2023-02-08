@@ -3,92 +3,67 @@
     import Histogram from "$lib/modal/Histogram.svelte";
     import Scatterplot from "$lib/modal/Scatterplot.svelte";
 
-    export let node, fields, selectNode;
+    export let node;
 
     let width,
         height,
-        objectArr = [],
         keys = Object.keys(node),
-        ignoredKeys = new Set(["x", "y", "vx", "vy", "fx", "fy"]),
-        coords = new Set(["x", "y"]);
+        ignoredKeys = new Set([
+            "index",
+            "id",
+            "data",
+            "x",
+            "y",
+            "vx",
+            "vy",
+            "fx",
+            "fy",
+        ]);
 
-    if (!fields) fields = keys;
- 
-    keys = Object.keys(node);
-    for (let i = 0; i < keys.length; i++) {
-        if (fields.includes(keys[i]) && !ignoredKeys.has(keys[i]))
-            objectArr.push({
-                label: keys[i],
-                value: coords.has(keys[i])
-                    ? Math.round(node[keys[i]])
-                    : node[keys[i]],
-            });
-        if (keys[i] === "group" && fields.includes("icon")) {
-            objectArr.push({
-                label: "icon",
-                value: node.group > 2 ? "dog" : "bird",
-            });
-        }
-    }
+    keys = keys.filter((val) => !ignoredKeys.has(val));
 
     $: graphWidth = (width + height) ** 0.65 || 300;
 </script>
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 
-<!-- <button on:click={selectNode(node.id)} class="relative left-[85%] top-7 w-12 h-12 btn btn-primary">
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-    >
-        <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-        />
-    </svg>
-</button> -->
-<div class="wrapper" >
+<div class="wrapper">
     <div>
-        {#each objectArr as field}
-            <p
-                class={field.label === "id"
-                    ? "text-3xl uppercase font-medium"
-                    : "text-lg"}
-            >
-                {field.label}:
-                <Highlight value={field.value}>
-                    {typeof field.value === "object" ? "[" : ""}
-                    {#if field.label === "out" && typeof field.value[0] === "string"}
-                        {#each field.value as out}
-                            <p><Highlight value={out}>{out}</Highlight></p>
-                        {/each}
-                    {:else}
-                        {field.label === "data" ? "" : field.value}
-                    {/if}
-                    {typeof field.value === "object" ? "]" : ""}
+        <p class="text-3xl uppercase font-medium">
+            id:
+            <Highlight value={node.id}>
+                {node.id}
+            </Highlight>
+        </p>
+        {#each keys as field}
+            <p class="text-lg">
+                {field}:
+                <Highlight value={node[field]}>
+                    {node[field]}
                 </Highlight>
             </p>
-
-            {#if field.label === "data"}
-                <div class="ml-4">
-                    {#each field.value as obj}
-                        <p class="text-sm">
-                            {obj.label}:
-                            <Highlight value={obj.value}>
-                                {obj.value}
-                            </Highlight>
-                        </p>
-                    {/each}
-                </div>
-            {/if}
         {/each}
-        <p class='text-lg'>x: <Highlight value={Math.round(node.x)}>{Math.round(node.x)}</Highlight></p>
-        <p class='text-lg'>y: <Highlight value={Math.round(node.y)}>{Math.round(node.y)}</Highlight></p>
+        {#if node.data}
+            <p class="text-lg">
+                data: [
+                {#each node.data as row}
+                    <p class="text-sm ml-4">
+                        {row.label}: <Highlight value={row.value}>
+                            {row.value}
+                        </Highlight>
+                    </p>
+                {/each}
+                ]
+            </p>
+        {/if}
+        {#each ['x', 'y'] as coord}
+            <p class="text-lg">
+                {coord}:
+                <Highlight value={Math.round(node[coord])}>
+                    {Math.round(node[coord])}
+                </Highlight>
+            </p>
+        {/each}
     </div>
     <div>
         {#each [1, 2, 3] as graph}

@@ -1,18 +1,21 @@
 <script>
     import Ticker from "../Ticker.svelte";
-    import DrawerModal from "./DrawerModal.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
     export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;
 
     //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
     let open = false,
-        currentView = 0;
+        currentView = 0,
+        hasntDiscovered = true;
 </script>
 
 <div class="wrapper {open ? 'w-1/3' : 'w-0'}">
     <div class="controls">
-        <button class="btn btn-primary" on:click={() => (open = !open)}>
+        <button
+            class="btn btn-primary"
+            on:click={() => ((open = !open), (hasntDiscovered = false))}
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -32,7 +35,11 @@
         <button
             class={!open || currentView !== 0
                 ? "btn btn-primary"
-                : "btn btn-disabled btn-ghost"}
+                : "btn btn-disabled btn-ghost"
+                }
+            class:animate-bounce={!open &&
+                hasntDiscovered &&
+                selectedNodes.length > 0}
             on:click={() => {
                 if (!open) open = !open;
                 currentView = 0;
@@ -50,24 +57,6 @@
             >
         {/if} -->
         <!-- <button
-                class="btn btn-primary"
-                on:click={() => {
-                    if(window) window.location.href = '#A'
-                }}>A</button
-            >
-            <button
-                class="btn btn-primary"
-                on:click={() => {
-                    if(window) window.location.href = '#B'
-                }}>B</button
-            >
-            <button
-                class="btn btn-primary"
-                on:click={() => {
-                    if(window) window.location.href = '#C'
-                }}>C</button
-            > -->
-        <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 1)}>EDIT</button
         >
@@ -79,8 +68,14 @@
         {/if} -->
     </div>
     {#if currentView === 0 || selectedNodes.length === 0}
-        <Ticker {nodes} {deleteNode} {selectedNodes} {selectNode} {nodeSelected}/>
-    <!-- {:else if currentView === 1}
+        <Ticker
+            {nodes}
+            {deleteNode}
+            {selectedNodes}
+            {selectNode}
+            {nodeSelected}
+        />
+        <!-- {:else if currentView === 1}
         {#key selectedNodes}
             {#each selectedNodes as nodeId}
                 <div id={nodeId}>

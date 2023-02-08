@@ -1,23 +1,22 @@
 <script>
     import { onMount } from "svelte";
+    import SelectorWrapper from "../lib/selector/SelectorWrapper.svelte";
+    let loaded = false,
+        simulationSelected = false;
 
     import { dummyNodes } from "$lib/utils";
-
     import NetworkGraph from "$lib/main-graph/NetworkGraph.svelte";
+    let data = dummyNodes,
+        selectedNodes = [];
+
     import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
     import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
-    import SelectorWrapper from "../lib/selector/SelectorWrapper.svelte";
-
-    let loaded = false,
-        data = dummyNodes,
-        physicsPaused = false,
+    let physicsPaused = false,
         updatesPaused = true,
         group = 1,
         groupLimit = false,
         resetSim = false,
-        grid = 1,
-        simulationSelected = false,
-        selectedNodes = [];
+        grid = 1;
 
     $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
@@ -206,6 +205,12 @@
             {decGrid}
             {newPreset}
         />
-        <DrawerWrapper {nodes} {deleteNode} {selectedNodes} {selectNode} {nodeSelected}/>
+        <DrawerWrapper
+            {nodes}
+            {deleteNode}
+            {selectedNodes}
+            {selectNode}
+            {nodeSelected}
+        />
     </div>
 {/if}

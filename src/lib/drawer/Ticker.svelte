@@ -1,5 +1,5 @@
 <script>
-    import { scale, fade } from "svelte/transition";
+    import { scale, fade, slide } from "svelte/transition";
 
     import Highlight from "$lib/Highlight.svelte";
     import DrawerModal from "$lib/drawer/DrawerModal.svelte";
@@ -21,7 +21,11 @@
         <h3>y:</h3>
         <h3>delete</h3>
         {#each tickerData as node}
-            <button on:click={selectNode(node.id)} class="rounded-l-xl" id={node.id}>
+            <button
+                on:click={selectNode(node.id)}
+                class="rounded-l-xl"
+                id={node.id}
+            >
                 <p title={node.id}>
                     <Highlight value={node.id}>{node.id}</Highlight>
                 </p>
@@ -74,17 +78,17 @@
                     />
                 </svg>
             </button>
-            {#key selectedNodes}
-                {#if nodeSelected(node.id)}
-                    <section
-                        class="col-span-6 transition-transform"
-                        in:scale
-                        out:fade
-                    >
+            {#if nodeSelected(node.id)}
+                <section
+                    class="col-span-6 transition-transform"
+                    in:scale 
+                    out:slide
+                >
+                    <!-- {#key selectedNodes} -->
                         <DrawerModal {node} />
-                    </section>
-                {/if}
-            {/key}
+                    <!-- {/key} -->
+                </section>
+            {/if}
         {/each}
     </div>
     <!-- <div class="controls">

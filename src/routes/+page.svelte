@@ -35,6 +35,7 @@
         resetSim = true;
         updatesPaused = false;
         setGroupLimit();
+        selectedNodes = [];
     };
 
     const resetTheSim = () => {

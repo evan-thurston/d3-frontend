@@ -1,4 +1,6 @@
 <script>
+    import { scrollto } from "svelte-scrollto";
+
     export let point,
         colourScale,
         setNodeHovered,
@@ -26,10 +28,8 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <g
     on:click={() => {
-        // if (!point.modalOpened) point.modalOpened = true;
-        // else point.modalOpened = false;
+        if (!selected && window) window.location.href = "#" + point.id;
         selectNode(point.id);
-        if(window && !selected) window.location.href = "#" + point.id;
     }}
     on:mouseenter={setNodeHovered(point.id)}
     on:mouseleave={setNodeHovered}

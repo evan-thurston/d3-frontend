@@ -1,5 +1,5 @@
 <script>
-    import Ticker from "../Ticker.svelte";
+    import Ticker from "$lib/drawer/Ticker.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
     export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;

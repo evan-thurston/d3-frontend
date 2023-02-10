@@ -17,22 +17,21 @@
         grid,
         incGrid,
         decGrid,
-        newPreset;
+        newPreset,
+        updates = 0,
+        progress = 100,
+        resetProg;
 
     let height,
         width,
         h,
         w,
-        updateInterval,
-        progressInterval,
         distance = 50,
         top,
         right,
         left = distance,
         bottom = distance,
-        moving = false,
-        updates = 0,
-        progress = 100;
+        moving = false;
 
     onMount(() => {
         top = height - distance;
@@ -71,41 +70,6 @@
         }
         moving = false;
     };
-
-    const incr = () => {
-        updates++;
-    };
-    const prog = () => {
-        if (progress < interval) progress += interval / 10;
-        else progress = interval / 10;
-    };
-
-    const resetProg = () => {
-        updates = 0;
-        clearInterval(updateInterval);
-        updateInterval = setInterval(incr, interval);
-        clearInterval(progressInterval);
-        progressInterval = setInterval(prog, interval / 10);
-    };
-
-    $: {
-        if (updatesPaused) {
-            clearInterval(updateInterval);
-        } else {
-            clearInterval(updateInterval);
-            updateInterval = setInterval(incr, interval);
-            progress = interval / 10;
-        }
-    }
-    $: {
-        if (updatesPaused) {
-            clearInterval(progressInterval);
-            progress = interval / 10;
-        } else {
-            clearInterval(progressInterval);
-            progressInterval = setInterval(prog, interval / 10);
-        }
-    }
 </script>
 
 <section

@@ -1,10 +1,11 @@
 <script>
     import Ticker from "$lib/drawer/Ticker.svelte";
+    import Timeline from "./Timeline.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;
+    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected, updateList;
 
-    //currentView: 0 => tickerboard, 1 => json editor, 2 => timeline
+    //currentView: 0 => tickerboard, 1 => timeline
     let open = false,
         currentView = 0,
         hasntDiscovered = true;
@@ -35,8 +36,7 @@
         <button
             class={!open || currentView !== 0
                 ? "btn btn-primary"
-                : "btn btn-disabled btn-ghost"
-                }
+                : "btn btn-disabled btn-ghost"}
             class:animate-bounce={!open &&
                 hasntDiscovered &&
                 selectedNodes.length > 0}
@@ -45,17 +45,15 @@
                 currentView = 0;
             }}>DATA</button
         >
-        <!-- {#if selectedNodes.length > 0}
-            <button
-                class={!open || currentView !== 1
-                    ? "btn btn-primary"
-                    : "btn btn-disabled btn-ghost"}
-                on:click={() => {
-                    if (!open) open = !open;
-                    currentView = 1;
-                }}>MODAL</button
-            >
-        {/if} -->
+        <button
+            class={!open || currentView !== 1
+                ? "btn btn-primary"
+                : "btn btn-disabled btn-ghost"}
+            on:click={() => {
+                if (!open) open = !open;
+                currentView = 1;
+            }}>EVENTS</button
+        >
         <!-- <button
             class={open ? "btn btn-primary" : "btn btn-disabled btn-ghost"}
             on:click={() => (currentView = 1)}>EDIT</button
@@ -67,7 +65,7 @@
             >
         {/if} -->
     </div>
-    {#if currentView === 0 || selectedNodes.length === 0}
+    {#if currentView === 0}
         <Ticker
             {nodes}
             {deleteNode}
@@ -75,14 +73,8 @@
             {selectNode}
             {nodeSelected}
         />
-        <!-- {:else if currentView === 1}
-        {#key selectedNodes}
-            {#each selectedNodes as nodeId}
-                <div id={nodeId}>
-                    <DrawerModal node={nodes.find(({ id }) => id === nodeId)} {selectNode}/>
-                </div>
-            {/each}
-        {/key} -->
+    {:else if currentView === 1}
+        <Timeline {updateList}/>
         <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>

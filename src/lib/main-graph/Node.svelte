@@ -1,6 +1,4 @@
 <script>
-    import { scrollto } from "svelte-scrollto";
-
     export let point,
         colourScale,
         setNodeHovered,

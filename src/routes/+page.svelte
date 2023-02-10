@@ -16,7 +16,12 @@
         group = 1,
         groupLimit = false,
         resetSim = false,
-        grid = 1;
+        grid = 1,
+        updateInterval,
+        progressInterval,
+        updates = 0,
+        progress = 100,
+        updateList = [];
 
     $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
@@ -36,6 +41,8 @@
         updatesPaused = false;
         setGroupLimit();
         selectedNodes = [];
+        updateList = []
+        resetProg();
     };
 
     const resetTheSim = () => {
@@ -151,6 +158,43 @@
     };
 
     updateLinks();
+
+    const update = () => {
+        updates++;
+        updateList = [new Date(), ...updateList]
+    };
+
+    const prog = () => {
+        if (progress < interval) progress += interval / 10;
+        else progress = interval / 10;
+    };
+
+    const resetProg = () => {
+        updates = 0;
+        clearInterval(updateInterval);
+        updateInterval = setInterval(update, interval);
+        clearInterval(progressInterval);
+        progressInterval = setInterval(prog, interval / 10);
+    };
+
+    $: {
+        if (updatesPaused) {
+            clearInterval(updateInterval);
+        } else {
+            clearInterval(updateInterval);
+            updateInterval = setInterval(update, interval);
+            progress = interval / 10;
+        }
+    }
+    $: {
+        if (updatesPaused) {
+            clearInterval(progressInterval);
+            progress = interval / 10;
+        } else {
+            clearInterval(progressInterval);
+            progressInterval = setInterval(prog, interval / 10);
+        }
+    }
 </script>
 
 <svelte:window on:resize={reset} />
@@ -205,6 +249,9 @@
             {incGrid}
             {decGrid}
             {newPreset}
+            {updates}
+            {progress}
+            {resetProg}
         />
         <DrawerWrapper
             {nodes}
@@ -212,6 +259,7 @@
             {selectedNodes}
             {selectNode}
             {nodeSelected}
+            {updateList}
         />
     </div>
 {/if}

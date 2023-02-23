@@ -30,8 +30,8 @@
                     <Highlight value={node.id}>{node.id}</Highlight>
                 </p>
             </button>
-            <div><Highlight value={node.group}>{node.group}</Highlight></div>
-            <div>
+            <div><div class='my-auto'><Highlight value={node.group}>{node.group}</Highlight></div></div>
+            <div><div class='my-auto'>
                 {#if node.out}
                     {#if typeof node.out[0] === "string"}
                         {#each node.out as out}
@@ -48,15 +48,20 @@
                     none
                 {/if}
             </div>
+            </div>
             <div>
+                <div class="my-auto">
                 <Highlight value={Math.round(node.x)}
                     >{Math.round(node.x)}</Highlight
                 >
             </div>
+            </div>
             <div>
+                <div class="my-auto">
                 <Highlight value={Math.round(node.y)}
                     >{Math.round(node.y)}</Highlight
                 >
+            </div>
             </div>
             <button
                 on:click={deleteNode(node.id)}
@@ -154,11 +159,15 @@
     }
 
     .ticker div {
-        @apply bg-primary my-2 py-4 text-center text-xl font-bold uppercase border-x border-black border-opacity-20;
+        @apply bg-primary my-2 py-4 text-center text-xl font-bold uppercase;
     }
 
     .ticker button {
-        @apply btn-primary my-2 py-4 border-x border-black border-opacity-20 text-neutral-content font-bold text-xl text-center;
+        @apply btn-primary my-2 py-4 text-neutral-content font-bold text-xl text-center;
+    }
+
+    .ticker > button, .ticker > div {
+        @apply border-x border-black border-opacity-20
     }
 
     .ticker div p {
@@ -166,7 +175,7 @@
     }
 
     .ticker h3 {
-        @apply my-4 py-4 text-center text-2xl font-bold uppercase sticky top-0 bg-base-100;
+        @apply my-4 py-4 text-center text-lg 2xl:text-2xl font-bold uppercase sticky top-0 bg-base-100;
     }
 
     .controls {

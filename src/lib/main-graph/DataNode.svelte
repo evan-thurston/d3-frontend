@@ -49,36 +49,35 @@
 
         return { x: midX + deltaX, y: midY + deltaY };
     };
-</script>
+
+    // TODO: pause/freeze animation https://codepen.io/jjdewitt/pen/XJRqNK
+    // $: if(updatesPaused || !(link.source.group === group || indirectTargeted(link))) document.getElementById('node').pauseAnimations();
+    // $: if(updatesPaused && document.getElementById('node')) document.getElementById('node').pauseAnimations();
+</script> 
 
 {#if link.source.x !== link.target.x || link.source.y !== link.target.y}
     <circle
+    id='node'
         class="dataNode"
         r={radius / 5}
         fill={colourScale(link.source.group)}
         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
     >
         <animate
-            class="no-animation"
             attributeName="cx"
             values={bothWays
                 ? `${link.source.x};${first.x};${controlPoint.x};${second.x};${link.target.x}`
                 : `${link.source.x};${link.target.x}`}
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={link.source.group === group || indirectTargeted(link)
-                ? "indefinite"
-                : "0"}
+            repeatCount={"indefinite"}
         />
         <animate
-            class="no-animation"
             attributeName="cy"
             values={bothWays
                 ? `${link.source.y};${first.y};${controlPoint.y};${second.y};${link.target.y}`
                 : `${link.source.y};${link.target.y}`}
             dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
-            repeatCount={link.source.group === group || indirectTargeted(link)
-                ? "indefinite"
-                : "0"}
+            repeatCount={"indefinite"}
         />
     </circle>
     <!-- {#each Array(link.source.group % 6) as _, i}

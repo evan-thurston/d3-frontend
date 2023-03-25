@@ -77,4 +77,8 @@
 	button {
 		@apply btn btn-primary fixed bottom-8 right-8;
 	}
+
+	:global(input[type='text']) {
+		@apply input input-primary
+	}
 </style>

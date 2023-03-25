@@ -2,9 +2,8 @@
     import Highlight from "../Highlight.svelte";
     import Histogram from "$lib/modal/Histogram.svelte";
     import Scatterplot from "$lib/modal/Scatterplot.svelte";
-
+    import ModalRow from "./ModalRow.svelte";
     export let node;
-
     let width,
         height,
         keys = Object.keys(node),
@@ -19,30 +18,20 @@
             "fx",
             "fy",
         ]);
-
     keys = keys.filter((val) => !ignoredKeys.has(val));
-
     $: graphWidth = (width + height) ** 0.65 || 300;
 </script>
 
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
 
 <div class="wrapper">
-    <div>
-        <p class="text-3xl uppercase font-medium">
-            id:
-            <Highlight value={node.id}>
-                {node.id}
-            </Highlight>
-        </p>
+    <div class="max-w-full flex flex-col">
+        <ModalRow field="id" value={node.id} id={true} />
+
         {#each keys as field}
-            <p class="text-lg">
-                {field}:
-                <Highlight value={node[field]}>
-                    {node[field]}
-                </Highlight>
-            </p>
+            <ModalRow {field} bind:value={node[field]} />
         {/each}
+
         {#if node.data}
             <p class="text-lg">
                 data: [
@@ -56,7 +45,8 @@
                 ]
             </p>
         {/if}
-        {#each ['x', 'y'] as coord}
+
+        {#each ["x", "y"] as coord}
             <p class="text-lg">
                 {coord}:
                 <Highlight value={Math.round(node[coord])}>
@@ -86,7 +76,7 @@
             </div>
         {/each}
     </div>
-    <div>
+    <!-- <div>
         {#each [1, 2, 3] as graph}
             <div>
                 {#if graph === 1}
@@ -106,13 +96,13 @@
                 />
             </div>
         {/each}
-    </div>
+    </div> -->
 </div>
 
 <style lang="postcss">
     .wrapper {
         @apply px-6 py-4
         border-4 border-primary rounded-xl 
-        grid grid-cols-3;
+        grid lg:grid-cols-2 gap-8;
     }
 </style>

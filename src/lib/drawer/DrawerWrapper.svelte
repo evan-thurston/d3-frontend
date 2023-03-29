@@ -64,6 +64,7 @@
                 on:click={updateData}>SAVE</button
             >
         {/if} -->
+        <!-- <button class='btn btn-primary' on:click={() => console.log(nodes)}>log</button> -->
     </div>
     {#if currentView === 0}
         <Ticker

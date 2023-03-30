@@ -14,9 +14,11 @@
             bind:value
             size={5}
             on:input={(e) => {
-                value = e.target.value;
-                console.log("value", value);
-                console.log("e.target", e.target.value);
+                if (field === "group") {
+                    value = /\d/.test(e.target.value)
+                        ? Number(e.target.value)
+                        : e.target.value;
+                }
             }}
         />
     {/if}
@@ -39,7 +41,6 @@
                         size={3}
                     />
                     <button
-                        class="btn btn-primary"
                         type="button"
                         on:click={() => {
                             value = [...value.filter((val) => val != value[i])];
@@ -63,7 +64,6 @@
                 </div>
             {/each}
             <button
-                class="btn btn-primary"
                 type="button"
                 on:click={() => {
                     value = [...value, ""];
@@ -88,7 +88,6 @@
             <!-- <input type="text" bind:value={obj} /> -->
 
             <button
-                class="btn btn-primary"
                 type="button"
                 on:click={() => {
                     value = [""];
@@ -119,5 +118,8 @@
     }
     section.id {
         @apply text-3xl uppercase font-medium;
+    }
+    button {
+        @apply btn btn-primary
     }
 </style>

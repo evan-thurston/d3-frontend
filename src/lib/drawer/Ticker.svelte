@@ -30,8 +30,10 @@
                     <Highlight value={node.id}>{node.id}</Highlight>
                 </p>
             </button>
-            <div><div class='my-auto'><Highlight value={node.group}>{node.group}</Highlight></div></div>
-            <div><div class='my-auto'>
+            <div>
+                <Highlight value={node.group}>{node.group}</Highlight>
+            </div>
+            <div>
                 {#if node.out}
                     {#if typeof node.out[0] === "string"}
                         {#each node.out as out}
@@ -48,20 +50,15 @@
                     none
                 {/if}
             </div>
-            </div>
             <div>
-                <div class="my-auto">
                 <Highlight value={Math.round(node.x)}
                     >{Math.round(node.x)}</Highlight
                 >
             </div>
-            </div>
             <div>
-                <div class="my-auto">
                 <Highlight value={Math.round(node.y)}
                     >{Math.round(node.y)}</Highlight
                 >
-            </div>
             </div>
             <button
                 on:click={deleteNode(node.id)}
@@ -84,73 +81,14 @@
                 </svg>
             </button>
             {#if nodeSelected(node.id)}
-                <section
-                    class="col-span-6 transition-transform"
-                    in:scale 
-                    out:slide
-                >
+                <section in:scale out:slide>
                     <!-- {#key selectedNodes} -->
-                        <DrawerModal {node} />
+                    <DrawerModal bind:node />
                     <!-- {/key} -->
                 </section>
             {/if}
         {/each}
     </div>
-    <!-- <div class="controls">
-        <button
-            on:click={() => {
-                toggleTicker();
-            }}
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-12 h-12 mx-auto"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                />
-            </svg>
-        </button>
-        <button class='mr-4 xl:mr-0' on:click={() => (tickerPaused = !tickerPaused)}>
-            {#if tickerPaused}
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-12 h-12 mx-auto"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
-                    />
-                </svg>
-            {:else}
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-12 h-12 mx-auto"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15.75 5.25v13.5m-7.5-13.5v13.5"
-                    />
-                </svg>
-            {/if}
-        </button>
-    </div> -->
 </div>
 
 <style lang="postcss">
@@ -159,15 +97,16 @@
     }
 
     .ticker div {
-        @apply bg-primary my-2 py-4 text-center text-xl font-bold uppercase;
+        @apply bg-primary my-2 py-4 text-center text-xl font-bold uppercase my-auto;
     }
 
     .ticker button {
         @apply btn-primary my-2 py-4 text-neutral-content font-bold text-xl text-center;
     }
 
-    .ticker > button, .ticker > div {
-        @apply border-x border-black border-opacity-20
+    .ticker > button,
+    .ticker > div {
+        @apply border-x border-black border-opacity-20;
     }
 
     .ticker div p {
@@ -184,5 +123,8 @@
 
     .controls button {
         @apply btn-ghost bg-base-300 rounded-xl;
+    }
+    section {
+        @apply col-span-6 transition-transform;
     }
 </style>

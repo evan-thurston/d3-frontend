@@ -68,7 +68,7 @@
     </div>
     {#if currentView === 0}
         <Ticker
-            {nodes}
+            bind:nodes
             {deleteNode}
             {selectedNodes}
             {selectNode}

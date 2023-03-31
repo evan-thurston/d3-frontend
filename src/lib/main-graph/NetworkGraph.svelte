@@ -83,7 +83,7 @@
         }
     }
 
-    $: radius = ((width + height) ** 0.5 * 2) / nodes.length ** 0.5;
+    $: radius = ((width + height) ** 0.5 * 3) / nodes.length ** 0.5;
     $: forceConstant =
         (3 * radius) / (Math.max(1, 750 - width) ** 0.1 * nodes.length ** 0.1);
     $: if (resetSim) {
@@ -151,7 +151,7 @@
                 d3
                     .forceLink(links)
                     .id((d) => d.id)
-                    .distance(forceConstant * 2.4)
+                    .distance(forceConstant * 6)
             )
             .force("charge", d3.forceManyBody().strength(forceConstant * -9))
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -345,7 +345,6 @@
         </g>
     </g>
 </svg>
-
 
 <style lang="postcss">
     svg {

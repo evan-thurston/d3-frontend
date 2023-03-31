@@ -34,6 +34,7 @@
     class="node"
 >
     <text
+        font-size={30}
         fill={colourScale(point.group)}
         x={point.x}
         y={point.y - radius * 1.5 || point.y}

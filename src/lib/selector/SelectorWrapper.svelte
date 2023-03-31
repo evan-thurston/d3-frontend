@@ -1,6 +1,5 @@
 <script>
-    import { lesMis, dummyNodes } from "$lib/utils";
-    import { group } from "d3";
+    import { lesMis, dummyNodes, airports } from "$lib/utils";
 
     export let selectSimulation;
 
@@ -13,7 +12,11 @@
         preset = id;
         preset === 0
             ? (presetData.nodes = [...dummyNodes.nodes])
-            : (presetData.nodes = [...lesMis.nodes]);
+            : preset === 1
+            ? (presetData.nodes = [...lesMis.nodes])
+            : preset === 2
+            ? (presetData.nodes = [...airports.nodes])
+            : (presetData.nodes = [{ id: "", group: 1, out: [] }]);
     };
 </script>
 
@@ -25,6 +28,12 @@
         <button class="presetButton" on:click={() => selectPreset(1)}>
             <p class="my-16">Les Mis Visualization</p>
         </button>
+        <button class="presetButton" on:click={() => selectPreset(2)}>
+            <p class="my-16">Airport Visualization</p>
+        </button>
+        <button class="presetButton" on:click={() => selectPreset(3)}>
+            <p class="my-16">Blank</p>
+        </button>
     </div>
 {:else}
     <div
@@ -35,7 +44,7 @@
             <div class="uppercase left-1/2 ">
                 <h5>preset:</h5>
                 <h3>
-                    {preset === 0 ? "dummyNodes" : "lesMis"}
+                    {preset === 0 ? "dummyNodes" : preset === 1 ? "lesMis" : preset === 2 ? "airport" : "blank"}
                 </h3>
             </div>
             <input type="submit" form="presetForm" />
@@ -58,7 +67,7 @@
                 <div class="grid grid-cols-3 gap-4 bg-base-200 p-8 rounded-xl">
                     <div class="flex flex-row justify-between">
                         <button
-                            class="h-full btn-primary"
+                            class="h-full btn-primary mr-4"
                             type="button"
                             on:click={() =>
                                 (presetData.nodes = presetData.nodes.filter(
@@ -209,8 +218,9 @@
     input[type="text"] {
         @apply input input-primary;
     }
-    button, input[type='submit'] {
-        @apply btn btn-primary
+    button,
+    input[type="submit"] {
+        @apply btn btn-primary;
     }
     button.presetButton {
         @apply btn btn-primary h-full;

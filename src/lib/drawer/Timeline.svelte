@@ -17,7 +17,7 @@
 
 <style lang='postcss'>
     div {
-        @apply bg-primary rounded-md m-4 p-4
+        @apply bg-base-200 rounded-md my-4 p-4 mx-8
     }
     h2 {
         @apply text-3xl font-bold;

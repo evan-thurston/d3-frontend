@@ -72,6 +72,60 @@ export let dummyNodes = {
 		{ "id": "O", "group": 7 },
 	]
 }
+export let airports = {
+	"nodes": [
+		{
+			"id": "AUS",
+			"group": 1,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "DFW",
+			"group": 1,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "SAT",
+			"group": 1,
+			"out": [1, "EWR", "LGA", "OAK"]
+		},
+		{
+			"id": "JFK",
+			"group": 2,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "LGA",
+			"group": 2,
+			"out": [1, 2, "SAN", "LAX", "SFO"]
+		},
+		{
+			"id": "EWR",
+			"group": 2,
+			"out": ["AUS", "DFW", 2, "LAX", "OAK"]
+		},
+		{
+			"id": "SAN",
+			"group": 3,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "LAX",
+			"group": 3,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "SFO",
+			"group": 3,
+			"out": [1, 2, 3]
+		},
+		{
+			"id": "OAK",
+			"group": 3,
+			"out": [1, "EWR", "JFK", 3]
+		},
+	]
+}
 export let lesMis = {
 	"nodes": [
 		{

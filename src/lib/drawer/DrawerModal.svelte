@@ -101,8 +101,8 @@
 
 <style lang="postcss">
     .wrapper {
-        @apply px-6 py-4
-        border-4 border-primary rounded-xl 
+        @apply mx-16 px-8 py-4
+        bg-base-200 rounded-xl 
         grid lg:grid-cols-2 gap-8;
     }
 </style>

@@ -81,6 +81,15 @@
 	:global(h3) {
 		@apply text-3xl;
 	}
+	:global(h4) {
+		@apply text-2xl;
+	}
+	:global(h5) {
+		@apply text-xl;
+	}
+	:global(h6) {
+		@apply text-lg;
+	}
 
 	:global(input[type="text"]) {
 		@apply input input-primary;

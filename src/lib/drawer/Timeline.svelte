@@ -1,12 +1,31 @@
 <script>
-    export let updateList;
+    export let updateList, nodes;
+
+    let targetList = [];
+
+    const parseTargets = (targets) => {
+        targetList = [];
+        targets.forEach(target => {
+            if(typeof target === "number") {
+                let groupNodes = nodes.filter(({group}) => group === target);
+                groupNodes.forEach(node => {
+                    targetList.push(node.id)
+                });
+            } else {
+                targetList.push(target)
+            }
+        });
+        return targetList
+    }
 </script>
 
 {#if updateList.length > 0}
-    {#each updateList as date, i}
+    {#each updateList as update, i}
         <div>
             <h2>event {updateList.length - i}</h2>
-            <p>timestamp: {date}</p>
+            <p>timestamp: {update.timestamp}</p>
+            <p>emitter: {update.emitter}</p>
+            <p>targets: {parseTargets(update.targets)}</p>
         </div>
     {/each}
 {:else}

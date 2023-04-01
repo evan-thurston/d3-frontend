@@ -8,7 +8,8 @@
         grid,
         indirectTargeted,
         transform,
-        bothWays;
+        bothWays,
+        nodeEmitting;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -68,7 +69,7 @@
             values={bothWays
                 ? `${link.source.x};${first.x};${controlPoint.x};${second.x};${link.target.x}`
                 : `${link.source.x};${link.target.x}`}
-            dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
+            dur={(interval / 1000) || 5 + "s"}
             repeatCount={"indefinite"}
         />
         <animate
@@ -76,7 +77,7 @@
             values={bothWays
                 ? `${link.source.y};${first.y};${controlPoint.y};${second.y};${link.target.y}`
                 : `${link.source.y};${link.target.y}`}
-            dur={(interval / 1000 / link.source.group) % 6 || 5 + "s"}
+            dur={(interval / 1000) || 5 + "s"}
             repeatCount={"indefinite"}
         />
     </circle>

@@ -9,7 +9,7 @@
     let data = dummyNodes,
         selectedNodes = [];
 
-    import DraggableControlPanel from "$lib/controls/DraggableControlPanel.svelte";
+    import ControlPanel from "$lib/controls/ControlPanel.svelte";
     import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
     let physicsPaused = false,
         updatesPaused = true,
@@ -21,7 +21,10 @@
         progressInterval,
         updates = 0,
         progress = 100,
-        updateList = [];
+        updateList = [],
+        emitters = data.nodes.filter(({ out }) => Array.isArray(out)),
+        nodeEmitting = emitters[0].id,
+        nodeIndex = 0;
 
     $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
@@ -41,7 +44,7 @@
         updatesPaused = false;
         setGroupLimit();
         selectedNodes = [];
-        updateList = []
+        updateList = [];
         resetProg();
     };
 
@@ -136,10 +139,27 @@
 
     const decGroup = () => (group -= 1);
 
-    const selectNode = (id) => {
-        selectedNodes.includes(id)
-            ? (selectedNodes = selectedNodes.filter((val) => val !== id))
-            : (selectedNodes = [id, ...selectedNodes]);
+    const nextNode = () => {
+        nodeIndex++;
+        nodeEmitting = emitters[nodeIndex].id;
+    };
+
+    const prevNode = () => {
+        nodeIndex--;
+        nodeEmitting = emitters[nodeIndex].id;
+    };
+
+    const selectNode = (nodeId) => {
+        if (selectedNodes.includes(nodeId)) {
+            selectedNodes = selectedNodes.filter((val) => val !== nodeId);
+        } else {
+            selectedNodes = [nodeId, ...selectedNodes];
+            let emitterIndex = emitters.findIndex(({ id }) => id === nodeId);
+            if (emitterIndex >= 0) {
+                nodeEmitting = nodeId;
+                nodeIndex = emitterIndex;
+            }
+        }
     };
 
     const nodeSelected = (id) => {
@@ -148,6 +168,9 @@
 
     const selectSimulation = (simulationData) => {
         data = simulationData;
+        emitters = data.nodes.filter(({ out }) => Array.isArray(out));
+        nodeIndex = 0;
+        nodeEmitting = emitters[nodeIndex].id;
         updateLinks();
         selectedNodes = [];
         simulationSelected = true;
@@ -161,7 +184,8 @@
 
     const update = () => {
         updates++;
-        updateList = [new Date(), ...updateList]
+
+        updateList = [{"timestamp": new Date(), "emitter": nodeEmitting, "targets": emitters[nodeIndex].out}, ...updateList];
     };
 
     const prog = () => {
@@ -231,27 +255,33 @@
             {selectedNodes}
             {selectNode}
             {nodeSelected}
+            {nodeEmitting}
         />
-        <DraggableControlPanel
+        <ControlPanel
             {reset}
+            {resetProg}
             {togglePhysics}
             {physicsPaused}
             {interval}
             {incInterval}
             {decInterval}
             {group}
-            {groupLimit}
             {incGroup}
             {decGroup}
             {updatesPaused}
+            {groupLimit}
             {toggleUpdates}
             {grid}
             {incGrid}
             {decGrid}
-            {newPreset}
             {updates}
             {progress}
-            {resetProg}
+            {newPreset}
+            {nodeEmitting}
+            {nodeIndex}
+            {nextNode}
+            {prevNode}
+            nodeCount={emitters.length}
         />
         <DrawerWrapper
             {nodes}

@@ -59,7 +59,8 @@
         setLinks,
         selectedNodes,
         selectNode,
-        nodeSelected;
+        nodeSelected,
+        nodeEmitting;
 
     let svg,
         width = 500,
@@ -276,13 +277,14 @@
     {#each links as link}
         <Link
             {link}
+            {nodeEmitting}
             {group}
             {indirectTargeted}
             {transform}
             {grid}
             bothWays={connectedBothWays(link)}
         />
-        {#if !updatesPaused && (link.source.group === group || indirectTargeted(link))}
+        {#if !updatesPaused && (link.source.id === nodeEmitting)}
             <DataNode
                 {link}
                 {colourScale}
@@ -290,6 +292,7 @@
                 {interval}
                 {updatesPaused}
                 {group}
+                {nodeEmitting}
                 {grid}
                 {indirectTargeted}
                 {transform}

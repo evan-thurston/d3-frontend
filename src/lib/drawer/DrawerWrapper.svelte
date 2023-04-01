@@ -75,7 +75,7 @@
             {nodeSelected}
         />
     {:else if currentView === 1}
-        <Timeline {updateList}/>
+        <Timeline {nodes} {updateList}/>
         <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>

@@ -1,5 +1,5 @@
 <script>
-    export let link, group, indirectTargeted, transform, grid, bothWays;
+    export let link, group, indirectTargeted, transform, grid, bothWays, nodeEmitting;
 
     const gridX = (x) => {
         return Math.round(x / grid) * grid || x || 100;
@@ -57,7 +57,7 @@
                     L ${link.target.x},${link.target.y}`}
             "
             class="fill-none 
-            {link.source.group === group || indirectTargeted(link)
+            {link.source.id === nodeEmitting
                 ? 'stroke-success'
                 : bothWays
                 ? 'stroke-info'

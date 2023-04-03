@@ -3,7 +3,7 @@
     import Timeline from "./Timeline.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected, updateList;
+    export let nodes, addNode, deleteNode, selectedNodes, selectNode, nodeSelected, updateList;
 
     //currentView: 0 => tickerboard, 1 => timeline
     let open = false,
@@ -69,6 +69,7 @@
     {#if currentView === 0}
         <Ticker
             bind:nodes
+            {addNode}
             {deleteNode}
             {selectedNodes}
             {selectNode}

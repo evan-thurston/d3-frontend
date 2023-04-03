@@ -126,6 +126,83 @@ export let airports = {
 		},
 	]
 }
+export let fibonacci = {
+	"nodes": [
+		{
+			"id": "Initial Val",
+			"group": 1,
+			"out": ["Adder"],
+			"data": [
+				{"label": "val1", "value": 0},
+				{"label": "val2",  "value": 1}
+			]
+		},
+		{
+			"id": "Adder",
+			"group": 2,
+			"out": ["Meter"]
+		},
+		{
+			"id": "Meter",
+			"group": 3,
+			"out": ["Adder"],
+			"data": [
+				{"label": "val1", "value": 0},
+				{"label": "val2",  "value": 1}
+			]
+		}
+	]
+}
+export let themepark = {
+	"nodes": [
+		{
+			"id": "The Howler",
+			"group": 1,
+			"out": [1, 2],
+			"data": [
+				{"label": "in line", "value": 15},
+				{"label": "carsActive",  "value": 3},
+				{"label": "ridersPerCar",  "value": 8}
+			]
+		},
+		{
+			"id": "Double Loop Dizzy",
+			"group": 1,
+			"out": [1, 2],
+			"data": [
+				{"label": "in line", "value": 32},
+				{"label": "carsActive",  "value": 5},
+				{"label": "ridersPerCar",  "value": 5}
+			]
+		},
+		{
+			"id": "Mineshaft Escape",
+			"group": 1,
+			"out": [2],
+			"data": [
+				{"label": "in line", "value": 7},
+				{"label": "carsActive",  "value": 2},
+				{"label": "ridersPerCar",  "value": 4}
+			]
+		},
+		{
+			"id": "Hugos Hot Dogs",
+			"group": 2,
+			"out": [2, "The Howler"],
+			"data": [
+				{"label": "in line", "value": 4}
+			]
+		},
+		{
+			"id": "Maggie's Soft Pretzels",
+			"group": 2,
+			"out": [2],
+			"data": [
+				{"label": "in line", "value": 12}
+			]
+		}
+	]
+}
 export let lesMis = {
 	"nodes": [
 		{

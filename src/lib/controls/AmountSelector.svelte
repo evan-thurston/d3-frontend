@@ -11,7 +11,7 @@
 <div class="flex flex-row space-x-4">
     <div class="flex flex-col text-center w-fit">
         <span class="text-xs uppercase"> {label} </span>
-        <span class="text-base font-bold">
+        <span class="text-base font-bold leading-4">
             {value}
         </span>
     </div>

@@ -4,10 +4,26 @@
     import Highlight from "$lib/Highlight.svelte";
     import DrawerModal from "$lib/drawer/DrawerModal.svelte";
 
-    export let nodes, deleteNode, selectedNodes, selectNode, nodeSelected;
+    export let nodes, addNode, deleteNode, selectedNodes, selectNode, nodeSelected;
 
     let tickerPaused = false,
-        tickerData;
+        tickerData,
+        targetList;
+
+    const parseTargets = (targets) => {
+        targetList = [];
+        targets.forEach((target) => {
+            if (typeof target === "number") {
+                let groupNodes = nodes.filter(({ group }) => group === target);
+                groupNodes.forEach((node) => {
+                    targetList.push(node.id);
+                });
+            } else {
+                targetList.push(target);
+            }
+        });
+        return targetList;
+    };
 
     $: if (!tickerPaused) tickerData = nodes;
 </script>
@@ -26,20 +42,23 @@
             <div>
                 <div>
                     <button on:click={selectNode(node.id)} id={node.id}>
-                        <h4 title={node.id}>
+                        <h6
+                            class="overflow-hidden text-ellipsis font-bold"
+                            title={node.id}
+                        >
                             <Highlight value={node.id}>{node.id}</Highlight>
-                        </h4>
+                        </h6>
                     </button>
                     <div>
-                        <h5>
+                        <h6>
                             <Highlight value={node.group}
                                 >{node.group}</Highlight
                             >
-                        </h5>
+                        </h6>
                     </div>
                     <div>
                         {#if node.out}
-                            {#if node.out.some((val) => {
+                            <!-- {#if node.out.some((val) => {
                                 return typeof val === "string";
                             })}
                                 {#each node.out as out}
@@ -53,28 +72,42 @@
                                         >{node.out}</Highlight
                                     >
                                 </h5>
-                            {/if}
+                            {/if} -->
+                            <div class="flex flex-col space-y-2">
+                                {#each parseTargets(node.out) as out}
+                                    {#if out}
+                                        <h6
+                                            class="p-2 bg-base-300 rounded-xl"
+                                            title={out}
+                                        >
+                                            <Highlight value={out}
+                                                >{out}</Highlight
+                                            >
+                                        </h6>
+                                    {/if}
+                                {/each}
+                            </div>
                         {:else}
                             <h5>null</h5>
                         {/if}
                     </div>
                     <div>
-                        <h5>
+                        <h6>
                             <Highlight value={Math.round(node.x)}
                                 >{Math.round(node.x)}</Highlight
                             >
-                        </h5>
+                        </h6>
                     </div>
                     <div>
-                        <h5>
+                        <h6>
                             <Highlight value={Math.round(node.y)}
                                 >{Math.round(node.y)}</Highlight
                             >
-                        </h5>
+                        </h6>
                     </div>
                     <button
                         on:click={deleteNode(node.id)}
-                        class:btn-disabled={tickerData.length < 6}
+                        class:btn-disabled={tickerData.length < 2}
                         class="rounded-r-xl "
                     >
                         <svg
@@ -98,13 +131,16 @@
                         in:slide={{ duration: 400 }}
                         out:slide={{ duration: 400 }}
                     >
-                        <!-- {#key selectedNodes} -->
-                        <DrawerModal bind:node />
-                        <!-- {/key} -->
+                        <div class="col-span-6">
+                            <!-- {#key selectedNodes} -->
+                            <DrawerModal bind:node />
+                            <!-- {/key} -->
+                        </div>
                     </div>
                 {/if}
             </div>
         {/each}
+        <button on:click={addNode} class='addNode'>+</button>
     </div>
 </main>
 
@@ -119,15 +155,20 @@
         @apply flex flex-col;
     }
     .ticker > div {
-        @apply bg-base-200 mx-8 rounded-xl mt-4;
+        @apply bg-base-200 mx-8 rounded-xl mt-4 p-4;
     }
     .ticker > div > div {
-        @apply flex flex-row justify-between;
+        /* @apply flex flex-row justify-between; */
+        @apply grid grid-cols-6;
     }
-    .ticker > div > div > div {
-        @apply my-auto;
+    .ticker > div > div > div,
+    .ticker > div > div > button {
+        @apply my-auto text-center;
     }
     button {
-        @apply btn btn-ghost px-8;
+        @apply btn btn-ghost bg-base-300 h-full;
+    }
+    button.addNode {
+        @apply btn btn-primary mx-8 my-4;
     }
 </style>

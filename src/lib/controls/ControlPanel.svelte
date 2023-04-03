@@ -215,6 +215,6 @@
         @apply progress w-auto progress-primary;
     } */
     .wrapper {
-        @apply fixed bottom-8 left-8 bg-base-200 rounded-xl px-8 py-4;
+        @apply fixed bottom-8 left-8 bg-base-200 rounded-xl px-8 py-4 max-w-md;
     }
 </style>

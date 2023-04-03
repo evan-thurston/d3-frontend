@@ -78,6 +78,9 @@
 		@apply btn btn-primary fixed bottom-8 right-8;
 	}
 
+	:global(h2) {
+		@apply text-4xl;
+	}
 	:global(h3) {
 		@apply text-3xl;
 	}

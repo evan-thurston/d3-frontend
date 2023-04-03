@@ -105,9 +105,16 @@
         links = newLinks;
     };
 
+    const addNode = () => {
+        console.log("adding node", data)
+        data = { nodes: [...data.nodes, {"id": "id", "group": 0, "out": []}]}
+        console.log("node added", data)
+        reset();
+    }
+
     const deleteNode = (idToRemove) => {
         let filteredNodes = data.nodes.filter(({ id }) => id !== idToRemove);
-        if (filteredNodes && filteredNodes.length > 4) {
+        if (filteredNodes && filteredNodes.length > 0) {
             data = { nodes: filteredNodes };
             reset();
         }
@@ -173,6 +180,7 @@
         nodeEmitting = emitters[nodeIndex].id;
         updateLinks();
         selectedNodes = [];
+        updateList = [];
         simulationSelected = true;
     };
 
@@ -285,6 +293,7 @@
         />
         <DrawerWrapper
             {nodes}
+            {addNode}
             {deleteNode}
             {selectedNodes}
             {selectNode}

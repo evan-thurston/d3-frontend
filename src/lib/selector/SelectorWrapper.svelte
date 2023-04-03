@@ -1,5 +1,5 @@
 <script>
-    import { lesMis, dummyNodes, airports } from "$lib/utils";
+    import { lesMis, dummyNodes, airports, fibonacci, themepark } from "$lib/utils";
 
     export let selectSimulation;
 
@@ -16,12 +16,16 @@
             ? (presetData.nodes = [...lesMis.nodes])
             : preset === 2
             ? (presetData.nodes = [...airports.nodes])
+            : preset === 3
+            ? (presetData.nodes = [...fibonacci.nodes])
+            : preset === 4
+            ? (presetData.nodes = [...themepark.nodes])
             : (presetData.nodes = [{ id: "", group: 1, out: [] }]);
     };
 </script>
 
 {#if !presetSelected}
-    <div class="grid grid-cols-2 p-32 gap-8 h-full">
+    <div class="grid grid-cols-3 p-32 gap-8 h-full">
         <button class="presetButton" on:click={() => selectPreset(0)}>
             <p class="my-16">Dummy Dataset</p>
         </button>
@@ -32,6 +36,12 @@
             <p class="my-16">Airport Visualization</p>
         </button>
         <button class="presetButton" on:click={() => selectPreset(3)}>
+            <p class="my-16">Fibonacci</p>
+        </button>
+        <button class="presetButton" on:click={() => selectPreset(4)}>
+            <p class="my-16">Theme Park</p>
+        </button>
+        <button class="presetButton" on:click={() => selectPreset(5)}>
             <p class="my-16">Blank</p>
         </button>
     </div>
@@ -44,7 +54,17 @@
             <div class="uppercase left-1/2 ">
                 <h5>preset:</h5>
                 <h3>
-                    {preset === 0 ? "dummyNodes" : preset === 1 ? "lesMis" : preset === 2 ? "airport" : "blank"}
+                    {preset === 0
+                        ? "dummyNodes"
+                        : preset === 1
+                        ? "lesMis"
+                        : preset === 2
+                        ? "airport"
+                        : preset === 3
+                        ? "fibonacci"
+                        : preset === 4
+                        ? "theme park"
+                        : "blank"}
                 </h3>
             </div>
             <input type="submit" form="presetForm" />

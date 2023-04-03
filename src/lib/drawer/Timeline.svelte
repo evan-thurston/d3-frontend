@@ -1,47 +1,55 @@
 <script>
     export let updateList, nodes;
 
-    let targetList = [];
+    let targetList = "";
 
     const parseTargets = (targets) => {
         targetList = [];
-        targets.forEach(target => {
-            if(typeof target === "number") {
-                let groupNodes = nodes.filter(({group}) => group === target);
-                groupNodes.forEach(node => {
-                    targetList.push(node.id)
+        targets.forEach((target) => {
+            if (typeof target === "number") {
+                let groupNodes = nodes.filter(({ group }) => group === target);
+                groupNodes.forEach((node) => {
+                    targetList = targetList += node.id + ', ';
                 });
             } else {
-                targetList.push(target)
+                targetList = targetList += target + ', ';
             }
         });
-        return targetList
-    }
+        return targetList.slice(0, targetList.length - 2);
+    };
 </script>
 
-{#if updateList.length > 0}
-    {#each updateList as update, i}
-        <div>
-            <h2>event {updateList.length - i}</h2>
-            <p>timestamp: {update.timestamp}</p>
-            <p>emitter: {update.emitter}</p>
-            <p>targets: {parseTargets(update.targets)}</p>
-        </div>
-    {/each}
-{:else}
-    <h2 class="mx-8 mt-16">
-        click the play button in the control panel to resume events!
-    </h2>
-{/if}
+<div class="wrapper">
+    {#if updateList.length > 0}
+        {#each updateList as update, i}
+            <div>
+                <h2>event {updateList.length - i}</h2>
+                <h6>emitter: {update.emitter}</h6>
+                <h6>targets: {parseTargets(update.targets)}</h6>
+                <p>timestamp: {update.timestamp}</p>
+            </div>
+        {/each}
+    {:else}
+        <h2>
+            click the play button in the control panel to resume events!
+        </h2>
+    {/if}
+</div>
 
-<style lang='postcss'>
-    div {
-        @apply bg-base-200 rounded-md my-4 p-4 mx-8
+<style lang="postcss">
+    .wrapper {
+        @apply mx-8 flex flex-col space-y-4 my-8
     }
-    h2 {
-        @apply text-3xl font-bold;
+    .wrapper > div {
+        @apply bg-base-200 rounded-md p-4;
     }
     p {
-        @apply text-xs font-mono
+        @apply text-xs font-mono;
+    }
+    h2 {
+        @apply font-bold
+    }
+    h6 {
+        @apply font-mono;
     }
 </style>

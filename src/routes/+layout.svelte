@@ -78,7 +78,7 @@
 		@apply btn btn-primary fixed bottom-8 right-8;
 	}
 
-	:global(h2) {
+	/* :global(h2) {
 		@apply text-4xl;
 	}
 	:global(h3) {
@@ -103,6 +103,6 @@
 	}
 	:global(input[type="submit"]) {
 		@apply btn-primary;
-	}
+	} */
 </style>
 <!-- TODO: how to combine last two styles -->

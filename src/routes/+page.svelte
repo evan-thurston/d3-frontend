@@ -193,7 +193,7 @@
     const update = () => {
         updates++;
 
-        updateList = [{"timestamp": new Date(), "emitter": nodeEmitting, "targets": emitters[nodeIndex].out}, ...updateList];
+        updateList = [{"timestamp": new Date(), "emitter": nodeEmitting, "emitterGroup": emitters[nodeIndex].group, "targets": emitters[nodeIndex].out}, ...updateList];
     };
 
     const prog = () => {

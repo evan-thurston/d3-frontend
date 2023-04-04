@@ -73,12 +73,25 @@
 	</button> -->
 </main>
 
+<!-- TODO: how to combine last two styles -->
 <style lang="postcss">
 	button {
 		@apply btn btn-primary fixed bottom-8 right-8;
 	}
 
-	/* :global(h2) {
+
+	/*DOESNT WORK WITH NEW SVELTE UPDATE... NO CLUE WHY
+	button:global {
+		@apply btn btn-primary;
+	}
+	input[type='submit']:global {
+		@apply btn-primary
+	} */
+
+    :global(p) {
+        @apply text-xs font-mono;
+    }
+	:global(h2) {
 		@apply text-4xl;
 	}
 	:global(h3) {
@@ -93,16 +106,7 @@
 	:global(h6) {
 		@apply text-lg;
 	}
-
 	:global(input[type="text"]) {
 		@apply input input-primary;
 	}
-
-	:global(button) {
-		@apply btn-primary;
-	}
-	:global(input[type="submit"]) {
-		@apply btn-primary;
-	} */
 </style>
-<!-- TODO: how to combine last two styles -->

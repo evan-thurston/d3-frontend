@@ -1,10 +1,13 @@
 <script>
-    export let updateList, nodes;
+    import { slide } from "svelte/transition";
+
+    export let updateList, nodes, updatesPaused, toggleUpdates;
 
     let targetList = "",
         idList = [],
         groupList = [],
-        outList = [];
+        outList = [],
+        filterShowing = true;
 
     const parseTargets = (targets) => {
         targetList = [];
@@ -26,7 +29,10 @@
     $: filteredOutList = outList.filter((val) => val !== "");
 </script>
 
+<!-- <button class='mx-8 mt-4' on:click={() => filterShowing = !filterShowing}> -->
 <h6 class="uppercase mx-8 mt-4">filter:</h6>
+<!-- </button> -->
+<!-- {#if filterShowing} -->
 <div class="filter">
     <div>
         <p>emitter id:</p>
@@ -161,14 +167,16 @@
         >
     </div>
 </div>
-
+<!-- {/if} -->
 <div class="wrapper">
     {#if updateList.length > 0}
         {#each updateList as update, i}
             {#if (filteredIdList.length === 0 || filteredIdList.includes(update.emitter)) && (filteredGroupList.length === 0 || filteredGroupList.includes(update.emitterGroup.toString())) && (filteredOutList.length === 0 || (update.targets && filteredOutList.some( (val) => parseTargets(update.targets).includes(val) )))}
                 <div>
                     <h2>event {updateList.length - i}</h2>
-                    <h6>emitter: {update.emitter} (group {update.emitterGroup})</h6>
+                    <h6>
+                        emitter: {update.emitter} (group {update.emitterGroup})
+                    </h6>
                     <!-- <h6>emitter group: {update.emitterGroup}</h6> -->
                     <h6>targets: {parseTargets(update.targets)}</h6>
                     <p>timestamp: {update.timestamp}</p>
@@ -176,7 +184,11 @@
             {/if}
         {/each}
     {:else}
-        <h2>click the play button in the control panel to resume events!</h2>
+        <div class="text-center w-full">
+            <h3 class="uppercase font-bold">no events detected so far</h3>
+            <h6>events are currently {updatesPaused ? "disabled" : "enabled"}</h6>
+            <button class='mt-2' class:disabled={!updatesPaused} on:click={() => toggleUpdates()}>enable events</button>
+        </div>
     {/if}
 </div>
 
@@ -196,13 +208,13 @@
     .wrapper > div {
         @apply bg-base-200 rounded-md p-4;
     }
-    h2 {
-        @apply font-bold;
-    }
-    h6 {
+    h3,h4, h6 {
         @apply font-mono;
     }
     button {
         @apply btn btn-primary;
+    }
+    button.disabled {
+        @apply btn-disabled;
     }
 </style>

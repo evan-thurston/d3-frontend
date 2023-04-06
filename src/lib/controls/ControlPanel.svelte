@@ -203,7 +203,7 @@
         @apply btn btn-primary;
     }
     button.collapse {
-        @apply bg-primary p-2 rounded-full mx-auto mb-2 md:mb-4;
+        @apply btn-primary p-2 rounded-full mx-auto mb-2 md:mb-4;
     }
     button.disabled {
         @apply btn-disabled;

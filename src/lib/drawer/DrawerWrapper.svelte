@@ -3,7 +3,15 @@
     import Timeline from "./Timeline.svelte";
     // import { JSONEditor } from "svelte-jsoneditor";
 
-    export let nodes, addNode, deleteNode, selectedNodes, selectNode, nodeSelected, updateList;
+    export let nodes,
+        addNode,
+        deleteNode,
+        selectedNodes,
+        selectNode,
+        nodeSelected,
+        updateList,
+        updatesPaused,
+        toggleUpdates;
 
     //currentView: 0 => tickerboard, 1 => timeline
     let open = false,
@@ -76,7 +84,7 @@
             {nodeSelected}
         />
     {:else if currentView === 1}
-        <Timeline {nodes} {updateList}/>
+        <Timeline {nodes} {updateList} {updatesPaused} {toggleUpdates} />
         <!-- <JSONEditor bind:content navigationBar={false} /> -->
     {/if}
 </div>
@@ -86,7 +94,7 @@
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
     }
     .controls {
-        @apply fixed -ml-8 -translate-x-full mt-8 flex flex-col space-y-8 w-16;
+        @apply fixed px-4 -translate-x-full py-8 flex flex-col space-y-8 bg-base-200 rounded-l-xl shadow-xl;
     }
     button {
         @apply transition-all;

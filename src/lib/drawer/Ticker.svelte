@@ -188,12 +188,12 @@
     <div class="ticker">
         {#each tickerData as node}
             {#if (filteredIdList.length === 0 || filteredIdList.includes(node.id)) && (filteredGroupList.length === 0 || filteredGroupList.includes(node.group.toString())) && (filteredOutList.length === 0 || (node.out && filteredOutList.some( (val) => parseTargets(node.out).includes(val) )))}
+                <p class="invisible relative -top-16" id={node.id} />
                 <div>
                     <div>
                         <button
                             class="nodeButton"
                             on:click={selectNode(node.id)}
-                            id={node.id}
                         >
                             <h6
                                 class="overflow-hidden text-ellipsis font-bold"
@@ -351,5 +351,9 @@
     }
     button.addNode {
         @apply btn btn-primary mx-8 my-4;
+    }
+
+    h6 {
+        @apply font-mono;
     }
 </style>

@@ -299,6 +299,8 @@
             {selectNode}
             {nodeSelected}
             {updateList}
+            {updatesPaused}
+            {toggleUpdates}
         />
     </div>
 {/if}

@@ -11,120 +11,136 @@
         filteredGroupList,
         filteredOutList,
         selectNode,
-        parseTargets;
+        parseTargets,
+        addNode,
+        deleteNode;
 </script>
 
-<div class="ticker">
+<main>
     {#each nodes as node}
         {#if (filteredIdList.length === 0 || filteredIdList.includes(node.id)) && (filteredGroupList.length === 0 || filteredGroupList.includes(node.group.toString())) && (filteredOutList.length === 0 || (node.out && filteredOutList.some( (val) => parseTargets(node.out).includes(val) )))}
+            <!-- ANCHOR FOR BROWSER TO JUMP TO WHEN NODE IS SELECTED -->
             <p
                 class="relative invisible -top-16"
                 id={node.id}
             />
-            <div>
-                <div>
-                    <button
-                        class="nodeButton"
-                        on:click={selectNode(node.id)}
+            <div class="nodeContainer">
+                <!-- <div> -->
+                <!-- <p class="dataLabel">id:</p> -->
+                <button
+                    class="nodeButton"
+                    on:click={selectNode(node.id)}
+                >
+                    <h4
+                        class="overflow-hidden font-bold text-ellipsis"
+                        title={node.id}
                     >
-                        <h6
-                            class="overflow-hidden font-bold text-ellipsis"
-                            title={node.id}
-                        >
-                            <Highlight value={node.id}>{node.id}</Highlight>
-                        </h6>
-                    </button>
-                    <div>
-                        <h6>
-                            <Highlight value={node.group}
-                                >{node.group}</Highlight
-                            >
-                        </h6>
-                    </div>
-                    <div>
-                        {#if node.out}
-                            <div class="flex flex-col space-y-2">
-                                {#each parseTargets(node.out) as out}
-                                    {#if out}
-                                        <h6
-                                            class="p-2 bg-base-300 rounded-xl"
-                                            title={out}
-                                        >
-                                            <Highlight value={out}
-                                                >{out}</Highlight
-                                            >
-                                        </h6>
-                                    {/if}
-                                {/each}
-                            </div>
-                        {:else}
-                            <h6
-                                class="p-2 bg-base-300 rounded-xl"
-                                title="NONE"
-                            >
-                                NONE
-                            </h6>
-                        {/if}
-                    </div>
-                    <div>
-                        <h6>
-                            <Highlight value={Math.round(node.x)}
-                                >{Math.round(node.x)}</Highlight
-                            >
-                        </h6>
-                    </div>
-                    <div>
-                        <h6>
-                            <Highlight value={Math.round(node.y)}
-                                >{Math.round(node.y)}</Highlight
-                            >
-                        </h6>
-                    </div>
+                        <span class="dataLabel">id:</span>
 
-                    <!-- on:click={deleteNode(node.id)} -->
-                    <button
-                        class:btn-disabled={nodes.length < 2}
-                        class="nodeButton"
-                    >
-                        <Trashcan />
-                    </button>
+                        <Highlight value={node.id}>{node.id}</Highlight>
+                    </h4>
+                </button>
+                <!-- </div> -->
+                <div>
+                    <span class="dataLabel">group:</span>
+                    <span>
+                        <Highlight value={node.group}>{node.group}</Highlight>
+                    </span>
                 </div>
-                {#if node.selected}
-                    <div transition:slide={{ duration: 400 }}>
-                        <div class="col-span-6">
-                            <DrawerModal bind:node />
+                <div class="hidden xl:block">
+                    {#if node.out && parseTargets(node.out).length > 0}
+                        <div class="flex flex-col space-y-2">
+                            {#each parseTargets(node.out) as out}
+                                {#if out}
+                                    <h6
+                                        class="p-2 bg-base-300 rounded-xl"
+                                        title={out}
+                                    >
+                                        <Highlight value={out}>{out}</Highlight>
+                                    </h6>
+                                {/if}
+                            {/each}
                         </div>
+                    {:else}
+                        <h6
+                            class="p-2 bg-base-300 rounded-xl"
+                            title="NONE"
+                        >
+                            NONE
+                        </h6>
+                    {/if}
+                </div>
+                <div class="xl:hidden">
+                    <span class="dataLabel">out:</span>
+                    <span class="dataLabel">
+                        <Highlight value={node.out || []}>
+                            [{(node.out && parseTargets(node.out)) || []}]
+                        </Highlight>
+                    </span>
+                </div>
+                <div>
+                    <h6>
+                        <span class="dataLabel">x:</span>
+                        <Highlight value={Math.round(node.x)}>
+                            {Math.round(node.x)}
+                        </Highlight>
+                    </h6>
+                </div>
+                <div>
+                    <h6>
+                        <span class="dataLabel">y:</span>
+                        <Highlight value={Math.round(node.y)}>
+                            {Math.round(node.y)}
+                        </Highlight>
+                    </h6>
+                </div>
+                <button
+                    class:btn-disabled={nodes.length < 2}
+                    class="nodeButton"
+                    on:click={deleteNode(node.id)}
+                >
+                    <Trashcan />
+                </button>
+
+                {#if node.selected}
+                    <div
+                        class="xl:col-span-6"
+                        transition:slide={{ duration: 400 }}
+                    >
+                        <DrawerModal bind:node />
                     </div>
                 {/if}
             </div>
         {/if}
     {/each}
 
-    <!-- on:click={addNode} -->
-    <button class="addNode">
+    <button
+        on:click={addNode}
+        class="addNode"
+    >
         <Plus />
     </button>
-</div>
+</main>
 
 <style lang="postcss">
-    .ticker {
-        @apply flex flex-col;
+    main {
+        @apply flex flex-col mx-4 xl:mx-8 mb-20 xl:mb-0;
     }
-    .ticker > div {
-        @apply bg-base-200 mx-8 rounded-xl mt-4 p-4;
+    .nodeContainer {
+        @apply border-2 border-base-300 bg-base-200 rounded-xl mt-4 p-4 grid xl:grid-cols-6 gap-2;
     }
-    .ticker > div > div {
-        @apply grid grid-cols-6;
+    .nodeContainer > div {
+        /* @apply flex flex-row space-x-4 items-center; */
+        @apply text-center my-auto;
     }
-    .ticker > div > div > div,
-    .ticker > div > div > button {
-        @apply my-auto text-center;
+    .dataLabel {
+        @apply xl:hidden;
     }
     button.nodeButton {
-        @apply btn btn-ghost bg-base-300 h-full;
+        @apply btn btn-primary w-full h-full;
     }
     button.addNode {
-        @apply btn btn-primary mx-8 my-4;
+        @apply btn btn-primary my-4;
     }
     h6 {
         @apply font-mono;

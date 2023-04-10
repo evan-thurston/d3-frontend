@@ -12,7 +12,7 @@
 </svelte:head>
 
 <main data-theme="greentheme">
-    <Navbar />
+    <!-- <Navbar /> -->
     <slot />
 </main>
 
@@ -30,24 +30,25 @@
         @apply input input-bordered border-base-300;
     }
     :global(h1) {
-        @apply text-5xl font-mono;
+        @apply text-4xl xl:text-5xl font-mono;
     }
     :global(h2) {
-        @apply text-4xl font-mono;
+        @apply text-3xl xl:text-4xl font-mono;
     }
     :global(h3) {
-        @apply text-3xl font-mono;
+        @apply text-2xl xl:text-3xl font-mono;
     }
     :global(h4) {
-        @apply text-2xl font-mono;
+        @apply text-xl xl:text-2xl font-mono;
     }
     :global(h5) {
-        @apply text-xl font-mono;
+        @apply text-lg xl:text-xl font-mono;
     }
     :global(h6) {
-        @apply text-lg font-mono;
+        @apply text-base xl:text-lg font-mono;
     }
-    :global(p) {
-        @apply text-base font-mono;
+    :global(p),
+    :global(span) {
+        @apply text-sm xl:text-base font-mono;
     }
 </style>

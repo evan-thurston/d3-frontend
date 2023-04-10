@@ -7,10 +7,10 @@
 <main class:out={field === 'out'}>
     <p class:id>{field}:</p>
     {#if field === 'out'}
-        <p>[{value}]</p>
+        <p>[{value || ''}]</p>
     {:else}
         <input
-            class="ml-8 w-full borderInput"
+            class="w-full ml-8 borderInput"
             type="text"
             bind:value
             size={5}

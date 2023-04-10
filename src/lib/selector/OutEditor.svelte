@@ -34,7 +34,7 @@
         class="primaryButton"
         type="button"
         on:click={() => {
-            out = [...out, ''];
+            out = Array.isArray(out) ? [...out, ''] : [''];
         }}
     >
         <Plus />
@@ -43,9 +43,9 @@
 
 <style lang="postcss">
     div.outWrapper {
-        @apply flex flex-col space-y-4 w-full;
+        @apply flex flex-col space-y-2 xl:space-y-4 w-full;
     }
     div.outRow {
-        @apply flex flex-row space-x-4;
+        @apply flex flex-row space-x-2 xl:space-x-4;
     }
 </style>

@@ -3,6 +3,7 @@
     // import Pause from '../icons/Pause.svelte';
     // import Play from '../icons/Play.svelte';
     import RightArrow from '../icons/RightArrow.svelte';
+    import User from '../icons/User.svelte';
 
     export let currentView, open, selectedNodes;
 
@@ -50,6 +51,15 @@
         }}
     >
         EVENTS
+    </button>
+    <button
+        class={!open || currentView !== 2 ? 'primaryButton' : 'disabledButton'}
+        on:click={() => {
+            if (!open) open = !open;
+            currentView = 2;
+        }}
+    >
+        <User />
     </button>
 </div>
 

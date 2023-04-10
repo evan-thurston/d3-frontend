@@ -32,8 +32,8 @@
             {/if}
         {/each}
     {:else}
-        <div class="text-center w-full">
-            <h3 class="uppercase font-bold">no events detected so far</h3>
+        <div class="w-full text-center">
+            <h3 class="font-bold uppercase">no events detected so far</h3>
             <h6>
                 events are currently {updatesPaused ? 'disabled' : 'enabled'}
             </h6>
@@ -51,9 +51,9 @@
 
 <style lang="postcss">
     .wrapper {
-        @apply mx-8 flex flex-col space-y-4 my-8;
+        @apply mx-4 xl:mx-8 flex flex-col space-y-2 xl:space-y-4 my-2 xl:my-4 mb-24;
     }
     .wrapper > div {
-        @apply bg-base-200 rounded-md p-4;
+        @apply border-2 border-base-300 bg-base-200 rounded-md p-4;
     }
 </style>

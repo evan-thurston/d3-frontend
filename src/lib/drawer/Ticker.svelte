@@ -6,7 +6,7 @@
     import Filter from './Filter.svelte';
     import TickerData from './TickerData.svelte';
 
-    export let nodes, selectNode, parseTargets;
+    export let nodes, selectNode, parseTargets, addNode, deleteNode;
 
     // addNode,
     // deleteNode,
@@ -45,6 +45,8 @@
         {filteredOutList}
         {selectNode}
         {parseTargets}
+        {addNode}
+        {deleteNode}
     />
 </main>
 
@@ -52,8 +54,7 @@
     .wrapper {
         @apply flex flex-col;
     }
-
     .legend {
-        @apply flex flex-row justify-around bg-base-200 border-2 border-base-300 p-4 mt-4 rounded-xl sticky top-4 mx-8 z-50;
+        @apply xl:flex flex-row justify-around bg-base-200 border-2 border-base-300 p-4 mt-4 rounded-xl sticky top-4 mx-4 xl:mx-8 z-50 hidden;
     }
 </style>

@@ -6,6 +6,7 @@
     import Restart from '../icons/Restart.svelte';
     import UpArrow from '../icons/UpArrow.svelte';
     import AmountSelector from './AmountSelector.svelte';
+    import Home from '../icons/Home.svelte';
 
     export let physicsPaused,
         emitterIndex,
@@ -18,16 +19,19 @@
         grid,
         restart;
 
-    let width;
+    let width, height;
 
     $: panelShowing = width > 1536;
 </script>
 
-<svelte:window bind:innerWidth={width} />
+<svelte:window
+    bind:innerWidth={width}
+    bind:innerHeight={height}
+/>
 
 <main>
     <div class="panelInfo">
-        <h3 class="panelTitle">ctrl panel</h3>
+        <h3 class="panelTitle">control panel</h3>
         <button
             on:click={() => (panelShowing = !panelShowing)}
             class="primaryButton"
@@ -50,7 +54,7 @@
                     class="primaryButton"
                     on:click={() => (simulationSelected = false)}
                 >
-                    new preset
+                    <Home />
                 </button>
                 <div>
                     <AmountSelector
@@ -98,20 +102,7 @@
                     />
                 </div>
             </div>
-            <div>
-                <button
-                    class="primaryButton"
-                    on:click={restart()}
-                >
-                    <Restart />
-                </button>
-
-                <button
-                    class="primaryButton"
-                    on:click={() => (physicsPaused = !physicsPaused)}
-                >
-                    physics {physicsPaused ? 'off' : 'on'}
-                </button>
+            <div class="lastRow">
                 <div>
                     <AmountSelector
                         label="Grid Size:"
@@ -119,8 +110,23 @@
                         dec={() => (grid -= 30)}
                         inc={() => (grid += 30)}
                         decLimit={grid <= 0}
-                        incLimit={grid >= Math.round(width / 10)}
+                        incLimit={grid >= Math.round(height / 10)}
                     />
+                </div>
+                <div class="flex flex-row justify-center space-x-4">
+                    <button
+                        class="primaryButton"
+                        on:click={restart()}
+                    >
+                        <Restart />
+                    </button>
+
+                    <button
+                        class="primaryButton"
+                        on:click={() => (physicsPaused = !physicsPaused)}
+                    >
+                        physics {physicsPaused ? 'off' : 'on'}
+                    </button>
                 </div>
             </div>
             <div />
@@ -134,16 +140,20 @@
 </main>
 
 <style lang="postcss">
-    div.controlWrapper {
-        @apply flex flex-col items-center space-y-2 bg-base-200 px-8 rounded-b-xl py-4;
-    }
-    div.controlWrapper > div {
-        @apply flex flex-row space-x-4;
-    }
     main {
         @apply flex flex-col
-        bg-base-100 rounded-xl
-        fixed bottom-8 left-8 w-1/4;
+        bg-base-100 rounded-t-xl xl:rounded-xl
+        fixed bottom-0 xl:bottom-8 xl:left-8 w-full xl:w-1/3 max-w-md
+        border-2 border-base-300 shadow-xl;
+    }
+    div.controlWrapper {
+        @apply flex flex-col items-center space-y-2 bg-base-200 px-8 xl:rounded-b-xl py-4;
+    }
+    div.controlWrapper > div:not(.lastRow) {
+        @apply flex flex-row space-x-4;
+    }
+    div.lastRow {
+        @apply flex flex-col space-y-2 2xl:flex-row 2xl:space-y-0 2xl:space-x-4;
     }
     div.panelInfo {
         @apply flex flex-row space-x-4 mx-8 my-4 justify-between;

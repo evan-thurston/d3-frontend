@@ -12,7 +12,13 @@
     //     updatesPaused,
     //     toggleUpdates;
 
-    export let nodes, selectedNodes, selectNode, updatesPaused, updateList;
+    export let nodes,
+        selectedNodes,
+        selectNode,
+        updatesPaused,
+        updateList,
+        addNode,
+        deleteNode;
 
     const parseTargets = (targets) => {
         let targetList = [];
@@ -22,7 +28,7 @@
                 groupNodes.forEach((node) => {
                     targetList.push(node.id);
                 });
-            } else {
+            } else if (target) {
                 targetList.push(target);
             }
         });
@@ -34,7 +40,7 @@
         currentView = 0;
 </script>
 
-<div class="wrapper {open ? 'w-1/3' : 'w-0'}">
+<div class="wrapper {open ? 'open' : 'w-0'}">
     <DrawerControls
         bind:currentView
         bind:open
@@ -46,6 +52,8 @@
             bind:nodes
             {selectNode}
             {parseTargets}
+            {addNode}
+            {deleteNode}
         />
     {:else if currentView === 1}
         <Timeline
@@ -53,12 +61,17 @@
             {updateList}
             {parseTargets}
         />
+    {:else if currentView === 2}
+        <p class="my-16 text-center">account information here (WIP)</p>
     {/if}
 </div>
 
 <style lang="postcss">
     .wrapper {
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
+    }
+    .open {
+        @apply w-2/3 xl:w-1/3;
     }
     button {
         @apply transition-all;

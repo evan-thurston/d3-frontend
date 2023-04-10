@@ -16,7 +16,7 @@
         </button>
         <div>
             <h5>preset:</h5>
-            <h3>
+            <h3 class="leading-5">
                 {presetName}
             </h3>
         </div>
@@ -32,30 +32,30 @@
     >
         <!-- LEGEND BY COLUMN -->
         <div class="legend">
-            <p>id</p>
+            <p class="col-span-2">id</p>
             <p>group</p>
-            <p>out</p>
+            <p class="col-span-2">out</p>
         </div>
         <!-- LIST OF NODES -->
         {#each presetData.nodes as obj}
             <div class="editorRow">
-                <div class="flex flex-row justify-between">
-                    <button
-                        class="deleteButton"
-                        type="button"
-                        on:click={() =>
-                            (presetData.nodes = presetData.nodes.filter(
-                                ({ id }) => id !== obj.id
-                            ))}
-                    >
-                        <Trashcan />
-                    </button>
-                    <input
-                        class="mainInput"
-                        type="text"
-                        bind:value={obj.id}
-                    />
-                </div>
+                <button
+                    class="deleteButton"
+                    type="button"
+                    on:click={() =>
+                        (presetData.nodes = presetData.nodes.filter(
+                            ({ id }) => id !== obj.id
+                        ))}
+                >
+                    <Trashcan />
+                </button>
+                <!-- <div class="flex flex-row justify-between"> -->
+                <input
+                    class="mainInput"
+                    type="text"
+                    bind:value={obj.id}
+                />
+                <!-- </div> -->
                 <input
                     class="mainInput"
                     type="text"
@@ -65,7 +65,9 @@
                             ? Number(e.target.value)
                             : e.target.value)}
                 />
-                <OutEditor bind:out={obj.out} />
+                <div class="col-span-2">
+                    <OutEditor bind:out={obj.out} />
+                </div>
             </div>
         {/each}
         <!-- ADD A NODE -->
@@ -81,26 +83,24 @@
 
 <style lang="postcss">
     main {
-        @apply flex flex-col space-y-8 pt-32 pb-16 text-center h-full w-fit mx-auto;
+        @apply flex flex-col space-y-4 xl:space-y-8 text-center h-full w-fit mx-auto px-8 lg:px-24 2xl:px-32 pb-0 pt-8 lg:pt-12 2xl:pt-16;
     }
-
     div.controls {
         @apply flex flex-row max-w-full justify-between uppercase;
     }
-
     form {
-        @apply flex flex-col space-y-8 mx-auto overflow-y-scroll px-8 pb-4;
+        @apply flex flex-col space-y-4 xl:space-y-8 mx-auto overflow-y-scroll pb-4 lg:pb-6 2xl:pb-8;
     }
     div.legend {
-        @apply flex flex-row space-x-4 justify-around sticky top-0 bg-base-100 border-2 border-base-300 py-4 rounded-xl uppercase;
+        @apply grid grid-cols-5 sticky top-0 bg-base-100 border-2 border-base-300 py-4 rounded-xl uppercase;
     }
     div.editorRow {
-        @apply grid grid-cols-3 gap-4 bg-base-200 p-8 rounded-xl;
+        @apply grid grid-cols-5 gap-2 xl:gap-4 bg-base-200 p-2 xl:p-8 rounded-xl;
     }
     button.deleteButton {
-        @apply btn btn-primary h-full mr-4;
+        @apply btn btn-primary h-full mr-2 xl:mr-4;
     }
     input.mainInput {
-        @apply input input-bordered border-base-300 h-full;
+        @apply input input-bordered border-base-300 w-full h-full;
     }
 </style>

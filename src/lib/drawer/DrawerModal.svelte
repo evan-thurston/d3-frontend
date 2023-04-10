@@ -12,6 +12,7 @@
         ignoredKeys = new Set([
             'index',
             'id',
+            'out',
             'data',
             'selected',
             'x',
@@ -47,6 +48,11 @@
             />
         {/each}
 
+        <ModalRow
+            field="out"
+            value={node.out}
+        />
+
         <OutEditor bind:out={node.out} />
 
         <!-- {#if node.data}
@@ -72,7 +78,7 @@
             </p>
         {/each} -->
     </div>
-    <div>
+    <!-- <div class="hidden xl:block">
         {#each [1, 2] as graph}
             <div>
                 {#if graph === 1}
@@ -92,13 +98,13 @@
                 />
             </div>
         {/each}
-    </div>
+    </div> -->
 </div>
 
 <style lang="postcss">
     .wrapper {
-        @apply px-8 py-4
+        @apply px-4 py-2
         bg-base-200 rounded-xl 
-        grid grid-cols-2 gap-8;
+        /* grid xl:grid-cols-2 gap-8 */;
     }
 </style>

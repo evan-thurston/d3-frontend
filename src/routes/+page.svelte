@@ -88,6 +88,18 @@
         nodes = [...nodes];
     };
 
+    const addNode = () => {
+        nodes = [...nodes, { id: 'X', group: 0, out: [] }];
+
+        restart();
+    };
+
+    const deleteNode = (nodeId) => {
+        nodes = nodes.filter(({ id }) => id !== nodeId);
+
+        restart();
+    };
+
     const prog = () => {
         if (progress < interval) progress += interval / 10;
         else {
@@ -107,6 +119,8 @@
     };
 
     const restart = () => {
+        // console.log(nodes);
+        // console.log(data.nodes);
         selectedNodes = [];
         physicsPaused = false;
         emitterIndex = 0;
@@ -147,6 +161,8 @@
         {selectNode}
         bind:updatesPaused
         {updateList}
+        {addNode}
+        {deleteNode}
     />
 
     {#key restartSim}
@@ -183,6 +199,6 @@
 
 <style lang="postcss">
     h1.loadingText {
-        @apply text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2;
+        @apply text-3xl xl:text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2;
     }
 </style>

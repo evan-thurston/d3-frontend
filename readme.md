@@ -16,4 +16,4 @@ npm run dev -- --open
 
 ## Public test server
 
-[Click here](https://d3-systems.vercel.app) to open a live test server that is dynamically updated based on the main branch of this repo
+[Click here](https://d3.evanthurston.com) to open a live test server that is dynamically updated based on the main branch of this repo

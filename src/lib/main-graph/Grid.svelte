@@ -1,9 +1,9 @@
 <script>
     export let width, height, grid, transform;
 
-    $: cols = Math.round(width / grid)
-    $: rows = Math.round(height / grid)
-    $: griddedWidth = cols * grid
+    $: cols = Math.round(width / grid);
+    $: rows = Math.round(height / grid);
+    $: griddedWidth = cols * grid;
     $: griddedHeight = rows * grid;
 </script>
 
@@ -13,7 +13,7 @@
         x2={2 * griddedWidth}
         y1={n * grid - griddedHeight}
         y2={n * grid - griddedHeight}
-        class="stroke-base-300"
+        class="stroke-base-100"
         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
     />
 {/each}
@@ -23,7 +23,7 @@
         x2={n * grid - griddedWidth}
         y1={-griddedHeight}
         y2={2 * griddedHeight}
-        class="stroke-base-300"
+        class="stroke-base-100"
         transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
     />
 {/each}

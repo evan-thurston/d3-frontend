@@ -1,55 +1,48 @@
 <script>
-    import { onMount } from "svelte";
-    import SelectorWrapper from "../lib/selector/SelectorWrapper.svelte";
-    let loaded = false,
-        simulationSelected = false;
+    import { onMount } from 'svelte';
+    import PresetSelector from '$lib/selector/PresetSelector.svelte';
+    import MainGraph from '$lib/main-graph/MainGraph.svelte';
+    import ControlPanel from '$lib/controls/ControlPanel.svelte';
+    import DataDrawer from '../lib/drawer/DataDrawer.svelte';
 
-    import { dummyNodes } from "$lib/utils";
-    import NetworkGraph from "$lib/main-graph/NetworkGraph.svelte";
-    let data = dummyNodes,
-        selectedNodes = [];
-
-    import ControlPanel from "$lib/controls/ControlPanel.svelte";
-    import DrawerWrapper from "../lib/drawer/DrawerWrapper.svelte";
-    let physicsPaused = false,
-        updatesPaused = true,
-        group = 1,
-        groupLimit = false,
-        resetSim = false,
-        grid = 1,
-        updateInterval,
+    //APPLICATION VARIABLES
+    let width = 100,
+        height = 100,
+        loaded = false,
+        simulationSelected = false,
+        data = { nodes: [], links: [] },
+        selectedNodes = [],
+        physicsPaused = false,
+        emitters = [],
+        emitterIndex = 0,
+        interval = 3000,
+        progress = interval / 10,
         progressInterval,
-        updates = 0,
-        progress = 100,
         updateList = [],
-        emitters = data.nodes.filter(({ out }) => Array.isArray(out)),
-        nodeEmitting = emitters[0].id,
-        nodeIndex = 0;
+        updatesPaused = true,
+        grid = 0,
+        restartSim = false;
 
-    $: links = data.links.map((d) => Object.assign({}, d));
     $: nodes = data.nodes.map((d) => Object.assign({}, d));
-
-    $: interval = 3000;
-    $: gridInc = 30;
+    $: links = data.links.map((d) => Object.assign({}, d));
+    $: emitters = nodes.filter(({ out }) => out && out.length > 0);
 
     onMount(() => {
         loaded = true;
-
-        setGroupLimit();
     });
 
-    const reset = () => {
+    const sendPresetData = (presetData) => {
+        data = presetData;
         updateLinks();
-        resetSim = true;
-        updatesPaused = false;
-        setGroupLimit();
-        selectedNodes = [];
-        updateList = [];
-        resetProg();
+        simulationSelected = true;
     };
 
-    const resetTheSim = () => {
-        resetSim = false;
+    const setNodes = (newNodes) => {
+        nodes = newNodes;
+    };
+
+    const setLinks = (newLinks) => {
+        links = newLinks;
     };
 
     const updateLinks = () => {
@@ -57,14 +50,14 @@
         data.nodes.forEach((node) => {
             if (node.out) {
                 node.out.forEach((out) => {
-                    if (typeof out === "string") {
+                    if (typeof out === 'string') {
                         if (data.nodes.find(({ id }) => id === out)) {
                             data.links.push({
                                 source: node.id,
                                 target: out,
                             });
                         }
-                    } else if (typeof out === "number") {
+                    } else if (typeof out === 'number') {
                         let filteredNodes = data.nodes.filter(
                             ({ group }) => group === out
                         );
@@ -80,227 +73,116 @@
         });
     };
 
-    const setGroupLimit = () => {
-        let maxGroupNodes,
-            maxGroups = Math.max(...data.nodes.map((o) => o.group)),
-            i = 0;
-        while (!groupLimit) {
-            maxGroupNodes = data.nodes.filter(
-                ({ group }) => group === maxGroups - i
-            );
-            maxGroupNodes.forEach((obj) => {
-                if (data.links.find(({ source }) => obj.id === source))
-                    groupLimit = obj.group;
-            });
-            i++;
-        }
-        if (group > groupLimit) group = groupLimit;
-    };
-
-    const setNodes = (newNodes) => {
-        nodes = newNodes;
-    };
-
-    const setLinks = (newLinks) => {
-        links = newLinks;
-    };
-
-    const addNode = () => {
-        console.log("adding node", data)
-        data = { nodes: [...data.nodes, {"id": "id", "group": 0, "out": []}]}
-        console.log("node added", data)
-        reset();
-    }
-
-    const deleteNode = (idToRemove) => {
-        let filteredNodes = data.nodes.filter(({ id }) => id !== idToRemove);
-        if (filteredNodes && filteredNodes.length > 0) {
-            data = { nodes: filteredNodes };
-            reset();
-        }
-    };
-
-    const toggleUpdates = (paused) => {
-        updatesPaused = paused || !updatesPaused;
-    };
-
-    const togglePhysics = () => {
-        physicsPaused = !physicsPaused;
-    };
-
-    const incGrid = () => {
-        grid += gridInc;
-        reset();
-    };
-
-    const decGrid = () => {
-        grid -= gridInc;
-        reset();
-    };
-
-    const incInterval = () => (interval += 1000);
-
-    const decInterval = () => (interval -= 1000);
-
-    const incGroup = () => (group += 1);
-
-    const decGroup = () => (group -= 1);
-
-    const nextNode = () => {
-        nodeIndex++;
-        nodeEmitting = emitters[nodeIndex].id;
-    };
-
-    const prevNode = () => {
-        nodeIndex--;
-        nodeEmitting = emitters[nodeIndex].id;
-    };
-
     const selectNode = (nodeId) => {
         if (selectedNodes.includes(nodeId)) {
             selectedNodes = selectedNodes.filter((val) => val !== nodeId);
+            nodes.find(({ id }) => id === nodeId).selected = false;
         } else {
             selectedNodes = [nodeId, ...selectedNodes];
-            let emitterIndex = emitters.findIndex(({ id }) => id === nodeId);
-            if (emitterIndex >= 0) {
-                nodeEmitting = nodeId;
-                nodeIndex = emitterIndex;
+            nodes.find(({ id }) => id === nodeId).selected = true;
+            let nodeIndex = emitters.findIndex(({ id }) => id === nodeId);
+            if (nodeIndex >= 0) {
+                emitterIndex = nodeIndex;
             }
         }
-    };
-
-    const nodeSelected = (id) => {
-        return selectedNodes.find((val) => val === id);
-    };
-
-    const selectSimulation = (simulationData) => {
-        data = simulationData;
-        emitters = data.nodes.filter(({ out }) => Array.isArray(out));
-        nodeIndex = 0;
-        nodeEmitting = emitters[nodeIndex].id;
-        updateLinks();
-        selectedNodes = [];
-        updateList = [];
-        simulationSelected = true;
-    };
-
-    const newPreset = () => {
-        simulationSelected = false;
-    };
-
-    updateLinks();
-
-    const update = () => {
-        updates++;
-
-        updateList = [{"timestamp": new Date(), "emitter": nodeEmitting, "emitterGroup": emitters[nodeIndex].group, "targets": emitters[nodeIndex].out}, ...updateList];
+        nodes = [...nodes];
     };
 
     const prog = () => {
         if (progress < interval) progress += interval / 10;
-        else progress = interval / 10;
-    };
+        else {
+            updateList = [
+                {
+                    timestamp: new Date(),
+                    id: emitters[emitterIndex].id,
+                    group: emitters[emitterIndex].group,
+                    targets: emitters[emitterIndex].out,
+                },
+                ...updateList,
+            ];
+            // console.log('updated', updateList);
 
-    const resetProg = () => {
-        updates = 0;
-        clearInterval(updateInterval);
-        updateInterval = setInterval(update, interval);
-        clearInterval(progressInterval);
-        progressInterval = setInterval(prog, interval / 10);
-    };
-
-    $: {
-        if (updatesPaused) {
-            clearInterval(updateInterval);
-        } else {
-            clearInterval(updateInterval);
-            updateInterval = setInterval(update, interval);
             progress = interval / 10;
         }
-    }
+    };
+
+    const restart = () => {
+        selectedNodes = [];
+        physicsPaused = false;
+        emitterIndex = 0;
+        interval = 3000;
+        progress = interval / 10;
+        updateList = [];
+        updatesPaused = true;
+        grid = 0;
+
+        data.nodes = nodes;
+        updateLinks();
+
+        restartSim = true;
+    };
+
     $: {
-        if (updatesPaused) {
-            clearInterval(progressInterval);
-            progress = interval / 10;
-        } else {
+        if (updatesPaused) clearInterval(progressInterval);
+        else {
             clearInterval(progressInterval);
             progressInterval = setInterval(prog, interval / 10);
         }
     }
 </script>
 
-<svelte:window on:resize={reset} />
+<svelte:window
+    bind:innerHeight={height}
+    bind:innerWidth={width}
+/>
 
 {#if !loaded}
-    <h1
-        class="text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2"
-    >
-        loading...
-    </h1>
+    <h1 class="loadingText">loading...</h1>
 {:else if !simulationSelected}
-    <SelectorWrapper
-        {simulationSelected}
-        {setNodes}
-        {reset}
-        {selectSimulation}
-    />
+    <PresetSelector {sendPresetData} />
 {:else}
-    <div class:hidden={!loaded}>
-        <NetworkGraph
-            {resetSim}
-            {resetTheSim}
-            {physicsPaused}
-            {data}
-            {interval}
-            {group}
-            {updatesPaused}
-            {grid}
-            {deleteNode}
+    <DataDrawer
+        {nodes}
+        {selectedNodes}
+        {selectNode}
+        bind:updatesPaused
+        {updateList}
+    />
+
+    {#key restartSim}
+        <MainGraph
+            {width}
+            {height}
             {nodes}
             {links}
             {setNodes}
             {setLinks}
-            {selectedNodes}
             {selectNode}
-            {nodeSelected}
-            {nodeEmitting}
-        />
-        <ControlPanel
-            {reset}
-            {resetProg}
-            {togglePhysics}
             {physicsPaused}
+            emitterId={emitters[emitterIndex].id}
             {interval}
-            {incInterval}
-            {decInterval}
-            {group}
-            {incGroup}
-            {decGroup}
             {updatesPaused}
-            {groupLimit}
-            {toggleUpdates}
             {grid}
-            {incGrid}
-            {decGrid}
-            {updates}
-            {progress}
-            {newPreset}
-            {nodeEmitting}
-            {nodeIndex}
-            {nextNode}
-            {prevNode}
-            nodeCount={emitters.length}
+            bind:restartSim
         />
-        <DrawerWrapper
-            {nodes}
-            {addNode}
-            {deleteNode}
-            {selectedNodes}
-            {selectNode}
-            {nodeSelected}
-            {updateList}
-            {updatesPaused}
-            {toggleUpdates}
-        />
-    </div>
+    {/key}
+
+    <ControlPanel
+        bind:physicsPaused
+        bind:emitterIndex
+        {emitters}
+        bind:simulationSelected
+        bind:interval
+        {updateList}
+        bind:progress
+        bind:updatesPaused
+        bind:grid
+        {restart}
+    />
 {/if}
+
+<style lang="postcss">
+    h1.loadingText {
+        @apply text-7xl top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2;
+    }
+</style>

@@ -1,22 +1,14 @@
 <script>
-    export let link, group, indirectTargeted, transform, grid, bothWays, nodeEmitting;
+    export let link, transform, bothWays, emitterId, gridX, gridY;
 
-    const gridX = (x) => {
-        return Math.round(x / grid) * grid || x || 100;
-    };
+    $: if (link.source.x) link.source.x = gridX(link.source.x);
+    $: if (link.source.y) link.source.y = gridY(link.source.y);
+    $: if (link.target.x) link.target.x = gridX(link.target.x);
+    $: if (link.target.y) link.target.y = gridY(link.target.y);
 
-    const gridY = (y) => {
-        return Math.round(y / grid) * grid || y || 100;
-    };
-
-    $: if (grid > 1 && link.source.x) link.source.x = gridX(link.source.x);
-    $: if (grid > 1 && link.source.y) link.source.y = gridY(link.source.y);
-    $: if (grid > 1 && link.target.x) link.target.x = gridX(link.target.x);
-    $: if (grid > 1 && link.target.y) link.target.y = gridY(link.target.y);
-
-    $: first = control(link.source.x, link.source.y, midX(), midY());
-    $: second = control(midX(), midY(), link.target.x, link.target.y);
-    $: controlPoint = control(
+    $: firstControl = control(link.source.x, link.source.y, midX(), midY());
+    $: secondControl = control(midX(), midY(), link.target.x, link.target.y);
+    $: midControl = control(
         link.source.x,
         link.source.y,
         link.target.x,
@@ -44,26 +36,26 @@
     };
 </script>
 
-<g>
-    {#if link.source.x !== link.target.x || link.source.y !== link.target.y}
+{#if link.source.x !== link.target.x || link.source.y !== link.target.y}
+    <g>
         <path
             d="
                 M {link.source.x}, {link.source.y}
                 {bothWays
-                ? `Q ${first.x},${first.y} ${controlPoint.x},${controlPoint.y}
-                    Q ${second.x},${second.y} ${link.target.x},${link.target.y}`
+                ? `Q ${firstControl.x},${firstControl.y} ${midControl.x},${midControl.y}
+                        Q ${secondControl.x},${secondControl.y} ${link.target.x},${link.target.y}`
                 : `L ${(link.source.x + link.target.x) / 2},
-                    ${(link.source.y + link.target.y) / 2} 
-                    L ${link.target.x},${link.target.y}`}
+                        ${(link.source.y + link.target.y) / 2} 
+                        L ${link.target.x},${link.target.y}`}
             "
-            class="fill-none 
-            {link.source.id === nodeEmitting
+            class="fill-none
+            {link.source.id === emitterId
                 ? 'stroke-success'
                 : bothWays
                 ? 'stroke-info'
-                : 'stroke-neutral'}"
+                : 'stroke-primary'}"
             marker-mid="url(#marker)"
             transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})"
         />
-    {/if}
-</g>
+    </g>
+{/if}

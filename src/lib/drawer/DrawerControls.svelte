@@ -12,7 +12,7 @@
 
 <div class="controls">
     <button
-        class="primaryButton"
+        class="2xl:mb-4 primaryButton"
         on:click={() => ((open = !open), (hasntDiscovered = false))}
     >
         {#if open}
@@ -65,6 +65,11 @@
 
 <style lang="postcss">
     .controls {
-        @apply fixed px-4 -translate-x-full py-8 flex flex-col space-y-8 bg-base-200 rounded-l-xl shadow-xl;
+        @apply fixed p-4 2xl:-translate-x-full
+        flex flex-row 2xl:flex-col space-x-4 2xl:space-x-0 2xl:space-y-4 top-0
+        bg-base-200 rounded-l-xl shadow-xl w-full 2xl:w-auto justify-center;
+        @media (max-width: 1536px) {
+            left: 0px;
+        }
     }
 </style>

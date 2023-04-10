@@ -30,6 +30,6 @@
         @apply text-lg py-2 flex flex-row justify-between items-center;
     }
     p.id {
-        @apply text-2xl uppercase font-medium;
+        @apply uppercase font-medium;
     }
 </style>

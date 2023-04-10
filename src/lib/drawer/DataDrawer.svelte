@@ -68,10 +68,10 @@
 
 <style lang="postcss">
     .wrapper {
-        @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll;
+        @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll flex flex-col pt-20 2xl:pt-0;
     }
     .open {
-        @apply w-2/3 xl:w-1/3;
+        @apply w-full xl:w-1/3;
     }
     button {
         @apply transition-all;

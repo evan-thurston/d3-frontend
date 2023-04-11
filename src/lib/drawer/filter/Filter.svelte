@@ -22,6 +22,6 @@
 
 <style lang="postcss">
     .filter {
-        @apply grid xl:grid-cols-3 gap-2 bg-base-200 border-2 border-base-300 p-4 mt-2 rounded-xl mx-4 xl:mx-8;
+        @apply grid 2xl:grid-cols-3 gap-2 bg-base-200 border-2 border-base-300 p-4 mt-2 rounded-xl mx-4 2xl:mx-8;
     }
 </style>

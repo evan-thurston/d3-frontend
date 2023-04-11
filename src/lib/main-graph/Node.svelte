@@ -16,7 +16,7 @@
         font-size={30}
         fill={colour}
         x={node.x}
-        y={node.y - radius * 1.5 || node.y}
+        y={node.y - radius * 1.35 || node.y}
         text-anchor="middle"
         transform="
         translate({transform.x || 0} {transform.y || 0}) 

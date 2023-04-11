@@ -89,7 +89,14 @@
     };
 
     const addNode = () => {
-        nodes = [...nodes, { id: 'X', group: 0, out: [] }];
+        let nodeId = 'new node '
+        let count = 1;
+
+        while(nodes.find(({id}) => id === nodeId + count)) {
+            count++;
+        }
+
+        nodes = [...nodes, { id: nodeId + count, group: 0, out: [] }];
 
         restart();
     };

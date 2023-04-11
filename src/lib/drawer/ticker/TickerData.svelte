@@ -48,7 +48,7 @@
                         <Highlight value={node.group}>{node.group}</Highlight>
                     </span>
                 </div>
-                <div class="hidden xl:block">
+                <div class="hidden 2xl:block">
                     {#if node.out && parseTargets(node.out).length > 0}
                         <div class="flex flex-col space-y-2">
                             {#each parseTargets(node.out) as out}
@@ -71,7 +71,7 @@
                         </h6>
                     {/if}
                 </div>
-                <div class="xl:hidden">
+                <div class="2xl:hidden">
                     <span class="dataLabel">out:</span>
                     <span class="dataLabel">
                         <Highlight value={node.out || []}>
@@ -79,7 +79,7 @@
                         </Highlight>
                     </span>
                 </div>
-                <div>
+                <!-- <div>
                     <h6>
                         <span class="dataLabel">x:</span>
                         <Highlight value={Math.round(node.x)}>
@@ -94,7 +94,7 @@
                             {Math.round(node.y)}
                         </Highlight>
                     </h6>
-                </div>
+                </div> -->
                 <button
                     class:btn-disabled={nodes.length < 2}
                     class="nodeButton"
@@ -105,7 +105,7 @@
 
                 {#if node.selected}
                     <div
-                        class="xl:col-span-6"
+                        class="2xl:col-span-4"
                         transition:slide={{ duration: 400 }}
                     >
                         <DrawerModal bind:node />
@@ -125,17 +125,17 @@
 
 <style lang="postcss">
     main {
-        @apply flex flex-col mx-4 xl:mx-8 mb-20 xl:mb-0;
+        @apply flex flex-col mx-4 2xl:mx-8 mb-20 2xl:mb-0;
     }
     .nodeContainer {
-        @apply border-2 border-base-300 bg-base-200 rounded-xl mt-4 p-4 grid xl:grid-cols-6 gap-2;
+        @apply border-2 border-base-300 bg-base-200 rounded-xl mt-4 p-4 grid 2xl:grid-cols-4 gap-2;
     }
     .nodeContainer > div {
         /* @apply flex flex-row space-x-4 items-center; */
         @apply text-center my-auto;
     }
     .dataLabel {
-        @apply xl:hidden;
+        @apply 2xl:hidden;
     }
     button.nodeButton {
         @apply btn btn-primary w-full h-full;

@@ -39,7 +39,9 @@
         <!-- LIST OF NODES -->
         {#each presetData.nodes as obj}
             <div class="editorRow">
-                <button
+                <div class="flex flex-row col-span-2">
+
+                    <button
                     class="deleteButton"
                     type="button"
                     on:click={() =>
@@ -55,6 +57,7 @@
                     type="text"
                     bind:value={obj.id}
                 />
+                </div>
                 <!-- </div> -->
                 <input
                     class="mainInput"
@@ -98,7 +101,7 @@
         @apply grid grid-cols-5 gap-2 xl:gap-4 bg-base-200 p-2 xl:p-8 rounded-xl;
     }
     button.deleteButton {
-        @apply btn btn-primary h-full mr-2 xl:mr-4;
+        @apply btn btn-primary h-full mr-2 xl:mr-4 w-min;
     }
     input.mainInput {
         @apply input input-bordered border-base-300 w-full h-full;

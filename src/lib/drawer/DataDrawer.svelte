@@ -1,5 +1,6 @@
 <script>
     import DrawerControls from './DrawerControls.svelte';
+    import Login from './account/Login.svelte';
     import Ticker from './ticker/Ticker.svelte';
     import Timeline from './timeline/Timeline.svelte';
 
@@ -62,7 +63,7 @@
             {parseTargets}
         />
     {:else if currentView === 2}
-        <p class="my-16 text-center">account information here (WIP)</p>
+        <Login />
     {/if}
 </div>
 
@@ -71,7 +72,7 @@
         @apply h-full fixed right-0 bg-base-100 shadow-2xl transition-all overflow-y-scroll flex flex-col pt-20 2xl:pt-0;
     }
     .open {
-        @apply w-full xl:w-1/3;
+        @apply w-full xl:w-2/5;
     }
     button {
         @apply transition-all;

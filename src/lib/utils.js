@@ -146,6 +146,10 @@ export let fibonacci = [
         id: 'Adder',
         group: 2,
         out: ['Meter'],
+        data: [
+            { label: 'val1', value: 0 },
+            { label: 'val2', value: 1 },
+        ],
     },
     {
         id: 'Meter',

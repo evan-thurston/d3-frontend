@@ -34,8 +34,8 @@
         <p>ID:</p>
         <p>group:</p>
         <p>out:</p>
-        <p>x:</p>
-        <p>y:</p>
+        <!-- <p>x:</p>
+        <p>y:</p> -->
         <p>delete</p>
     </div>
     <TickerData
@@ -55,6 +55,9 @@
         @apply flex flex-col;
     }
     .legend {
-        @apply xl:flex flex-row justify-around bg-base-200 border-2 border-base-300 p-4 mt-4 rounded-xl sticky top-4 mx-4 xl:mx-8 z-50 hidden;
+        @apply 2xl:grid grid-cols-4 justify-around bg-base-200 border-2 border-base-300 p-4 mt-4 rounded-xl sticky top-4 mx-4 2xl:mx-8 z-50 hidden;
+    }
+    .legend > p {
+        @apply text-center
     }
 </style>

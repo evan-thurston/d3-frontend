@@ -3,7 +3,7 @@
 
     // import Highlight from '$lib/Highlight.svelte';
     // import DrawerModal from '$lib/drawer/DrawerModal.svelte';
-    import Filter from './Filter.svelte';
+    import Filter from '../filter/Filter.svelte';
     import TickerData from './TickerData.svelte';
 
     export let nodes, selectNode, parseTargets, addNode, deleteNode;

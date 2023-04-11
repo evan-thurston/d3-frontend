@@ -3,7 +3,7 @@
     import PresetSelector from '$lib/selector/PresetSelector.svelte';
     import MainGraph from '$lib/main-graph/MainGraph.svelte';
     import ControlPanel from '$lib/controls/ControlPanel.svelte';
-    import DataDrawer from '../lib/drawer/DataDrawer.svelte';
+    import DataDrawer from '$lib/drawer/DataDrawer.svelte';
 
     //APPLICATION VARIABLES
     let width = 100,

@@ -1,10 +1,11 @@
 <script>
     import { slide } from 'svelte/transition';
 
-    import Plus from '../icons/Plus.svelte';
     import Highlight from '$lib/Highlight.svelte';
-    import Trashcan from '../icons/Trashcan.svelte';
-    import DrawerModal from './DrawerModal.svelte';
+    import DrawerModal from '../modal/DrawerModal.svelte';
+
+    import Plus from '$lib/icons/Plus.svelte';
+    import Trashcan from '$lib/icons/Trashcan.svelte';
 
     export let nodes,
         filteredIdList,

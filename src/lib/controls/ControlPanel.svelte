@@ -143,7 +143,7 @@
     main {
         @apply flex flex-col
         bg-base-100 rounded-t-xl xl:rounded-xl
-        fixed bottom-0 xl:bottom-8 xl:left-8 w-full xl:w-1/3 max-w-md
+        fixed bottom-0 xl:bottom-8 xl:left-8 w-full xl:w-1/3 max-w-lg
         border-2 border-base-300 shadow-xl;
     }
     div.controlWrapper {

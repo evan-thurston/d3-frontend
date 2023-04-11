@@ -1,5 +1,5 @@
 <script>
-    import Filter from './Filter.svelte';
+    import Filter from '../filter/Filter.svelte';
 
     export let updateList, updatesPaused, parseTargets;
 

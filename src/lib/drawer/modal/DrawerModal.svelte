@@ -1,5 +1,5 @@
 <script>
-    import Highlight from '../Highlight.svelte';
+    import Highlight from '$lib/Highlight.svelte';
     import OutEditor from '$lib/selector/OutEditor.svelte';
     import Histogram from './Histogram.svelte';
     import ModalRow from './ModalRow.svelte';

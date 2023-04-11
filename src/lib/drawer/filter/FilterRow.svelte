@@ -1,6 +1,6 @@
 <script>
-    import Plus from '../icons/Plus.svelte';
-    import Trashcan from '../icons/Trashcan.svelte';
+    import Plus from '../../icons/Plus.svelte';
+    import Trashcan from '../../icons/Trashcan.svelte';
 
     export let name, arr;
 </script>

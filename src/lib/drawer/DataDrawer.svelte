@@ -1,7 +1,7 @@
 <script>
     import DrawerControls from './DrawerControls.svelte';
-    import Ticker from './Ticker.svelte';
-    import Timeline from './Timeline.svelte';
+    import Ticker from './ticker/Ticker.svelte';
+    import Timeline from './timeline/Timeline.svelte';
 
     // export let nodes,
     //     addNode,

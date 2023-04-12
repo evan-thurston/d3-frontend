@@ -22,7 +22,7 @@
         {#if (filteredIdList.length === 0 || filteredIdList.includes(node.id)) && (filteredGroupList.length === 0 || filteredGroupList.includes(node.group.toString())) && (filteredOutList.length === 0 || (node.out && filteredOutList.some( (val) => parseTargets(node.out).includes(val) )))}
             <!-- ANCHOR FOR BROWSER TO JUMP TO WHEN NODE IS SELECTED -->
             <p
-                class="relative invisible -top-16"
+                class="relative invisible -top-20"
                 id={node.id}
             />
             <div class="nodeContainer">
@@ -128,7 +128,7 @@
         @apply flex flex-col mx-4 2xl:mx-8 mb-20 2xl:mb-0;
     }
     .nodeContainer {
-        @apply border-2 border-base-300 bg-base-200 rounded-xl mt-4 p-4 grid 2xl:grid-cols-4 gap-2;
+        @apply border-2 border-base-300 bg-base-200 rounded-xl mt-4 p-4 grid 2xl:grid-cols-4 gap-4;
     }
     .nodeContainer > div {
         /* @apply flex flex-row space-x-4 items-center; */

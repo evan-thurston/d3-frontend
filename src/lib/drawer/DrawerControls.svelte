@@ -66,7 +66,7 @@
 <style lang="postcss">
     .controls {
         @apply fixed p-4 2xl:-translate-x-full
-        flex flex-row 2xl:flex-col space-x-4 2xl:space-x-0 2xl:space-y-4 top-0
+        flex flex-row 2xl:flex-col space-x-4 2xl:space-x-0 2xl:space-y-4 top-32
         bg-base-200 rounded-l-xl shadow-xl w-full 2xl:w-auto justify-center;
         @media (max-width: 1536px) {
             left: 0px;

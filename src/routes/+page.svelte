@@ -157,22 +157,22 @@
     bind:innerWidth={width}
 />
 
-<!-- {#if !loaded}
+{#if !loaded}
     <h1 class="loadingText">loading...</h1>
 {:else if !simulationSelected}
     <PresetSelector {sendPresetData} />
-{:else} -->
-<DataDrawer
-    {nodes}
-    {selectedNodes}
-    {selectNode}
-    bind:updatesPaused
-    {updateList}
-    {addNode}
-    {deleteNode}
-/>
+{:else}
+    <DataDrawer
+        {nodes}
+        {selectedNodes}
+        {selectNode}
+        bind:updatesPaused
+        {updateList}
+        {addNode}
+        {deleteNode}
+    />
 
-<!-- {#key restartSim}
+    {#key restartSim}
         <MainGraph
             {width}
             {height}
@@ -188,9 +188,9 @@
             {grid}
             bind:restartSim
         />
-    {/key} -->
+    {/key}
 
-<!-- <ControlPanel
+    <ControlPanel
         bind:physicsPaused
         bind:emitterIndex
         {emitters}
@@ -202,7 +202,7 @@
         bind:grid
         {restart}
     />
-{/if} -->
+{/if}
 
 <style lang="postcss">
     h1.loadingText {
